@@ -1,0 +1,19 @@
+{
+  "parser" : "babel-eslint",
+  "env" : {
+    "node" : true,
+    "es6" : true
+  },
+  "rules" : {
+    "curly": false,
+    "semi" : false,
+    "no-use-before-define" : false,
+    "strict" : false ,
+    "no-var" : 2,
+    "no-unused-expressions" : false,
+    "no-shadow" : false,
+    "no-loop-func": false,
+    "no-unused-vars": false,
+    "no-underscore-dangle": false
+  }
+}

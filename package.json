@@ -1,0 +1,41 @@
+{
+  "name": "parsec",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "setup": "npm i && npm run test",
+    "build": "babel --optional runtime src -d dist",
+    "test": "npm run build && npm run tape | tspec",
+    "deploy": "npm run test && git push origin master && npm publish",
+    "tape": "node --harmony --harmony_arrow_functions ./node_modules/tape/bin/tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bucaran/parsec.git"
+  },
+  "keywords": [
+    "options",
+    "argv",
+    "arguments",
+    "parser",
+    "cli",
+    "es6"
+  ],
+  "author": "Jorge Bucaran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bucaran/parsec/issues"
+  },
+  "homepage": "https://github.com/bucaran/parsec#readme",
+  "devDependencies": {
+    "babel": "^5.3.3",
+    "babel-eslint": "^3.1.1",
+    "eslint": "^0.21.0",
+    "tap-spec": "^3.0.0",
+    "tape": "^4.0.0"
+  },
+  "dependencies": {
+    "babel-runtime": "^5.8.3"
+  }
+}
