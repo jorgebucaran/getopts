@@ -205,6 +205,13 @@ test("no flags", (t) => {
     _: ["bar"]
   }, "invalid no-flag")
 
+  t.deepEqual(parse.call(["--no-foo", "--foo"], ["no-foo", "N"], ["foo", "F"]), {
+    foo: true,
+    F: true,
+    "no-foo": false,
+    "N": false
+  }, "no-flag w/ aliases")
+
   t.end()
 })
 
@@ -215,5 +222,19 @@ test("invalid options", (t) => {
   parse.call(["-a"], "b", "c", (unknown) => {
     t.equal(unknown, "a", "invoke callback with bad options")
   })
+  t.end()
+})
+
+test("edge cases", (t) => {
+  t.deepEqual(parse.call(["-f", ""], "foo"), {
+    foo: "",
+    f: ""
+  }, "single and empty string")
+
+  t.deepEqual(parse.call(["--foo", ""], "foo"), {
+    foo: "",
+    f: ""
+  }, "double and empty string")
+
   t.end()
 })
