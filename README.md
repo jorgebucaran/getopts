@@ -37,7 +37,7 @@ npm install parsec
 
 ## Synopsis
 
-_Parsec_ is a [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) in 60 LOC.
+_Parsec_ is a [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) in 50 LOC.
 
 ```js
 // node ./index.js -abc --secret=42
