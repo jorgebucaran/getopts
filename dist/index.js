@@ -36,7 +36,7 @@ function parse(argv, aliases) {
     if (token === "--") return add("_", argv.slice(index + 1)) || true;
 
     if (/^[a-z/"'@#$`~.]|^[+-]?[0-9]\d*(\.\d+)?$/i.test(token)) {
-      add.apply(undefined, _toConsumableArray(stack.length === 0 ? ["_", [token]] : [stack.pop(), token]));
+      add.apply(undefined, _toConsumableArray(stack.length ? [stack.pop(), token] : ["_", [token]]));
     } else if (/^-[a-z]/i.test(token)) {
       var _index = (token = token.slice(1)).search(/[\d\W]/i);
       var split = ~_index ? token.slice(0, _index) : token;
