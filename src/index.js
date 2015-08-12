@@ -5,7 +5,8 @@ export default function (...aliases) {
 
 function find (aliases, fun) {
   return aliases.some((alias) => fun(alias = alias.slice(),
-    typeof alias[alias.length - 1] === "object" && alias.pop().default))
+    typeof alias[alias.length - 1] === "object"
+      ? alias.pop().default : undefined))
 }
 
 function parse (argv, aliases) {
@@ -15,6 +16,18 @@ function parse (argv, aliases) {
   const unknown = typeof aliases[aliases.length - 1] === "function"
     ? aliases.pop() : Function
 
+  function add (key, value = true) {
+    map[key] = map[key] === undefined
+      ? value : Array.isArray(map[key])
+        ? map[key].concat(value) : [map[key]].concat(value)
+
+    find(aliases, (alias, _value) => {
+      if (!~keys.indexOf(key)) return !unknown(key)
+      if (~alias.indexOf(key)) alias.forEach((key) =>
+        map[key] = typeof _value === "string" && typeof value === "boolean"
+          ? _value : value)
+    })
+  }
   argv.some((token, index) => {
     if (token === "--") return add("_", argv.slice(index + 1)) || true
 
@@ -39,27 +52,10 @@ function parse (argv, aliases) {
       } else {
         stack.push(token)
       }
-    } else {
-      console.log(">>>", token, "<<<")
-      throw new RangeError(`invalid option ${token}`)
-    }
+    } else throw new RangeError(`invalid option ${token}`)
   })
   stack.forEach((key) => add(key))
   find(aliases, (alias, value) => alias.forEach((a) =>
     map[a] = map[a] === undefined ? value : map[a]))
-
   return map
-
-  function add (key, value = true) {
-    map[key] = map[key] === undefined
-      ? value : Array.isArray(map[key])
-        ? map[key].concat(value) : [map[key]].concat(value)
-
-    find(aliases, (alias, _value) => {
-      if (!~keys.indexOf(key)) return !unknown(key)
-      if (~alias.indexOf(key)) alias.forEach((key) =>
-        map[key] = typeof value === typeof _value
-          ? value : value === true ? _value : value)
-    })
-  }
 }

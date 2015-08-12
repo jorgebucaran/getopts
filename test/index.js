@@ -70,6 +70,18 @@ test("singles", (t) => {
     a: "bar"
   }, "single and value")
 
+  t.deepEqual(parse.call(["-af", "/"], ["f", "foo", { default: "." }]), {
+    a: true,
+    f: "/",
+    foo: "/"
+  }, "single w/ value and default ")
+
+  t.deepEqual(parse.call(["-af", "/"], ["f", "foo", { default: true }]), {
+    a: true,
+    f: "/",
+    foo: "/"
+  }, "single w/ value and default and type mismatch")
+
   t.deepEqual(parse.call(["-abc./", "bar"]), {
     a: true,
     b: true,
@@ -141,42 +153,38 @@ test("aliases", (t) => {
     foo: true
   }, "double w/ alias")
 
-  t.deepEqual(parse.call(["foo"], "foo"), {
-    f: false,
-    foo: false,
-    _: ["foo"]
+  t.deepEqual(parse.call(["bar"], "foo"), {
+    f: undefined,
+    foo: undefined,
+    _: ["bar"]
   }, "bare w/ alias")
 
-  t.deepEqual(parse.call(["-xf"], "foo", "bar"), {
-    x: true,
+  t.deepEqual(parse.call(["-af"], "foo", "bar"), {
+    a: true,
     f: true,
     foo: true,
-    b: false,
-    bar: false
+    b: undefined,
+    bar: undefined
   }, "missing alias for option")
 
-  t.deepEqual(parse.call(["-xf"], "foo", ["bar"]), {
-    x: true,
+  t.deepEqual(parse.call(["-af"], "foo", ["bar"]), {
+    a: true,
     f: true,
     foo: true,
-    bar: false
+    bar: undefined
   }, "missing option w/o short alias")
 
-  t.deepEqual(parse.call(["-x"], ["bar", "beer"]), {
-    x: true,
-    bar: false,
-    beer: false
+  t.deepEqual(parse.call(["-a"], ["bar", "beer"]), {
+    a: true,
+    bar: undefined,
+    beer: undefined
   }, "missing option w/ multiple aliases")
 
-  t.deepEqual(parse.call(["-x"], ["bar", "beer", { default: "." }]), {
-    x: true,
+  t.deepEqual(parse.call(["-a"], ["bar", "beer", { default: "." }]), {
+    a: true,
     bar: ".",
     beer: "."
   }, "missing option w/ default values")
-
-  t.deepEqual(parse.call(["-f"], ["f", { default: "." }]), {
-    f: "."
-  }, "option w/ missing value and default type")
 
   t.deepEqual(parse.call(["-f"], ["f", { default: false }]), {
     f: true
@@ -184,8 +192,8 @@ test("aliases", (t) => {
 
   t.deepEqual(parse.call(["--foo"], ["_", "operands"]), {
     foo: true,
-    _: false,
-    operands: false
+    _: undefined,
+    operands: undefined
   }, "operands alias")
 
   t.end()
@@ -205,12 +213,10 @@ test("no flags", (t) => {
     _: ["bar"]
   }, "invalid no-flag")
 
-  t.deepEqual(parse.call(["--no-foo", "--foo"], ["no-foo", "N"], ["foo", "F"]), {
-    foo: true,
-    F: true,
-    "no-foo": false,
-    "N": false
-  }, "no-flag w/ aliases")
+  t.deepEqual(parse.call(["--no-foo"], ["foo", "F"]), {
+    "foo": false,
+    "F": false
+  }, "no-flag w/ alias")
 
   t.end()
 })
@@ -235,6 +241,15 @@ test("edge cases", (t) => {
     foo: "",
     f: ""
   }, "double and empty string")
+
+  t.deepEqual(parse.call(["-f"], ["f", { default: "." }]), {
+    f: "."
+  }, "single set w/ default value and type mismatch")
+
+  t.deepEqual(parse.call(["--foo"], ["f", "foo", { default: "." }]), {
+    f: ".",
+    foo: "."
+  }, "double set w/ default value and type mismatch")
 
   t.end()
 })
