@@ -35,7 +35,7 @@ function parse(argv, aliases) {
   argv.some(function (token, index) {
     if (token === "--") return add("_", argv.slice(index + 1)) || true;
 
-    if (/^[a-z/"'@#$`~.]|^[+-]?[0-9]\d*(\.\d+)?$/i.test(token)) {
+    if (/^$|^[a-z/"'@#$`~.]|^[+-]?[0-9]\d*(\.\d+)?$/i.test(token)) {
       add.apply(undefined, _toConsumableArray(stack.length ? [stack.pop(), token] : ["_", [token]]));
     } else if (/^-[a-z]/i.test(token)) {
       var _index = (token = token.slice(1)).search(/[\d\W]/i);
@@ -56,7 +56,10 @@ function parse(argv, aliases) {
       } else {
         stack.push(token);
       }
-    } else throw new RangeError("invalid option " + token);
+    } else {
+      console.log(">>>", token, "<<<");
+      throw new RangeError("invalid option " + token);
+    }
   });
   stack.forEach(function (key) {
     return add(key);
