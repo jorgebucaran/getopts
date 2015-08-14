@@ -34,6 +34,10 @@ test("bares", (t) => {
     _: ["bar", "beer"]
   }, "bare and bare")
 
+  t.deepEqual(parse.call(["foo", "bar", "baz", "quux"]), {
+    _: ["foo", "bar", "baz", "quux"]
+  }, "bare sequence")
+
   t.deepEqual(parse.call(["-ab42", "beer", "--foo", "--bar"]), {
     a: true,
     b: "42",
@@ -133,6 +137,23 @@ test("doubles", (t) => {
     b: true,
     c: true
   }, "double and single")
+
+  t.deepEqual(parse.call([ "--foo", "--bar", "--secret=42",  "baz"]), {
+    foo: true,
+    bar: true,
+    secret: "42",
+    _: ["baz"]
+  }, "multiple double sequence")
+
+  t.deepEqual(parse.call([ "-foo", "--bar", "-bar", "norf",  "baz", "quux"]), {
+    f: true,
+    o: [true, true],
+    bar: true,
+    b: true,
+    a: true,
+    r: "norf",
+    _: ["baz", "quux"]
+  }, "single double single w/ remaining bares")
 
   t.end()
 })
