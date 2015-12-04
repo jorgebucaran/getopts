@@ -1,6 +1,5 @@
 > CLI parser
 
-[![][parsec-badge]][parsec]
 [![npm package][npm-ver-link]][parsec]
 [![][dl-badge]][npm-pkg-link]
 [![][travis-logo]][travis]
@@ -11,7 +10,7 @@
 <br>
 <p align="center">
 <a href="https://github.com/bucaran/parsec/blob/master/README.md">
-<img width="300px" src="https://cloud.githubusercontent.com/assets/8317250/11601058/09c3220c-9b14-11e5-82ac-1fc6d5e8538a.png">
+<img width="350px" src="https://cloud.githubusercontent.com/assets/8317250/11601058/09c3220c-9b14-11e5-82ac-1fc6d5e8538a.png">
 </a>
 </p>
 <br>
@@ -218,7 +217,6 @@ npm run setup
 [license]: http://opensource.org/licenses/MIT
 [author]: http://about.bucaran.me
 [parsec]: https://www.github.com/bucaran/parsec
-[parsec-badge]: https://img.shields.io/badge/parsec-JS-33CCFF.svg?style=flat-square
 [mit-badge]: https://img.shields.io/badge/license-MIT-444444.svg?style=flat-square
 [npm-pkg-link]: https://www.npmjs.org/package/parsec
 [npm-ver-link]: https://img.shields.io/npm/v/parsec.svg?style=flat-square
