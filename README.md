@@ -8,11 +8,13 @@
 
 <a name="parsec"></a>
 
+<br>
 <p align="center">
 <a href="https://github.com/bucaran/parsec/blob/master/README.md">
-<img width="65%" src="https://cloud.githubusercontent.com/assets/8317250/7609248/1735d894-f9ac-11e4-9f80-eb0483533355.png">
+<img width="300px" src="https://cloud.githubusercontent.com/assets/8317250/11601058/09c3220c-9b14-11e5-82ac-1fc6d5e8538a.png">
 </a>
 </p>
+<br>
 
 <p align="center">
 <b><a href="#install">Install</a></b>
@@ -37,7 +39,7 @@ npm install parsec
 
 ## Synopsis
 
-_Parsec_ is a [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) in 50 LOC.
+_Parsec_ is a tiny [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments).
 
 ```js
 // node ./index.js -abc --secret=42
@@ -204,15 +206,6 @@ parse("foo", "bar", ["path", { default: "./" }])
 }
  ```
 
-# About
-
-I also found the following projects useful and inspiring while writing Parsec:
-
-  + [`minimist`](https://github.com/substack/minimist)
-  + [`nopt`](https://github.com/npm/nopt)
-  + [`commander`](https://github.com/tj/commander.js)
-  + [`yargs`](https://github.com/bcoe/yargs)
-
 # Hacking
 
 ```sh
@@ -220,11 +213,6 @@ git clone https://github.com/bucaran/parsec
 cd parsec
 npm run setup
 ```
-
-# License
-
-[MIT][license] © [Jorge Bucaran][author] et [al][contributors]
-:heart:
 
 
 [license]: http://opensource.org/licenses/MIT
