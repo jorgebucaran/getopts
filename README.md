@@ -10,24 +10,33 @@
 <br>
 <p align="center">
 <a href="https://github.com/bucaran/parsec/blob/master/README.md">
-<img width="350px" src="https://cloud.githubusercontent.com/assets/8317250/11601058/09c3220c-9b14-11e5-82ac-1fc6d5e8538a.png">
+<img width="400px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
 </a>
 </p>
 <br>
 
 <p align="center">
-<b><a href="#install">Install</a></b>
+<b><a href="#features">Features</a></b>
 |
-<b><a href="#synopsis">Synopsis</a></b>
+<b><a href="#install">Install</a></b>
 |
 <b><a href="#usage">Usage</a></b>
 |
-<b><a href="#example">Example</a></b>
+<b><a href="#usage">Usage</a></b>
 |
-<b><a href="#hacking">Hacking</a></b>
-|
-<b><a href="#about">About</a></b>
+<b><a href="#examples">Example</a></b>
 </p>
+
+
+## Features
+
++ Simple
++ Based in the [UNIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/7908799/xbd/utilconv.html)
++ Custom aliases
+* Default shorthands
++ Default values / types
++ Handle `--no-*` options
++ Handle unknown options
 
 
 ## Install
@@ -36,7 +45,7 @@
 npm install parsec
 ```
 
-## Synopsis
+## Usage
 
 _Parsec_ is a tiny [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments).
 
@@ -67,16 +76,6 @@ parse("secret", ["verbose", "V", { default: true }])
   "verbose": true
 }
 ```
-
-## Features
-
-+ Simple
-+ Based in the [UNIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/7908799/xbd/utilconv.html)
-+ Custom aliases
-* Default shorthands
-+ Default values / types
-+ Handle `--no-*` options
-+ Handle unknown options
 
 ## Usage
 
@@ -174,7 +173,7 @@ parse(alias1, alias2, ...)
   parse.call(["--foo", "--bar"], [alias1, alias2, ...])
   ```
 
-## Example
+## Examples
 
 ```js
 // ./node index.js -f bar -bp
@@ -204,15 +203,6 @@ parse("foo", "bar", ["path", { default: "./" }])
   "path": "./"
 }
  ```
-
-# Hacking
-
-```sh
-git clone https://github.com/bucaran/parsec
-cd parsec
-npm run setup
-```
-
 
 [license]: http://opensource.org/licenses/MIT
 [author]: http://about.bucaran.me
