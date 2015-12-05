@@ -1,5 +1,3 @@
-> CLI parser
-
 [![npm package][npm-ver-link]][parsec]
 [![][dl-badge]][npm-pkg-link]
 [![][travis-logo]][travis]
@@ -10,7 +8,7 @@
 <br>
 <p align="center">
 <a href="https://github.com/bucaran/parsec/blob/master/README.md">
-<img width="400px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
+<img width="420px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
 </a>
 </p>
 <br>
@@ -22,15 +20,13 @@
 |
 <b><a href="#usage">Usage</a></b>
 |
-<b><a href="#usage">Usage</a></b>
-|
-<b><a href="#examples">Example</a></b>
+<b><a href="#examples">Examples</a></b>
 </p>
 
+_Parsec_ is a tiny [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments).
 
 ## Features
 
-+ Simple
 + Based in the [UNIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/7908799/xbd/utilconv.html)
 + Custom aliases
 * Default shorthands
@@ -47,25 +43,22 @@ npm install parsec
 
 ## Usage
 
-_Parsec_ is a tiny [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments).
-
 ```js
-// node ./index.js -abc --secret=42
+// ./index.js -par5ec
 parse()
 ```
 ```json
 {
+  "p": true,
   "a": true,
-  "b": true,
-  "c": true,
-  "secret": 42
+  "r": 5ec
 }
 ```
 
 Customize:
 
 ```js
-// node ./index.js -s42
+// ./index.js -s42
 parse("secret", ["verbose", "V", { default: true }])
 ```
 ```json
@@ -89,89 +82,89 @@ parse(alias1, alias2, ...)
 
 + Custom aliases
 
-  ```js
-  // node ./index.js --bar
-  parse(["foo", "bar", "baz"])
-  ```
+```js
+// ./index.js --bar
+parse(["foo", "bar", "baz"])
+```
 
-  ```json
-  {
-    "foo": true,
-    "bar": true,
-    "baz": true
-  }
-  ```
+```json
+{
+  "foo": true,
+  "bar": true,
+  "baz": true
+}
+```
 
 + Example aliases
 
-  ```js
-  "foo" // → ["f", "foo"]
-  ["F", "f", "foo"]
-  ["foo", { default: "./" }]
-  ["baz", { default: true }]
-  ```
+```js
+"foo" // → ["f", "foo"]
+["F", "f", "foo"]
+["foo", { default: "./" }]
+["baz", { default: true }]
+```
 
 + Default shorthands
 
-  ```js
-  // node ./index.js -fb
-  parse("foo", "bar")
-  ```
-  ```json
-  {
-    "f": true,
-    "foo": true,
-    "b": true,
-    "bar": true,
-  }
-  ```
+```js
+// ./index.js -fb
+parse("foo", "bar")
+```
+```json
+{
+  "f": true,
+  "foo": true,
+  "b": true,
+  "bar": true,
+}
+```
 
 + Default values and types
 
-  ```js
-  // node ./index.js --file
-  parse(["f", "file", { default: "." }])
-  ```
-  ```json
-  {
-    "f": ".",
-    "file": "."
-  }
-  ```
+```js
+// ./index.js --file
+parse(["f", "file", { default: "." }])
+```
+```json
+{
+  "f": ".",
+  "file": "."
+}
+```
 
 + Handle `--no-flags`
 
-  ```js
-  // node ./index.js --no-foo --no-bar=baz
-  parse()
-  ```
-  ```json
-  {
-    "foo": false,
-    "no-bar": "baz"
-  }
-  ```
+```js
+// ./index.js --no-foo --no-bar=baz
+parse()
+```
+```json
+{
+  "foo": false,
+  "no-bar": "baz"
+}
+```
 
 + Handle unknown options
 
-  ```js
-  // node ./index.js --bar
-  parse("foo", (option) => {
-    throw new RangeError(`unknown option ${option}`) // bar
-  })
-  ```
+```js
+// ./index.js --bar
+parse("foo", (option) => {
+  throw new RangeError(`unknown option ${option}`) // bar
+})
+```
 
 + Bare operands and arguments after `--` are added to `._`. To override:
 
-  ```js
-  parse(["_", "alias"])
-  ```
+```js
+parse(["_", "alias"])
+```
 
 + Bind `parse` to a different source of arguments:
 
-  ```js
-  parse.call(["--foo", "--bar"], [alias1, alias2, ...])
-  ```
+```js
+parse.call(["--foo", "--bar"], [alias1, alias2, ...])
+```
 
 ## Examples
 
