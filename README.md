@@ -51,7 +51,7 @@ parse()
 {
   "p": true,
   "a": true,
-  "r": 5ec
+  "r": "5ec"
 }
 ```
 
