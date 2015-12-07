@@ -1,8 +1,8 @@
 [![npm package][npm-ver-link]][parsec]
 [![][dl-badge]][npm-pkg-link]
 [![][travis-logo]][travis]
-![][mit-badge]
 
+<br>
 <a name="parsec"></a>
 
 <p align="center">
@@ -10,7 +10,7 @@
 <img width="420px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
 </a>
 </p>
-
+<br>
 
 <p align="center">
 <b><a href="#features">Features</a></b>
@@ -199,7 +199,6 @@ parse("foo", "bar", ["path", { default: "./" }])
 [license]: http://opensource.org/licenses/MIT
 [author]: http://about.bucaran.me
 [parsec]: https://www.github.com/bucaran/parsec
-[mit-badge]: https://img.shields.io/badge/license-MIT-444444.svg?style=flat-square
 [npm-pkg-link]: https://www.npmjs.org/package/parsec
 [npm-ver-link]: https://img.shields.io/npm/v/parsec.svg?style=flat-square
 [dl-badge]: http://img.shields.io/npm/dm/parsec.svg?style=flat-square
