@@ -5,10 +5,24 @@
 <img width="400px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
 </a>
 
-[![npm package][npm-ver-link]][parsec]
-[![][dl-badge]][npm-pkg-link]
-[![][travis-logo]][travis]
+</p>
 
+
+<p align="center">
+  <a href="https://www.npmjs.org/package/parsec">
+    <img src="https://img.shields.io/npm/v/parsec.svg?style=flat-square"
+         alt="NPM Version">
+  </a>
+
+  <a href="https://travis-ci.org/bucaran/parsec">
+    <img src="http://img.shields.io/travis/bucaran/parsec.svg?style=flat-square"
+         alt="Downloads">
+  </a>
+
+  <a href="https://www.npmjs.org/package/parsec">
+    <img src="http://img.shields.io/npm/dm/parsec.svg?style=flat-square"
+         alt="Build Status">
+  </a>
 </p>
 
 
