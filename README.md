@@ -1,18 +1,19 @@
-[![npm package][npm-ver-link]][parsec]
-[![][dl-badge]][npm-pkg-link]
-[![][travis-logo]][travis]
-
-<br>
 <a name="parsec"></a>
 
 <p align="center">
 <a href="https://github.com/bucaran/parsec/blob/master/README.md">
-<img width="420px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
+<img width="400px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
 </a>
+
+[![npm package][npm-ver-link]][parsec]
+[![][dl-badge]][npm-pkg-link]
+[![][travis-logo]][travis]
+
 </p>
-<br>
+
 
 <p align="center">
+
 <b><a href="#features">Features</a></b>
 |
 <b><a href="#install">Install</a></b>
@@ -21,6 +22,9 @@
 |
 <b><a href="#examples">Examples</a></b>
 </p>
+
+
+## About
 
 _Parsec_ is a tiny [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments).
 
