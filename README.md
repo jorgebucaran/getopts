@@ -7,7 +7,6 @@
 
 </p>
 
-
 <p align="center">
   <a href="https://www.npmjs.org/package/parsec">
     <img src="https://img.shields.io/npm/v/parsec.svg?style=flat-square"
@@ -26,36 +25,22 @@
 </p>
 
 
-<p align="center">
+# Parsec
 
-<b><a href="#features">Features</a></b>
-|
-<b><a href="#install">Install</a></b>
-|
-<b><a href="#usage">Usage</a></b>
-|
-<b><a href="#examples">Examples</a></b>
-</p>
-
-
-## About
-
-_Parsec_ is a tiny [CLI parser](https://en.wikipedia.org/wiki/Command-line_interface#Arguments).
+**Parsec** is a tiny command line options parser.
 
 ## Features
 
-+ Based in the [UNIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/7908799/xbd/utilconv.html)
-+ Custom aliases
-* Default shorthands
-+ Default values / types
-+ Handle `--no-*` options
-+ Handle unknown options
-
++ [Custom aliases](#custom-aliases)
+* [Default shorthands](#default-shorthands)
++ [Default values and types](#default-values-and-types)
++ [Process negated options](#process-negated-options)
++ [Process unknown options](#process-unknown-options)
 
 ## Install
 
 ```sh
-npm install parsec
+npm i parsec
 ```
 
 ## Usage
@@ -64,6 +49,7 @@ npm install parsec
 // ./index.js -par5ec
 parse()
 ```
+
 ```json
 {
   "p": true,
@@ -72,32 +58,7 @@ parse()
 }
 ```
 
-Customize:
-
-```js
-// ./index.js -s42
-parse("secret", ["verbose", "V", { default: true }])
-```
-```json
-{
-  "s": 42,
-  "secret": 42,
-  "V": true,
-  "verbose": true
-}
-```
-
-## Usage
-
-> Parse [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) by default.
-
-```js
-import parse from "parsec"
-parse(alias1, alias2, ...)
-```
-
-
-+ Custom aliases
+### Custom aliases
 
 ```js
 // ./index.js --bar
@@ -112,7 +73,7 @@ parse(["foo", "bar", "baz"])
 }
 ```
 
-+ Example aliases
+### Example aliases
 
 ```js
 "foo" // → ["f", "foo"]
@@ -121,12 +82,13 @@ parse(["foo", "bar", "baz"])
 ["baz", { default: true }]
 ```
 
-+ Default shorthands
+### Default shorthands
 
 ```js
 // ./index.js -fb
 parse("foo", "bar")
 ```
+
 ```json
 {
   "f": true,
@@ -136,12 +98,13 @@ parse("foo", "bar")
 }
 ```
 
-+ Default values and types
+### Default values and types
 
 ```js
 // ./index.js --file
 parse(["f", "file", { default: "." }])
 ```
+
 ```json
 {
   "f": ".",
@@ -149,12 +112,13 @@ parse(["f", "file", { default: "." }])
 }
 ```
 
-+ Handle `--no-flags`
+### Process negated options
 
 ```js
 // ./index.js --no-foo --no-bar=baz
 parse()
 ```
+
 ```json
 {
   "foo": false,
@@ -162,7 +126,7 @@ parse()
 }
 ```
 
-+ Handle unknown options
+### Process unknown options
 
 ```js
 // ./index.js --bar
@@ -171,55 +135,14 @@ parse("foo", (option) => {
 })
 ```
 
-+ Bare operands and arguments after `--` are added to `._`. To override:
+* Bare operands and arguments after `--` are added to `_`. To add an alias:
 
 ```js
 parse(["_", "alias"])
 ```
 
-+ Bind `parse` to a different source of arguments:
+* Bind `parse` to a different source of arguments
 
 ```js
 parse.call(["--foo", "--bar"], [alias1, alias2, ...])
 ```
-
-## Examples
-
-```js
-// ./node index.js -f bar -bp
-parse()
-```
-```json
-{
-  "f": "bar",
-  "b": true,
-  "p": "./"
-}
-```
-
-with custom aliases:
-
-```js
-parse("foo", "bar", ["path", { default: "./" }])
-```
-
-```json
-{
-  "f": "bar",
-  "foo": "bar",
-  "b": true,
-  "bar": true,
-  "p": "./",
-  "path": "./"
-}
- ```
-
-[license]: http://opensource.org/licenses/MIT
-[author]: http://about.bucaran.me
-[parsec]: https://www.github.com/bucaran/parsec
-[npm-pkg-link]: https://www.npmjs.org/package/parsec
-[npm-ver-link]: https://img.shields.io/npm/v/parsec.svg?style=flat-square
-[dl-badge]: http://img.shields.io/npm/dm/parsec.svg?style=flat-square
-[travis-logo]: http://img.shields.io/travis/bucaran/parsec.svg?style=flat-square
-[travis]: https://travis-ci.org/bucaran/parsec
-[contributors]: https://github.com/bucaran/parsec/graphs/contributors
