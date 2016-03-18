@@ -1,5 +1,3 @@
-<a name="parsec"></a>
-
 <p align="center">
 <a href="https://github.com/bucaran/parsec/blob/master/README.md">
 <img width="400px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
@@ -23,7 +21,6 @@
          alt="Build Status">
   </a>
 </p>
-
 
 # Parsec
 
