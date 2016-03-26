@@ -1,0 +1,365 @@
+autoenvstack
+https://github.com/hutenosa/autoenvstack
+Tree-based autoenv
+env autoenv autoenvfish cd
+hutenosa
+
+autojump
+https://github.com/jethrokuan/fish-autojump
+Clean autojump loading support
+j cd
+jethrokuan
+
+bass
+https://github.com/edc/bass
+Compatibility layer for bash utilities
+bash wrapper env
+edc
+
+bd
+https://github.com/0rax/fish-bd
+Quickly go back to a parent directory
+cd bd
+0rax
+
+bobthefish
+https://github.com/oh-my-fish/theme-bobthefish
+Powerline, Git prompt optimized for awesome
+prompt powerline
+bobthecow
+
+chain
+https://github.com/oh-my-fish/theme-chain
+Classy theme composed of information chains
+prompt chain
+coderstephen
+
+cmorrell
+https://github.com/oh-my-fish/theme-cmorrell.com
+Powerline-like, flat, left and right prompt
+prompt powerline flat
+inxilpro
+
+composer
+https://github.com/oh-my-fish/plugin-composer
+Composer support plugin
+php composer
+natrim
+
+debug
+https://github.com/fishery/debug
+Conditional debug logger
+debug profile instrument log
+bucaran
+
+eco
+https://github.com/fishery/eco
+Eco-minimal gray scale prompt
+minimal gray prompt
+bucaran
+
+errno
+https://github.com/oh-my-fish/plugin-errno
+POSIX error code/string translator
+posix error
+derekstavis
+
+expand
+https://github.com/oh-my-fish/plugin-expand
+Real-time command line word expansion
+abbr expansion cli
+coderstephen
+
+fasd
+https://github.com/oh-my-fish/plugin-fasd
+fasd integration for fish
+fasd jump cd z
+simnalamburt
+
+fishtape
+https://github.com/fishery/fishtape
+TAP producing test runner
+test runner harness tap
+bucaran
+
+flash
+https://github.com/fishery/flash
+Thunder, rad prompt inspired by the Flash
+prompt powerline dc
+bucaran
+
+fzf
+https://github.com/jethrokuan/fish-fzf
+Efficient keybindings for fzf
+fzf cd find fuzzy
+jethrokuan
+
+get
+https://github.com/fishery/get
+Interactive prompt reader
+prompt read input
+bucaran
+
+git_branch_name
+https://github.com/fishery/git_branch_name
+Get the name of the current Git branch
+git status util
+bucaran
+
+git_is_detached_head
+https://github.com/fishery/git_is_detached_head
+Test if the repository is in a detached HEAD state
+git status util
+bucaran
+
+git_is_dirty
+https://github.com/fishery/git_is_dirty
+Test if there are changes not staged for commit
+git status util
+bucaran
+
+git_is_empty
+https://github.com/fishery/git_is_empty
+Test if a repo is empty
+git status util
+bucaran
+
+git_is_repo
+https://github.com/fishery/git_is_repo
+Test if the current directory is a Git repo
+git status util
+bucaran
+
+git_is_staged
+https://github.com/fishery/git_is_staged
+Test if there are changes staged for commit
+git status util
+bucaran
+
+git_is_stashed
+https://github.com/fishery/git_is_stashed
+Test if there are changes in the stash
+git status util stash
+bucaran
+
+git_is_touched
+https://github.com/fishery/git_is_touched
+Test if there are changes in the working tree
+git status util
+bucaran
+
+git_porcelain
+https://github.com/jethrokuan/git_porcelain
+Parse git status --porcelain output
+git status util
+jethrokuan
+
+git_untracked_files
+https://github.com/fishery/git_untracked_files
+Get the number of untracked files in a repository
+git util status
+sotayamashita
+
+git_util
+https://github.com/fishery/git_util
+Various Git utilities
+git status util
+bucaran
+
+grc
+https://github.com/oh-my-fish/plugin-grc
+grc colorizer for various commands
+grc color wrapper
+tannhuber
+
+hash
+https://github.com/oh-my-fish/plugin-hash
+Compute string digests
+digest md5 sha1 hash
+coderstephen
+
+host_info
+https://github.com/fishery/host_info
+Get user and host / domain information
+host user util
+bucaran
+
+hulk
+https://github.com/fishery/hulk
+Strong power prompt inspired by the Hulk
+prompt powerline dark
+bucaran
+
+humanize_duration
+https://github.com/fishery/humanize_duration
+Humanize a time interval for display
+time util duration
+bucaran
+
+joker
+https://github.com/fishery/joker
+Powerline prompt based on the Joker
+prompt powerline dc
+bucaran
+
+lambda
+https://github.com/hasanozgan/theme-lambda
+Multiline, git-ware lambda prompt
+prompt 2-line lambda
+hasanozgan
+
+last_job_id
+https://github.com/fishery/last_job_id
+Get the id of the last job to be started
+job util
+bucaran
+
+lolfish
+https://github.com/er0/lolfish
+Tmux-aware, rainbow gradient prompt
+prompt tmux rainbow
+er0
+
+narwhal
+https://github.com/0rax/narwhal
+Simple docker wrapper
+docker machine compose
+0rax
+
+new
+https://github.com/fishery/new
+Create a plugin from a template
+create generator template
+bucaran
+
+pure
+https://github.com/rafaelrinaldi/pure
+Pretty, minimal and fast prompt
+prompt minimal simple
+rafaelrinaldi
+
+pwd_info
+https://github.com/fishery/pwd_info
+Print info about the current working directory
+cwd util
+bucaran
+
+pwd_is_home
+https://github.com/fishery/pwd_is_home
+Test if cwd equals or is a sub directory of HOME
+cwd util
+bucaran
+
+pyenv
+https://github.com/daenney/fish-pyenv
+Pyenv support plugin
+python pyenv
+daenney
+
+rbenv
+https://github.com/daenney/fish-rbenv
+Rbenv support plugin
+ruby rbenv
+daenney
+
+redsnapper
+https://github.com/oh-my-fish/theme-red-snapper
+Git-aware, playful theme for fish lovers
+prompt fish simple
+zuraguerra
+
+robbyrussell
+https://github.com/oh-my-fish/theme-robbyrussell
+The original zsh theme ported to fish
+prompt robbyrussell simple
+robbyrussell
+
+segment
+https://github.com/fishery/segment
+Powerline prompt builder
+prompt powerline segment
+bucaran
+
+sektor
+https://github.com/fishery/sektor
+Mortal prompt based on MK's Sektor
+prompt mk powerline
+bucaran
+
+shark
+https://github.com/fishery/shark
+Fantastic sparkline generator
+chart sparkline graph
+bucaran
+
+stark
+https://github.com/fishery/stark
+Powerline prompt based on Iron Man
+prompt powerline marvel
+bucaran
+
+shellder
+https://github.com/simnalamburt/shellder
+Powerline prompt inspired by seoul256.vim
+prompt powerline
+simnalamburt
+
+spin
+https://github.com/fishery/spin
+Background job spinner
+spinner progress job
+bucaran
+
+ssh-agent
+https://github.com/herrbischoff/fish-ssh-agent
+Autostart ssh-agent and add identities
+autostart ssh-agent
+herrbischoff
+
+submit
+https://github.com/fishery/submit
+Submit a plugin to the index
+index plugin register
+bucaran
+
+superman
+https://github.com/fishery/superman
+Powerline prompt based on Superman
+prompt powerline dc
+bucaran
+
+tab
+https://github.com/oh-my-fish/plugin-tab
+Open new tabs from the command line
+tab terminal
+bobthecow
+
+technicolor
+https://github.com/oh-my-fish/plugin-technicolor
+Text colorization declarative DSL
+color ansi styles
+derekstavis
+
+thefuck
+https://github.com/oh-my-fish/plugin-thefuck
+thefuck integration for fish
+cli thefuck correct
+scorphus
+
+title
+https://github.com/oh-my-fish/plugin-title
+Change the tab/window title string
+window terminal title
+derekstavis
+
+vibrant
+https://github.com/derhuerst/vibrant
+Pretty, minimal, git-centric prompt
+prompt minimal
+derhuerst
+
+z
+https://github.com/fishery/fish-z
+Pure-fish z directory jumping
+z cd jump
+jethrokuan
