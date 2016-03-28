@@ -58,6 +58,12 @@ Eco-minimal gray scale prompt
 minimal gray prompt
 bucaran
 
+echo_color
+https://github.com/fishery/echo_color
+Colorize output
+echo color util
+bucaran
+
 errno
 https://github.com/oh-my-fish/plugin-errno
 POSIX error code/string translator
