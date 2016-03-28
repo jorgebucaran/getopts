@@ -46,6 +46,12 @@ Composer support plugin
 php composer
 natrim
 
+dartfish
+https://github.com/fishery/dartfish
+Classical prompt inspired by dartfish
+prompt classical mint
+bucaran
+
 debug
 https://github.com/fishery/debug
 Conditional debug logger
