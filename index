@@ -340,6 +340,12 @@ Text colorization declarative DSL
 color ansi styles
 derekstavis
 
+terran
+https://github.com/fishery/terran
+Powerline prompt based on the Terran race
+prompt powerline starcraft
+bucaran
+
 thefuck
 https://github.com/oh-my-fish/plugin-thefuck
 thefuck integration for fish
