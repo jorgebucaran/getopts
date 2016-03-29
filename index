@@ -370,6 +370,12 @@ Classical prompt inspired by the flag of Albania
 prompt classical red
 bucaran
 
+teapot
+https://github.com/fishery/teapot
+Solarized prompt made of teapots and apples
+prompt solarized teal
+bucaran
+
 title
 https://github.com/oh-my-fish/plugin-title
 Change the tab/window title string
