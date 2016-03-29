@@ -364,6 +364,12 @@ thefuck integration for fish
 cli thefuck correct
 scorphus
 
+tirana
+https://github.com/fishery/tirana
+Classical prompt inspired by the flag of Albania
+prompt classical red
+bucaran
+
 title
 https://github.com/oh-my-fish/plugin-title
 Change the tab/window title string
