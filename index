@@ -40,7 +40,7 @@ Classical prompt inspired by hacking the kernel
 prompt classical hack
 bucaran
 
-cmorrell
+cmorrell.com
 https://github.com/oh-my-fish/theme-cmorrell.com
 Powerline-like, flat, left and right prompt
 prompt powerline flat
@@ -68,12 +68,6 @@ eco
 https://github.com/fishery/eco
 Eco-minimal gray scale prompt
 minimal gray prompt
-bucaran
-
-echo_color
-https://github.com/fishery/echo_color
-Colorize output
-echo color util
 bucaran
 
 errno
@@ -280,7 +274,7 @@ Rbenv support plugin
 ruby rbenv
 daenney
 
-redsnapper
+red-snapper
 https://github.com/oh-my-fish/theme-red-snapper
 Git-aware, playful theme for fish lovers
 prompt fish simple
@@ -340,6 +334,12 @@ Powerline prompt based on Superman
 prompt powerline dc
 bucaran
 
+simple
+https://github.com/sotayamashita/simple
+Heavily inspired by @mathiasbynens's prompt
+prompt simple
+sotayamashita
+
 tab
 https://github.com/oh-my-fish/plugin-tab
 Open new tabs from the command line
@@ -394,8 +394,3 @@ Pure-fish z directory jumping
 z cd jump
 jethrokuan
 
-simple
-https://github.com/sotayamashita/simple
-Heavily inspired by the @mathiasbynens's prompt
-prompt simple
-sotayamashita
