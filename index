@@ -394,3 +394,8 @@ Pure-fish z directory jumping
 z cd jump
 jethrokuan
 
+jellyfish
+https://github.com/fishery/jellyfish
+Colors inspired by Jellybeans Vim palette
+color jellybeans jellyfish bright
+Limeth
