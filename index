@@ -244,6 +244,12 @@ Create a plugin from a template
 create generator template
 bucaran
 
+plain
+https://github.com/changyuheng/theme-plain
+Plain style theme of fish prompt
+prompt fish simple plain theme git
+changyuheng
+
 pure
 https://github.com/rafaelrinaldi/pure
 Pretty, minimal and fast prompt
