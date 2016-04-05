@@ -246,8 +246,8 @@ bucaran
 
 plain
 https://github.com/changyuheng/theme-plain
-Plain style theme of fish prompt
-prompt fish simple plain theme git
+Plain and simple prompt with a fish
+prompt simple plain
 changyuheng
 
 pure
