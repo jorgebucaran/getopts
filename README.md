@@ -50,7 +50,7 @@ All the plugins listed in this index are property of their respective owners. Fo
 
 [slack-link]: https://fisherman-wharf.herokuapp.com/
 [slack-badge]:  https://img.shields.io/badge/slack-join%20the%20chat-00B9FF.svg?style=flat-square
-[travis-link]:  https://travis-ci.org/fisherman/fisher-index
-[travis-badge]: https://img.shields.io/travis/fisherman/fisher-index.svg?style=flat-square
+[travis-link]:  https://travis-ci.org/fisherman/index
+[travis-badge]: https://img.shields.io/travis/fisherman/index.svg?style=flat-square
 [fisherman]: https://github.com/fisherman/fisherman
 [submit]: https://github.com/fishery/submit
