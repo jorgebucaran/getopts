@@ -101,7 +101,7 @@ prompt powerline dc
 bucaran
 
 fzf
-https://github.com/jethrokuan/fish-fzf
+https://github.com/fishery/fzf
 Efficient keybindings for fzf
 fzf cd find fuzzy
 jethrokuan
