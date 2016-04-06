@@ -1,7 +1,7 @@
 autoenvstack
 https://github.com/hutenosa/autoenvstack
 Tree-based autoenv
-env autoenv autoenvfish cd
+env autoenv cd
 hutenosa
 
 autojump
