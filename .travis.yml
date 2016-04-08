@@ -1,4 +1,4 @@
 sudo: false
 script:
-  - curl https://raw.githubusercontent.com/fisherman/index-check/master/main > checker && chmod +x checker
+  - curl https://raw.githubusercontent.com/fisherman/index-check/master/index-check > checker && chmod +x checker
   - ./checker ./index
