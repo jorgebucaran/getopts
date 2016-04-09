@@ -298,6 +298,12 @@ The original zsh theme ported to fish
 prompt robbyrussell simple
 robbyrussell
 
+rvm
+https://github.com/oh-my-fish/plugin-rvm
+Ruby version manager fish support
+ruby rvm
+bpinto
+
 segment
 https://github.com/fishery/segment
 Powerline prompt builder
