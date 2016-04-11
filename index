@@ -34,12 +34,6 @@ Classy theme composed of information chains
 prompt chain
 coderstephen
 
-cyber
-https://github.com/fishery/cyber
-Classical prompt inspired by hacking the kernel
-prompt classical hack
-bucaran
-
 cmorrell.com
 https://github.com/oh-my-fish/theme-cmorrell.com
 Powerline-like, flat, left and right prompt
@@ -51,6 +45,12 @@ https://github.com/oh-my-fish/plugin-composer
 Composer support plugin
 php composer
 natrim
+
+cyber
+https://github.com/fishery/cyber
+Classical prompt inspired by hacking the kernel
+prompt classical hack
+bucaran
 
 dartfish
 https://github.com/fishery/dartfish
@@ -214,6 +214,12 @@ Very Simple and Minimal prompt
 prompt minimal simple
 sijad
 
+jellyfish
+https://github.com/fishery/jellyfish
+Colors inspired by Jellybeans Vim palette
+color jellybeans jellyfish bright
+Limeth
+
 joker
 https://github.com/fishery/joker
 Powerline prompt based on the Joker
@@ -322,23 +328,29 @@ Fantastic sparkline generator
 chart sparkline graph
 bucaran
 
-stark
-https://github.com/fishery/stark
-Powerline prompt based on Iron Man
-prompt powerline marvel
-bucaran
-
 shellder
 https://github.com/simnalamburt/shellder
 Powerline prompt inspired by seoul256.vim
 prompt powerline
 simnalamburt
 
+simple
+https://github.com/sotayamashita/simple
+Heavily inspired by @mathiasbynens's prompt
+prompt simple
+sotayamashita
+
 ssh-agent
 https://github.com/herrbischoff/fish-ssh-agent
 Autostart ssh-agent and add identities
 autostart ssh-agent
 herrbischoff
+
+stark
+https://github.com/fishery/stark
+Powerline prompt based on Iron Man
+prompt powerline marvel
+bucaran
 
 submit
 https://github.com/fishery/submit
@@ -352,17 +364,17 @@ Powerline prompt based on Superman
 prompt powerline dc
 bucaran
 
-simple
-https://github.com/sotayamashita/simple
-Heavily inspired by @mathiasbynens's prompt
-prompt simple
-sotayamashita
-
 tab
 https://github.com/oh-my-fish/plugin-tab
 Open new tabs from the command line
 tab terminal
 bobthecow
+
+teapot
+https://github.com/fishery/teapot
+Solarized prompt made of teapots and apples
+prompt solarized teal
+bucaran
 
 technicolor
 https://github.com/oh-my-fish/plugin-technicolor
@@ -382,12 +394,6 @@ thefuck integration for fish
 cli thefuck correct
 scorphus
 
-teapot
-https://github.com/fishery/teapot
-Solarized prompt made of teapots and apples
-prompt solarized teal
-bucaran
-
 title
 https://github.com/oh-my-fish/plugin-title
 Change the tab/window title string
@@ -405,9 +411,3 @@ https://github.com/fishery/z
 Pure-fish z directory jumping
 z cd jump
 jethrokuan
-
-jellyfish
-https://github.com/fishery/jellyfish
-Colors inspired by Jellybeans Vim palette
-color jellybeans jellyfish bright
-Limeth
