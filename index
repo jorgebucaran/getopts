@@ -287,13 +287,13 @@ cwd util
 bucaran
 
 pyenv
-https://github.com/daenney/fish-pyenv
+https://github.com/fishery/fish-pyenv
 Pyenv support plugin
 python pyenv
 daenney
 
 rbenv
-https://github.com/daenney/fish-rbenv
+https://github.com/dfishery/fish-rbenv
 Rbenv support plugin
 ruby rbenv
 daenney
