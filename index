@@ -76,6 +76,12 @@ POSIX error code/string translator
 posix error
 derekstavis
 
+errno-grep
+https://github.com/Shadowigor/plugin-errno-grep
+Search error numbers, labels and messages
+posix error grep
+Shadowigor
+
 expand
 https://github.com/oh-my-fish/plugin-expand
 Real-time command line word expansion
