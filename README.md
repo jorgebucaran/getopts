@@ -24,7 +24,7 @@
 
 # Parsec
 
-**Parsec** is a tiny command line options parser.
+Tiny cli parser in JavaScript.
 
 ## Features
 
