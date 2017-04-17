@@ -8,7 +8,7 @@
     "build": "babel --optional runtime src -d dist",
     "test": "npm run build && npm run tape | tspec",
     "deploy": "npm run test && git push origin master && npm publish",
-    "tape": "node --harmony --harmony_arrow_functions ./node_modules/tape/bin/tape test/*.js"
+    "tape": "node ./node_modules/tape/bin/tape test/*.js"
   },
   "repository": {
     "type": "git",
