@@ -17,9 +17,17 @@ function parse (argv, aliases) {
 
     find(aliases, (alias, _default) => {
       if (!~keys.indexOf(key)) return !unknown(key)
-      if (~alias.indexOf(key)) alias.forEach((key) =>
-        map[key] = typeof _default === "string" && typeof value === "boolean"
-          ? _default : value)
+      if (~alias.indexOf(key)) alias.forEach((key) => {
+        if (typeof _default === "boolean" && typeof value === "string") {
+          if (value === 'true') {
+            return map[key] = true
+          } else if (value === 'false') {
+            return map[key] = false
+          }
+        }
+        return map[key] = typeof _default === "string" && typeof value === "boolean"
+          ? _default : value
+      })
     })
   }
   argv.some((token, index) => {
