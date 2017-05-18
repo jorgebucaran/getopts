@@ -80,6 +80,12 @@ test("singles", (t) => {
     foo: "/"
   }, "single w/ value and default ")
 
+  t.deepEqual(parse.call(["-af", "true"], ["f", "foo", {default: false}]), {
+    a: true,
+    f: true,
+    foo: true
+  }, "single w/ value and default is boolean")
+
   t.deepEqual(parse.call(["-af", "/"], ["f", "foo", { default: true }]), {
     a: true,
     f: "/",
