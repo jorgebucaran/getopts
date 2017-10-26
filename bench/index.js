@@ -4,22 +4,22 @@ const yargs = require("yargs-parser")
 const getopts = require("../")
 const minimist = require("minimist")
 
-const args = ["-bmx", "--speed-limit=88mph", "--no-zip"]
-var opts = {
-  default:  {
-    b: true,
-    m: true,
-    x: true
+const args = ["-z", "--turbo", "--no-stop", "--mode=hyper"]
+const opts = {
+  default: {
+    mode: "normal"
   }
 }
 
 const bench = new Suite()
 bench
-  .add("mri", () => mri(args))
-  .add("yargs", () => yargs(args))
-  .add("getopts", () => getopts(args))
-  .add("minimist", () => minimist(args))
-  .on("cycle", e => console.log(`${e.target}`))
+  .add("mri", () => mri(args, opts))
+  .add("yargs", () => yargs(args, opts))
+  .add("getopts", () => getopts(args, opts))
+  .add("minimist", () => minimist(args, opts))
+  .on("cycle", ({ target: { name, hz, stats } }) =>
+    console.log(`${name} × ${Math.floor(hz).toLocaleString()} ops/sec`)
+  )
   .on("complete", function() {
     console.log(`Fastest is ${this.filter("fastest").map("name")}`)
   })
