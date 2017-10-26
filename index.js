@@ -1,8 +1,10 @@
+const push = Array.prototype.push
+const SHORTSPLIT = /$|[!-@\[-`{-~]/
+
 module.exports = function(args, opts) {
   opts = opts || {}
-
-  return compile(
-    parse(args),
+  return parse(
+    args,
     aliases(opts.alias),
     defaults(opts.default, opts.alias),
     opts.unknown,
@@ -10,149 +12,127 @@ module.exports = function(args, opts) {
   )
 }
 
-function parse(args, operands) {
-  var len = 0
-  var stack = []
-
-  var isEndOfOptions = false
-
-  for (var i = 0, argsLen = args.length; i < argsLen; i++) {
+function parse(args, aliases, defaults, unknown, out) {
+  for (var i = 0, j = 0, len = args.length, _ = out._; i < len; i++) {
     var arg = args[i]
-    if (isEndOfOptions || typeof arg !== "string" || arg[0] !== "-") {
-      len = (1 & len) > 0 ? stack.push(arg) : stack.push("_", arg)
-    } else {
-      if ((1 & len) > 0) {
-        len = stack.push(true)
-      }
 
-      if ("--" === arg) {
-        isEndOfOptions = true
-        continue
-      }
-
-      if ("-" === arg[0] && "-" === arg[1]) {
-        var atom = arg.split("=")
-        var name = atom[0].slice(2)
-        var value = atom[1]
-
-        if (
-          "n" === name[0] &&
-          "o" === name[1] &&
-          "-" === name[2] &&
-          undefined === value
-        ) {
-          name = name.slice(3)
-          value = false
-        }
-
-        len = undefined === value ? stack.push(name) : stack.push(name, value)
-      } else if (arg[0] === "-") {
-        for (var j = 1, argLen = arg.length; j < argLen; j++) {
-          var c = arg[j]
-          if (c.toUpperCase() !== c.toLowerCase() || 1 === j) {
-            if ((1 & len) > 0) {
-              stack.push(true)
-            }
-            len = stack.push(c)
+    if ("--" === arg) {
+      push.apply(_, args.slice(i + 1))
+      break
+    } else if ("-" === arg[0]) {
+      if ("-" === arg[1]) {
+        var end = arg.indexOf("=")
+        if (0 <= end) {
+          set(arg.slice(2, end), arg.slice(end + 1), out, aliases, unknown)
+        } else {
+          if ("n" === arg[2] && "o" === arg[3] && "-" === arg[4]) {
+            set(arg.slice(5), false, out, aliases, unknown)
           } else {
-            len = stack.push(arg.slice(j))
-            j = argLen
+            set(
+              arg.slice(2),
+              (j = i + 1) === len || "-" === args[j][0] || args[(i = j)],
+              out,
+              aliases,
+              unknown
+            )
           }
         }
-      }
-    }
-  }
-
-  if ((1 & len) > 0) {
-    len = stack.push(true)
-  }
-
-  return stack
-}
-
-function compile(stack, aliases, defaults, unknown, result) {
-  for (var i = 0, len = stack.length - 1; i < len; i += 2) {
-    var key = stack[i]
-    var value = stack[i + 1]
-    var prev = result[key]
-    var alias = aliases[key]
-
-    if (undefined === alias && undefined !== unknown && unknown(key)) {
-      continue
-    }
-
-    if (undefined === prev) {
-      result[key] = value
-    } else {
-      if (Array.isArray(prev)) {
-        prev.push(value)
       } else {
-        result[key] = [prev, value]
-      }
-    }
+        var end = arg.slice(2).search(SHORTSPLIT) + 2
+        var value = end === arg.length
+          ? (j = i + 1) === len || "-" === args[j][0] || args[(i = j)]
+          : arg.slice(end)
 
-    if (undefined !== alias) {
-      for (var j = 0, aliasLen = alias.length, next; j < aliasLen; j++) {
-        if (key !== (next = alias[j])) {
-          result[next] = result[key]
+        for (j = 1; j < end; ) {
+          set(arg[j], ++j !== end || value, out, aliases, unknown)
         }
       }
+    } else {
+      _.push(arg)
     }
   }
 
   for (var key in defaults) {
-    if (undefined === result[key]) {
-      result[key] = defaults[key]
+    if (undefined === out[key]) {
+      out[key] = defaults[key]
     }
   }
 
-  return result
+  return out
 }
 
-function defaults(hash, aliases) {
-  if (undefined === hash) return
-  for (var key in aliases) {
-    var value = hash[key]
-    var alias = toArray(aliases[key])
+function aliases(aliases) {
+  var out = {}
 
-    if (undefined !== value) {
-      for (var i = 0, len = alias.length; i < len; i++) {
-        hash[alias[i]] = value
+  for (var key in aliases) {
+    var alias = (out[key] = toArray(aliases[key]))
+
+    for (var i = 0, len = alias.length; i < len; i++) {
+      var name = alias[i]
+      out[name] = [key]
+
+      for (var j = 0; j < len; j++) {
+        var next = alias[j]
+        if (next !== name) {
+          out[name].push(next)
+        }
       }
-    } else {
-      for (var i = 0, len = alias.length; i < len; i++) {
-        if (undefined !== (value = hash[alias[i]])) {
-          hash[key] = value
-          for (var j = 0; j < len; j++) {
-            if (i !== j) {
-              hash[alias[j]] = value
+    }
+  }
+
+  return out
+}
+
+function defaults(defaults, aliases) {
+  if (undefined !== defaults) {
+    for (var key in aliases) {
+      var value = defaults[key]
+      var alias = toArray(aliases[key])
+
+      if (undefined !== value) {
+        for (var i = 0, len = alias.length; i < len; i++) {
+          defaults[alias[i]] = value
+        }
+      } else {
+        for (var i = 0, len = alias.length; i < len; i++) {
+          if (undefined !== (value = defaults[alias[i]])) {
+            defaults[key] = value
+
+            for (var j = 0; j < len; j++) {
+              if (i !== j) {
+                defaults[alias[j]] = value
+              }
             }
           }
         }
       }
     }
   }
-  return hash
+  return defaults
 }
 
-function aliases(hash, map) {
-  var map = {}
-  for (var key in hash) {
-    var alias = (map[key] = toArray(hash[key]))
+function set(key, value, out, aliases, unknown) {
+  var curr = out[key]
+  var alias = aliases[key]
+  var hasAlias = undefined !== alias
 
-    for (var i = 0, len = alias.length; i < len; i++) {
-      var name = alias[i]
-      map[name] = [key]
+  if (hasAlias || undefined === unknown || unknown(key)) {
+    if (undefined === curr) {
+      out[key] = value
+    } else {
+      if (Array.isArray(curr)) {
+        curr.push(value)
+      } else {
+        out[key] = [curr, value]
+      }
+    }
 
-      for (var j = 0; j < len; j++) {
-        var next = alias[j]
-        if (next !== name) {
-          map[name].push(next)
-        }
+    if (hasAlias) {
+      for (var i = 0, len = alias.length; i < len; ) {
+        out[alias[i++]] = out[key]
       }
     }
   }
-  return map
 }
 
 function toArray(any) {
