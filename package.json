@@ -1,41 +1,29 @@
 {
-  "name": "parsec",
-  "version": "1.5.3",
-  "description": "",
-  "main": "dist/index.js",
-  "scripts": {
-    "setup": "npm i && npm run test",
-    "build": "babel --optional runtime src -d dist",
-    "test": "npm run build && npm run tape | tspec",
-    "deploy": "npm run test && git push origin master && npm publish",
-    "tape": "node ./node_modules/tape/bin/tape test/*.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bucaran/parsec.git"
-  },
-  "keywords": [
-    "options",
-    "argv",
-    "arguments",
-    "parser",
-    "cli",
-    "es6"
-  ],
-  "author": "Jorge Bucaran",
+  "name": "getopts",
+  "description": "Tiny (450B) JavaScript CLI options parser.",
+  "version": "0.0.0",
+  "main": "index.js",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bucaran/parsec/issues"
+  "repository": "getopts/getopts",
+  "author": "Jorge Bucaran",
+  "keywords": [
+    "cli",
+    "argv",
+    "cli-parser"
+  ],
+  "scripts": {
+    "test": "nyc -r lcov --require=babel-register tape test.js && nyc report",
+    "format": "prettier --semi false --write '*.js'",
+    "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
   },
-  "homepage": "https://github.com/bucaran/parsec#readme",
   "devDependencies": {
-    "babel": "^5.3.3",
-    "babel-eslint": "^3.1.1",
-    "eslint": "^0.21.0",
-    "tap-spec": "^3.0.0",
-    "tape": "^4.0.0"
+    "nyc": "^11.2.1",
+    "prettier": "~1.4.1",
+    "tape": "^4.8.0"
   },
   "dependencies": {
-    "babel-runtime": "^5.8.3"
+    "babel-register": "^6.26.0",
+    "mri": "^1.1.0",
+    "prettyjson": "^1.2.1"
   }
 }
