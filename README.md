@@ -1,145 +1,107 @@
-<p align="center">
-<a href="https://github.com/bucaran/parsec/blob/master/README.md">
-<img width="400px" src="https://cloud.githubusercontent.com/assets/8317250/11606196/b85167b0-9b5b-11e5-81a6-c66e2fc694e2.png">
-</a>
+# Getopts
+[![Travis CI](https://img.shields.io/travis/getopts/getopts/master.svg)](https://travis-ci.org/getopts/getopts)
+[![Codecov](https://img.shields.io/codecov/c/github/getopts/getopts/master.svg)](https://codecov.io/gh/getopts/getopts)
+[![npm](https://img.shields.io/npm/v/getopts.svg)](https://www.npmjs.org/package/getopts)
 
-</p>
+Getopts is a JavaScript CLI options parser.
 
-<p align="center">
-  <a href="https://www.npmjs.org/package/parsec">
-    <img src="https://img.shields.io/npm/v/parsec.svg?style=flat-square"
-         alt="NPM Version">
-  </a>
+[Try it online](...)
 
-  <a href="https://travis-ci.org/bucaran/parsec">
-    <img src="http://img.shields.io/travis/bucaran/parsec.svg?style=flat-square"
-         alt="Downloads">
-  </a>
 
-  <a href="https://www.npmjs.org/package/parsec">
-    <img src="http://img.shields.io/npm/dm/parsec.svg?style=flat-square"
-         alt="Build Status">
-  </a>
-</p>
+## Installation
 
-# Parsec
-
-Tiny cli parser in JavaScript.
-
-## Features
-
-+ [Custom aliases](#custom-aliases)
-* [Default shorthands](#default-shorthands)
-+ [Default values and types](#default-values-and-types)
-+ [Process negated options](#process-negated-options)
-+ [Process unknown options](#process-unknown-options)
-
-## Install
-
-```sh
-npm i parsec
-```
+<pre>
+npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
+</pre>
 
 ## Usage
 
-```js
-// ./index.js -par5ec
-parse()
-```
+### Example
 
-```json
+### Invalid options
+
+## Arguments
+
+### Short Flags
+
+Short flags are written as `-x`, `-F`, `-#`, etc. They can have a value: `-x foo`. The white space can be omitted in some cases: `-f./my-file`, `-f1`, etc.
+
+Multiple short flags can be joined `-abcx foo`. In this case `a`, `b` and `c` will be `true` and `x` will be `"foo"`.
+
+```js
+console.log(
+  getopts(["-abcx", "foo"])
+)
+```
+```js
 {
-  "p": true,
-  "a": true,
-  "r": "5ec"
+  a: true,
+  b: true,
+  c: true,
+  x: "foo"
 }
 ```
 
-### Custom aliases
+### Long Flags
+
+Long flags are written as `--write`, `--limit-rate`, etc. They can have a value: `--write=./file` or `--write ./file`.
 
 ```js
-// ./index.js --bar
-parse(["foo", "bar", "baz"])
+console.log(
+  getopts(["--write=./file"])
+)
 ```
-
-```json
+```js
 {
-  "foo": true,
-  "bar": true,
-  "baz": true
+  write: "./file"
 }
 ```
 
-### Example aliases
+### Operands
+
+Operands are arguments that are neither short or long options. In `-x foo bar`, `bar` is an operand. Getopts collects operands into the [`_`](#underscore) key of the result object.
 
 ```js
-"foo" // → ["f", "foo"]
-["F", "f", "foo"]
-["foo", { default: "./" }]
-["baz", { default: true }]
+console.log(
+  getopts(["-x", "foo", "bar"])
+)
 ```
-
-### Default shorthands
-
 ```js
-// ./index.js -fb
-parse("foo", "bar")
-```
-
-```json
 {
-  "f": true,
-  "foo": true,
-  "b": true,
-  "bar": true,
+  x: "foo",
+  _: ["bar"]
 }
 ```
 
-### Default values and types
+### Early stop
 
-```js
-// ./index.js --file
-parse(["f", "file", { default: "." }])
-```
+The `--` argument indicates the end of options. Any following arguments will be treated as operands, even if they begin with a `-` character.
 
-```json
-{
-  "f": ".",
-  "file": "."
+## Options
+
+<!--
+### getopts
+
+Parse an array of CLI options and return an object populated with the arguments.
+
+<pre>
+getopts(
+  <a href="#options">options</a>: Array&ltstring&gt,
+  <a href="#aliases">aliases</a>: {
+    [string]: string | Array&ltstring&gt
+  }
+): {
+  [string]: number | string | boolean,
+  <a href="#underscore">_</a>: Array&ltstring&gt
 }
-```
+</pre>
 
-### Process negated options
+- <a id="options"></a>options: Array of CLI arguments. Use [process.argv](https://nodejs.org/docs/latest/api/process.html#process_process_argv).slice(2) in a Node.js environment.
+- <a id="aliases"></a>aliases: Object of option/alias pairs.
+- <a id="underscore"></a>_: Array with all the operands and arguments after `--`. -->
 
-```js
-// ./index.js --no-foo --no-bar=baz
-parse()
-```
+## License
 
-```json
-{
-  "foo": false,
-  "no-bar": "baz"
-}
-```
+Getopts is MIT licensed. See [LICENSE](LICENSE.md).
 
-### Process unknown options
 
-```js
-// ./index.js --bar
-parse("foo", (option) => {
-  throw new RangeError(`unknown option ${option}`) // bar
-})
-```
-
-* Bare operands and arguments after `--` are added to `_`. To add an alias:
-
-```js
-parse(["_", "alias"])
-```
-
-* Bind `parse` to a different source of arguments
-
-```js
-parse.call(["--foo", "--bar"], [alias1, alias2, ...])
-```

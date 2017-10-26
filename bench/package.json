@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "getopts": "*",
+    "minimist": "^1.2.0",
+    "mri": "^1.1.0",
+    "yargs-parser": "^8.0.0"
+  }
+}

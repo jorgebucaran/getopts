@@ -1,7 +1,19 @@
 language: node_js
 node_js:
-  - iojs
-  - "0.12"
-  - "0.11"
-  - "0.10"
-script: "npm test"
+  - 8
+  - 7
+  - 6
+  - 4
+
+env:
+  - NODE_ENV=development
+
+before_install:
+  - npm i -g codecov
+
+install:
+  - npm install
+
+script:
+  - npm test
+  - codecov
