@@ -213,7 +213,7 @@ test("getopts", t => {
         a: "A"
       },
       unknown(option) {
-        return option !== "C"
+        return option === "C"
       }
     }),
     {
