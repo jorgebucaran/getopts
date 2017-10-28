@@ -4,7 +4,7 @@ const yargs = require("yargs-parser")
 const getopts = require("../")
 const minimist = require("minimist")
 
-const args = ["-z", "--turbo", "--no-stop", "--mode=hyper"]
+const args = ["--jet", "--mode=turbo", "-xfv1", "--", "game", "over"]
 const opts = {
   default: {
     mode: "normal"

@@ -116,7 +116,7 @@ function set(key, value, out, aliases, unknown) {
   var alias = aliases[key]
   var hasAlias = undefined !== alias
 
-  if (hasAlias || undefined === unknown || unknown(key)) {
+  if (hasAlias || undefined === unknown || unknown(key) !== false) {
     if (undefined === curr) {
       out[key] = value
     } else {
