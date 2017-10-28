@@ -1,7 +1,7 @@
 {
   "name": "getopts",
   "description": "Node.js CLI options parser.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "repository": "getopts/getopts",
@@ -9,7 +9,8 @@
   "keywords": [
     "cli",
     "argv",
-    "cli-parser"
+    "cli-parser",
+    "getopts"
   ],
   "scripts": {
     "test": "nyc -r lcov tape test/*.js && nyc report",
