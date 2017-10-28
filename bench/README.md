@@ -1,6 +1,6 @@
 # Benchmarks
 
-[Getopts](../README.md) vs. [minimist](https://github.com/substack/minimist), [yargs](https://github.com/yargs/yargs) and [mri](https://github.com/lukeed/mri) benchmark results.
+[Getopts](../README.md) vs. [mri](https://github.com/lukeed/mri), [yargs](https://github.com/yargs/yargs) and [minimist](https://github.com/substack/minimist) benchmark results.
 
 ## Run
 
@@ -17,5 +17,5 @@ mri × 3,848 ops/sec
 yargs × 763 ops/sec
 <b>getopts × 935,464 ops/sec</b>
 minimist × 816 ops/sec
-<b>Fastest is getopts</b>
+Fastest is getopts
 </pre>
