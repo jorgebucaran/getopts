@@ -12,13 +12,13 @@
     "cli-parser"
   ],
   "scripts": {
-    "test": "nyc -r lcov tape test.js && nyc report",
+    "test": "nyc -r lcov tape test/*.js && nyc report",
     "format": "prettier --semi false --write '*.js'",
     "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
   },
   "devDependencies": {
     "nyc": "^11.2.1",
-    "prettier": "~1.4.1",
+    "prettier": "~1.7.4",
     "tape": "^4.8.0"
   }
 }
