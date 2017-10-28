@@ -6,6 +6,7 @@
   "license": "MIT",
   "repository": "getopts/getopts",
   "author": "Jorge Bucaran",
+  "files": ["index.js"],
   "keywords": [
     "cli",
     "argv",
