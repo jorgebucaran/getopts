@@ -15,10 +15,10 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 
 ## Usage
 
-Use getopts to parse the arguments passed into your program.
+Use Getopts to parse the arguments passed into your program.
 
 ```console
-$ example --jet --mode=turbo -xfv12 -- game over
+$ example/demo --jet --mode=turbo -xfv12 -- game over
 ```
 
 And create an object that you can use to lookup options and values.
