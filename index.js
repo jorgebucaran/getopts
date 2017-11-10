@@ -1,4 +1,4 @@
-const SHORTSPLIT = /$|[!-@\[-`{-~]/
+const SHORTSPLIT = /[!-@\[-`{-~].*|$/g
 
 module.exports = function(args, opts) {
   opts = opts || {}
@@ -38,10 +38,10 @@ function parse(args, aliases, defaults, unknown, out) {
           }
         }
       } else {
-        var end = arg.slice(2).search(SHORTSPLIT) + 2
-        var value = end === arg.length
-          ? (j = i + 1) === len || "-" === args[j][0] || args[(i = j)]
-          : arg.slice(end)
+        SHORTSPLIT.lastIndex = 2
+        var match = SHORTSPLIT.exec(arg)
+        var value = match[0] || (j = i + 1) === len || "-" === args[j][0] || args[(i = j)]
+        var end = match.index
 
         for (j = 1; j < end; ) {
           set(arg[j], ++j !== end || value, out, aliases, unknown)
