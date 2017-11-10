@@ -1,4 +1,5 @@
 const SHORTSPLIT = /$|[!-@\[-`{-~].*/g
+const EMPTY = []
 
 module.exports = function(args, opts) {
   opts = opts || {}
@@ -96,6 +97,8 @@ function defaults(defaults, aliases) {
         for (var i = 0, len = alias.length; i < len; i++) {
           out[alias[i]] = value
         }
+      } else {
+        aliases[key] = EMPTY
       }
     }
   }
