@@ -24,13 +24,13 @@ function parse(args, aliases, defaults, unknown, out) {
       if ("-" === arg[1]) {
         var end = arg.indexOf("=")
         if (0 <= end) {
-          set(arg.slice(2, end), arg.slice(end + 1), out, aliases, unknown)
+          set(arg.substring(2, end), arg.substring(end + 1), out, aliases, unknown)
         } else {
           if ("n" === arg[2] && "o" === arg[3] && "-" === arg[4]) {
-            set(arg.slice(5), false, out, aliases, unknown)
+            set(arg.substring(5), false, out, aliases, unknown)
           } else {
             set(
-              arg.slice(2),
+              arg.substring(2),
               (j = i + 1) === len || "-" === args[j][0] || args[(i = j)],
               out,
               aliases,
@@ -39,10 +39,10 @@ function parse(args, aliases, defaults, unknown, out) {
           }
         }
       } else {
-        var end = arg.slice(2).search(SHORTSPLIT) + 2
+        var end = arg.substring(2).search(SHORTSPLIT) + 2
         var value = end === arg.length
           ? (j = i + 1) === len || "-" === args[j][0] || args[(i = j)]
-          : arg.slice(end)
+          : arg.substring(end)
 
         for (j = 1; j < end; ) {
           set(arg[j], ++j !== end || value, out, aliases, unknown)
