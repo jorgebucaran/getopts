@@ -84,6 +84,8 @@ function aliases(aliases) {
 }
 
 function defaults(defaults, aliases) {
+  var out = {}
+
   if (undefined !== defaults) {
     for (var key in aliases) {
       var value = defaults[key]
@@ -91,24 +93,23 @@ function defaults(defaults, aliases) {
 
       if (undefined !== value) {
         for (var i = 0, len = alias.length; i < len; i++) {
-          defaults[alias[i]] = value
+          out[alias[i]] = value
         }
       } else {
         for (var i = 0, len = alias.length; i < len; i++) {
           if (undefined !== (value = defaults[alias[i]])) {
-            defaults[key] = value
+            out[key] = value
 
-            for (var j = 0; j < len; j++) {
-              if (i !== j) {
-                defaults[alias[j]] = value
-              }
+            for (i = 0; i < len; i++) {
+              out[alias[i]] = value
             }
           }
         }
       }
     }
   }
-  return defaults
+
+  return out
 }
 
 function set(key, value, out, aliases, unknown) {
