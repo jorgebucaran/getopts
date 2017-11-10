@@ -68,13 +68,11 @@ function aliases(aliases) {
     var alias = (out[key] = toArray(aliases[key]))
 
     for (var i = 0, len = alias.length; i < len; i++) {
-      var name = alias[i]
-      out[name] = [key]
+      var curr = (out[alias[i]] = [key])
 
       for (var j = 0; j < len; j++) {
-        var next = alias[j]
-        if (next !== name) {
-          out[name].push(next)
+        if (i !== j) {
+          curr.push(alias[j])
         }
       }
     }
