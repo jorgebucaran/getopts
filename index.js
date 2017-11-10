@@ -1,4 +1,4 @@
-const SHORTSPLIT = /[!-@\[-`{-~].*|$/g
+const SHORTSPLIT = /$|[!-@\[-`{-~].*/g
 
 module.exports = function(args, opts) {
   opts = opts || {}
