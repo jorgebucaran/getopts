@@ -7,7 +7,8 @@ test("opts.default", t => {
   const defaults = {
     c: true,
     D: true,
-    e: false
+    e: false,
+    f: false
   }
   t.deepEqual(
     getopts(["-abC"], {
@@ -33,7 +34,8 @@ test("opts.default", t => {
       e: false,
       E: false,
       eek: false,
-      eh: false
+      eh: false,
+      f: false
     }
   )
 
@@ -42,7 +44,8 @@ test("opts.default", t => {
     {
       c: true,
       D: true,
-      e: false
+      e: false,
+      f: false
     }
   )
 
@@ -53,14 +56,14 @@ test("opts.default", t => {
       },
       default: {
         A: true,
-        B: false,
+        B: false
       }
     }),
     {
       _: [],
       a: true,
       A: true,
-      B: true,
+      B: true
     }
   )
 })

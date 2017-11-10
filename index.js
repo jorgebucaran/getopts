@@ -2,10 +2,11 @@ const SHORTSPLIT = /$|[!-@\[-`{-~]/
 
 module.exports = function(args, opts) {
   opts = opts || {}
+  var alias = aliases(opts.alias)
   return parse(
     args,
-    aliases(opts.alias),
-    defaults(opts.default, opts.alias),
+    alias,
+    defaults(opts.default, alias),
     opts.unknown,
     { _: [] }
   )
@@ -84,24 +85,16 @@ function aliases(aliases) {
 function defaults(defaults, aliases) {
   var out = {}
 
-  if (undefined !== defaults) {
-    for (var key in aliases) {
-      var value = defaults[key]
-      var alias = toArray(aliases[key])
+  for (var key in defaults) {
+    var value = defaults[key];
+    var alias = aliases[key];
 
-      if (undefined !== value) {
+    if (undefined === out[key]) {
+      out[key] = value;
+
+      if (undefined !== alias) {
         for (var i = 0, len = alias.length; i < len; i++) {
           out[alias[i]] = value
-        }
-      } else {
-        for (var i = 0, len = alias.length; i < len; i++) {
-          if (undefined !== (value = defaults[alias[i]])) {
-            out[key] = value
-
-            for (i = 0; i < len; i++) {
-              out[alias[i]] = value
-            }
-          }
         }
       }
     }
