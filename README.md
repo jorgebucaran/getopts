@@ -81,7 +81,7 @@ deepEqual(
     _: ["game", "over"],
     jet: true,
     mode: "turbo",
-    z: "12",
+    v: "12",
     bolt: true,
     hyper: 9000
   }
