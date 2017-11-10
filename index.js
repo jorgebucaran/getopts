@@ -1,4 +1,3 @@
-const push = Array.prototype.push
 const SHORTSPLIT = /$|[!-@\[-`{-~]/
 
 module.exports = function(args, opts) {
@@ -17,8 +16,9 @@ function parse(args, aliases, defaults, unknown, out) {
     var arg = args[i]
 
     if ("--" === arg) {
-      push.apply(_, args.slice(i + 1))
-      break
+      while (++i < len) {
+        _.push(args[i])
+      }
     } else if ("-" === arg[0]) {
       if ("-" === arg[1]) {
         var end = arg.indexOf("=")
