@@ -1,5 +1,5 @@
 const SHORTSPLIT = /$|[!-@\[-`{-~].*/g
-const EMPTY = ""
+const EMPTY = []
 
 function array(any) {
   return Array.isArray(any) ? any : [any]
@@ -18,6 +18,28 @@ function alias(aliases) {
         if (i !== j) {
           curr.push(alias[j])
         }
+      }
+    }
+  }
+
+  return out
+}
+
+function booleans(aliases, booleans) {
+  var out = {}
+
+  if (undefined !== booleans) {
+    for (var i = 0, len = booleans.length; i < len; i++) {
+      var name = booleans[i]
+      var alias = aliases[name]
+
+      out[name] = true;
+      if (undefined !== alias) {
+        for (var j = 0, end = alias.length; j < end; j++) {
+          out[alias[j]] = true
+        }
+      } else {
+        aliases[name] = EMPTY
       }
     }
   }
@@ -75,6 +97,7 @@ function set(out, key, value, aliases, unknown) {
 module.exports = function(argv, opts) {
   var unknown = (opts = opts || {}).unknown
   var aliases = alias(opts.alias)
+  var bools = booleans(aliases, opts.boolean)
   var values = defaults(aliases, opts.default)
   var out = { _: [] }
 
@@ -94,10 +117,12 @@ module.exports = function(argv, opts) {
           if ("n" === arg[2] && "o" === arg[3] && "-" === arg[4]) {
             set(out, arg.slice(5), false, aliases, unknown)
           } else {
+            var name = arg.slice(2)
             set(
               out,
-              arg.slice(2),
-              (j = i + 1) === len || "-" === argv[j][0] || argv[(i = j)],
+              name,
+              (j = i + 1) === len || "-" === argv[j][0] ||
+                undefined !== bools[name] || argv[(i = j)],
               aliases,
               unknown
             )
@@ -107,11 +132,18 @@ module.exports = function(argv, opts) {
         SHORTSPLIT.lastIndex = 2
         var match = SHORTSPLIT.exec(arg)
         var value =
-          match[0] || (j = i + 1) === len || "-" === argv[j][0] || argv[(i = j)]
+          match[0] || (j = i + 1) === len || "-" === argv[j][0]
         var end = match.index
 
-        for (j = 1; j < end; ) {
-          set(out, arg[j], ++j !== end || value, aliases, unknown)
+        for (var k = 1; k < end; ) {
+          var name = arg[k]
+          set(
+            out,
+            name,
+            ++k !== end || value || undefined !== bools[name] || argv[(i = j)],
+            aliases,
+            unknown
+          )
         }
       }
     } else {
