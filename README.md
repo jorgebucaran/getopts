@@ -25,7 +25,7 @@ Use Getopts to parse the arguments passed into your program.
 $ example/demo --jet --mode=turbo -xfv12 -- game over
 ```
 
-And create an object that you can use to lookup options and values.
+And create an object where you can lookup the arguments and their values.
 
 ```js
 const deepEqual = require("assert").deepEqual
@@ -147,5 +147,3 @@ getopts(["-xfvz"], {
 ## License
 
 Getopts is MIT licensed. See [LICENSE](LICENSE.md).
-
-
