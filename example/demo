@@ -6,12 +6,12 @@ console.log(
     alias: {
       j: "jet",
       m: "mode",
-      z: "zap"
+      u: "ultra"
     },
     boolean: ["jet"],
     default: {
       bolt: true,
-      hyper: 9000
+      hyper: true
     }
   })
 )

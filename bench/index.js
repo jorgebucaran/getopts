@@ -4,8 +4,9 @@ const yargs = require("yargs-parser")
 const getopts = require("../")
 const minimist = require("minimist")
 
-const args = ["--jet", "--mode=turbo", "-xfv1", "--", "game", "over"]
+const args = ["--jet", "sonic", "--mode=turbo", "-vu256", "--", "game", "over"]
 const opts = {
+  boolean: ["jet"],
   default: {
     mode: "normal"
   }
