@@ -22,7 +22,7 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 Use Getopts to parse the arguments passed into your program.
 
 ```console
-$ example/demo --jet --mode=turbo -xfv12 -- game over
+$ example/demo --jet sonic --mode=turbo -xdz777 -- game over
 ```
 
 And create an object where you can lookup the arguments and their values.
@@ -34,11 +34,11 @@ const args = process.argv.slice(2)
 
 deepEqual(getopts(args), {
   _: ["game", "over"],
-  jet: true,
+  jet: "sonic",
   mode: "turbo",
   x: true,
-  f: true,
-  v: "12"
+  d: true,
+  z: "555"
 })
 ```
 
@@ -50,19 +50,19 @@ deepEqual(
     alias: {
       j: "jet",
       m: "mode",
-      v: "viper"
+      z: "zap"
     }
   }),
   {
     _: ["game", "over"],
-    jet: true,
-    j: true,
+    jet: "sonic",
+    j: "sonic",
     mode: "turbo",
     m: "turbo",
     x: true,
-    f: true,
-    v: "12",
-    viper: "12"
+    d: true,
+    z: "555",
+    zap: "555"
   }
 )
 ```
@@ -79,23 +79,43 @@ deepEqual(
   }),
   {
     _: ["game", "over"],
-    jet: true,
+    jet: "sonic",
     mode: "turbo",
-    v: "12",
+    x: true,
+    d: true,
+    z: "555",
     bolt: true,
     hyper: 9000
   }
 )
 ```
 
-Identify options without an alias.
+Handle boolean options.
+
+```js
+deepEqual(
+  getopts(args, {
+    boolean: ["jet"]
+  }),
+  {
+    _: ["sonic", "game", "over"],
+    jet: true,
+    mode: "turbo",
+    x: true,
+    d: true,
+    z: "555"
+  }
+)
+```
+
+Identify unknown options.
 
 ```js
 getopts(args, {
   alias: {
     j: "jet",
     m: "mode",
-    v: "viper"
+    z: "zap"
   },
   unknown(option) {
     throw new Error(`Unknown option: ${option}.`) // => Unknown option: x.
@@ -117,9 +137,9 @@ An object of option aliases. An alias can be a string or an array of aliases.
 ```js
 getopts(["-b"], {
   alias: {
-    b: ["B", "boost"]
+    b: ["B", "bolt"]
   }
-}) //=> { _:[], b:true, B:true, boost:true }
+}) //=> { _:[], b:true, B:true, bolt:true }
 ```
 
 #### option.boolean
@@ -127,9 +147,9 @@ getopts(["-b"], {
 An array of options that should be parsed as booleans.
 
 ```js
-getopts(["-f", "bar"], {
+getopts(["-f", "zip"], {
   boolean: ["f"]
-}) //=> { _:["bar"], f:true }
+}) //=> { _:["zip"], f:true }
 ```
 
 #### options.default
@@ -139,9 +159,9 @@ An object of default values for missing options.
 ```js
 getopts(["-b"], {
   default: {
-    super: 9000
+    hyper: 9000
   }
-}) //=> { _:[], b:true, super:9000 }
+}) //=> { _:[], b:true, hyper:9000 }
 ```
 
 #### options.unknown
@@ -149,7 +169,7 @@ getopts(["-b"], {
 A function we run for every option without an alias. Return `false` to dismiss the option.
 
 ```js
-getopts(["-xfvz"], {
+getopts(["-xdz"], {
   unknown: option => option === "z"
 }) // => { _: [], z:true }
 ```

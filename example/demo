@@ -6,8 +6,9 @@ console.log(
     alias: {
       j: "jet",
       m: "mode",
-      v: "viper"
+      z: "zap"
     },
+    boolean: ["jet"],
     default: {
       bolt: true,
       hyper: 9000
