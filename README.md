@@ -21,7 +21,7 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 
 Use Getopts to parse the arguments passed into your program.
 
-```console
+```
 $ example/demo --jet sonic --mode=turbo -vu256 true -- game over
 ```
 
