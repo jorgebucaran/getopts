@@ -4,36 +4,35 @@ const getopts = require("../")
 test("opts.boolean", t => {
   t.plan(2)
 
-  const booleans = ['c', 'D', 'e', 'boolean']
   t.deepEqual(
-    getopts(["-abC", "operand", "--boolean", "operand"], {
+    getopts(["-abC", "foo", "--bool", "foo"], {
       alias: {
         A: "a",
         b: "B",
-        c: "C",
+        c: "C"
       },
-      boolean: booleans
+      boolean: ["c", "D", "e", "bool"]
     }),
     {
-      _: ["operand", "operand"],
+      _: ["foo", "foo"],
       a: true,
       A: true,
       b: true,
       B: true,
       c: true,
       C: true,
-      boolean: true
+      bool: true
     }
   )
 
   t.deepEqual(
-    getopts(['-a1', '--boolean=2'], {
-      boolean: ['a', 'boolean']
+    getopts(["-a42", "--bool=1"], {
+      boolean: ["a", "bool"]
     }),
     {
       _: [],
-      a: '1',
-      boolean: '2'
+      a: "42",
+      bool: "1"
     }
   )
 })

@@ -16,7 +16,7 @@ test("operands", t => {
     _: []
   })
 
-  t.deepEqual(getopts(["foo", "bmx", "-", "bar"]), {
-    _: ["foo", "bmx", "-", "bar"]
+  t.deepEqual(getopts(["foo", "-", "bar"]), {
+    _: ["foo", "-", "bar"]
   })
 })
