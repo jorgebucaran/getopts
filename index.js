@@ -108,9 +108,9 @@ module.exports = function(argv, opts) {
       while (++i < len) {
         _.push(argv[i])
       }
-    } else if ("-" === arg[0]) {
+    } else if ("-" !== arg && "-" === arg[0]) {
       if ("-" === arg[1]) {
-        var end = arg.indexOf("=")
+        var end = arg.indexOf("=", 2)
         if (0 <= end) {
           set(out, arg.slice(2, end), arg.slice(end + 1), aliases, unknown)
         } else {

@@ -3,7 +3,7 @@ const getopts = require("../")
 
 test("long", t => {
   t.plan(6)
-  
+
   t.deepEqual(getopts(["--foo=bar"]), {
     foo: "bar",
     _: []
