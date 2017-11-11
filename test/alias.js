@@ -8,24 +8,7 @@ test("opts.alias", t => {
     getopts(["-ab"], {
       alias: {
         a: "A",
-        b: "B"
-      }
-    }),
-    {
-      _: [],
-      a: true,
-      A: true,
-      b: true,
-      B: true
-    }
-  )
-
-  t.deepEqual(
-    getopts(["-ab", "--foobar=hoge"], {
-      alias: {
-        A: "a",
-        B: "b",
-        f: ["F", "foobar", "fooBar", "FooBar"]
+        b: ["B", "bolt"]
       }
     }),
     {
@@ -34,6 +17,24 @@ test("opts.alias", t => {
       A: true,
       b: true,
       B: true,
+      bolt: true
+    }
+  )
+
+  t.deepEqual(
+    getopts(["-ab", "--foobar=hoge"], {
+      alias: {
+        A: "a",
+        b: "bolt",
+        f: ["F", "foobar", "fooBar", "FooBar"]
+      }
+    }),
+    {
+      _: [],
+      a: true,
+      A: true,
+      b: true,
+      bolt: true,
       f: "hoge",
       F: "hoge",
       foobar: "hoge",
