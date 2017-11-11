@@ -22,7 +22,7 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 Use Getopts to parse the arguments passed into your program.
 
 ```
-$ example/demo --jet sonic --mode=turbo -vu256 true -- game over
+$ example/demo --jet sonic --mode=turbo -u256 -- game over
 ```
 
 And create an object where you can lookup the arguments and their values.
@@ -36,7 +36,6 @@ deepEqual(getopts(args), {
   _: ["game", "over"],
   jet: "sonic",
   mode: "turbo",
-  v: true,
   u: "256"
 })
 ```
@@ -54,12 +53,11 @@ deepEqual(
   }),
   {
     _: ["game", "over"],
-    jet: "sonic",
     j: "sonic",
-    mode: "turbo",
     m: "turbo",
-    v: true,
     u: "256",
+    jet: "sonic",
+    mode: "turbo",
     ultra: "256"
   }
 )
@@ -71,18 +69,15 @@ Populate missing options with default values.
 deepEqual(
   getopts(args, {
     default: {
-      bolt: true,
-      hyper: true
+      bolt: true
     }
   }),
   {
     _: ["game", "over"],
     jet: "sonic",
     mode: "turbo",
-    v: true,
     u: "256",
-    bolt: true,
-    hyper: true
+    bolt: true
   }
 )
 ```
@@ -98,7 +93,6 @@ deepEqual(
     _: ["sonic", "game", "over"],
     jet: true,
     mode: "turbo",
-    v: true,
     u: "256"
   }
 )
@@ -109,12 +103,10 @@ Identify unknown options.
 ```js
 getopts(args, {
   alias: {
-    j: "jet",
-    m: "mode",
-    u: "ultra"
+    j: "jet"
   },
   unknown(option) {
-    throw new Error(`Unknown option: ${option}.`) // => Unknown option: v.
+    throw new Error(`Unknown option: ${option}.`) // => Unknown option: mode.
   }
 })
 ```
@@ -143,9 +135,9 @@ getopts(["-b"], {
 An array of options that should be parsed as booleans.
 
 ```js
-getopts(["-f", "zip"], {
-  boolean: ["f"]
-}) //=> { _:["zip"], f:true }
+getopts(["-b", 1], {
+  boolean: ["b"]
+}) //=> { _:[1], b:true }
 ```
 
 #### options.default
@@ -155,19 +147,19 @@ An object of default values for missing options.
 ```js
 getopts(["-b"], {
   default: {
-    hyper: true
+    turbo: true
   }
-}) //=> { _:[], b:true, hyper:true }
+}) //=> { _:[], b:true, turbo:true }
 ```
 
 #### options.unknown
 
-A function we run for every option without an alias. Return `false` to dismiss the option.
+A function we run for every unknown option. Return `false` to dismiss the option.
 
 ```js
-getopts(["-xdu"], {
-  unknown: option => option === "u"
-}) // => { _: [], u:true }
+getopts(["-abc"], {
+  unknown: option => option === "a"
+}) // => { _:[], a:true }
 ```
 
 ## License
