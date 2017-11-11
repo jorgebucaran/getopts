@@ -122,6 +122,16 @@ getopts(["-b"], {
 }) //=> { _:[], b:true, B:true, boost:true }
 ```
 
+#### option.boolean
+
+An array of options that should be parsed as booleans.
+
+```js
+getopts(["-f", "bar"], {
+  boolean: ["f"]
+}) //=> { _:["bar"], f:true }
+```
+
 #### options.default
 
 An object of default values for missing options.

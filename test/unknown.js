@@ -2,7 +2,7 @@ const test = require("tape")
 const getopts = require("../")
 
 test("opts.unknown", t => {
-  t.plan(3)
+  t.plan(4)
 
   t.deepEqual(
     getopts(["-abC"], {
@@ -29,6 +29,17 @@ test("opts.unknown", t => {
     {
       _: [],
       a: true,
+    }
+  )
+
+  t.deepEqual(
+    getopts(["-abC"], {
+      boolean: ['a'],
+      unknown: option => false
+    }),
+    {
+      _: [],
+      a: true
     }
   )
 
