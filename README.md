@@ -5,7 +5,7 @@
 
 Getopts is a Node.js CLI options parser.
 
-* **Swift**: Getopts is 10 to 100 times faster than the alternatives. See the [benchmarks](./bench/README.md).
+* **Swift**: Getopts is 10 to 20 times faster than the alternatives. See the [benchmarks](./bench/README.md).
 * **Familiar**: Getopts works similarly to other CLI parsers like [mri](https://github.com/lukeed/mri), [yargs](https://github.com/yargs/yargs) and [minimist](https://github.com/substack/minimist).
 * **Standard**: Getopts is designed according to the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html).
 
