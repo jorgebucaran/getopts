@@ -58,7 +58,7 @@ Getopts expects an array of arguments and options object (optional) and returns 
 
 An array of arguments to parse. See [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv).
 
-Arguments that begin with one or two dashes are called options or flags. Options may have one or more [aliases](#optsalias). The underscore key stores operands. Operands include non-options, the single dash `-` and all the arguments after a double dash `--`.
+Arguments that begin with one or two dashes are called options or flags. Options may have one or more [aliases](#optsalias). The underscore key stores operands. Operands include non-options, the single dash `-` and all the arguments after `--`.
 
 #### options.alias
 
