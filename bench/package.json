@@ -1,5 +1,5 @@
 {
-  "devDependencies": {
+  "dependencies": {
     "benchmark": "^2.1.4",
     "getopts": "*",
     "minimist": "^1.2.0",

@@ -13,9 +13,9 @@ npm i && node .
 Please be aware that results may slightly vary across Node.js runtimes. All tests run on a 2.4GHz Intel Core i7 CPU with 16 GB memory.
 
 <pre>
-mri × 3,616 ops/sec
-yargs × 859 ops/sec
-<b>getopts × 1,156,041 ops/sec</b>
-minimist × 829 ops/sec
+mri × 333,509 ops/sec
+yargs × 30,343 ops/sec
+<b>getopts × 1,225,554 ops/sec</b>
+minimist × 236,740 ops/sec
 Fastest is getopts
 </pre>

@@ -4,20 +4,13 @@ const yargs = require("yargs-parser")
 const getopts = require("../")
 const minimist = require("minimist")
 
-const args = ["--jet", "sonic", "--mode=turbo", "-u256", "--", "game", "over"]
-const opts = {
-  boolean: ["jet"],
-  default: {
-    mode: "normal"
-  }
-}
-
+const argv = ["--super=sonic", "--no-lock", "-jb9000", "--", "game", "over"]
 const bench = new Suite()
 bench
-  .add("mri", () => mri(args, opts))
-  .add("yargs", () => yargs(args, opts))
-  .add("getopts", () => getopts(args, opts))
-  .add("minimist", () => minimist(args, opts))
+  .add("mri", () => mri(argv))
+  .add("yargs", () => yargs(argv))
+  .add("getopts", () => getopts(argv))
+  .add("minimist", () => minimist(argv))
   .on("cycle", ({ target: { name, hz, stats } }) =>
     console.log(`${name} × ${Math.floor(hz).toLocaleString()} ops/sec`)
   )
