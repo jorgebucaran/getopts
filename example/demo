@@ -4,14 +4,11 @@ const getopts = require("../")
 console.log(
   getopts(process.argv.slice(2), {
     alias: {
-      j: "jet",
-      m: "mode",
-      u: "ultra"
+      s: "super",
+      b: "blitz"
     },
-    boolean: ["jet"],
     default: {
-      bolt: true,
-      hyper: true
+      turbo: true
     }
   })
 )

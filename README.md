@@ -5,9 +5,9 @@
 
 Getopts is a Node.js CLI options parser.
 
-* **Swift**: Getopts is 10 to 1000 times faster than the alternatives. See [benchmarks](./bench/README.md) for details.
+* **Swift**: Getopts is 10 to 100 times faster than the alternatives. See the [benchmarks](./bench/README.md).
 * **Familiar**: Getopts works similarly to other CLI parsers like [mri](https://github.com/lukeed/mri), [yargs](https://github.com/yargs/yargs) and [minimist](https://github.com/substack/minimist).
-* **Predictable**: Getopts is designed according to the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html).
+* **Standard**: Getopts is designed according to the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html).
 
 ## Installation
 
@@ -19,118 +19,60 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 
 ## Usage
 
-Use Getopts to parse the arguments passed into your program.
+Use getopts to parse the arguments passed into your program from the command line.
 
-```
-$ example/demo --jet sonic --mode=turbo -u256 -- game over
-```
-
-And create an object where you can lookup the arguments and their values.
+<pre>
+$ <a href="./example/demo">example/demo</a> --super=sonic -jb9000 -- game over
+</pre>
 
 ```js
-const deepEqual = require("assert").deepEqual
-const getopts = require("getopts")
-const args = process.argv.slice(2)
-
-deepEqual(getopts(args), {
-  _: ["game", "over"],
-  jet: "sonic",
-  mode: "turbo",
-  u: "256"
-})
-```
-
-Create option aliases.
-
-```js
-deepEqual(
-  getopts(args, {
-    alias: {
-      j: "jet",
-      m: "mode",
-      u: "ultra"
-    }
-  }),
-  {
-    _: ["game", "over"],
-    j: "sonic",
-    m: "turbo",
-    u: "256",
-    jet: "sonic",
-    mode: "turbo",
-    ultra: "256"
-  }
-)
-```
-
-Populate missing options with default values.
-
-```js
-deepEqual(
-  getopts(args, {
-    default: {
-      bolt: true
-    }
-  }),
-  {
-    _: ["game", "over"],
-    jet: "sonic",
-    mode: "turbo",
-    u: "256",
-    bolt: true
-  }
-)
-```
-
-Handle boolean options.
-
-```js
-deepEqual(
-  getopts(args, {
-    boolean: ["jet"]
-  }),
-  {
-    _: ["sonic", "game", "over"],
-    jet: true,
-    mode: "turbo",
-    u: "256"
-  }
-)
-```
-
-Identify unknown options.
-
-```js
-getopts(args, {
+const options = getopts(process.argv.slice(2), {
   alias: {
-    j: "jet"
+    s: "super",
+    b: "blitz"
   },
-  unknown(option) {
-    throw new Error(`Unknown option: ${option}.`) // => Unknown option: mode.
+  default: {
+    turbo: true
   }
 })
+```
+
+Getopts expects an array of arguments and options object (optional) and returns an object where you can look up the argument keys and their values.
+
+```
+{
+  _: ["game", "over"],
+  j: true,
+  s: "sonic",
+  b: "9000",
+  super: "sonic",
+  blitz: "9000",
+  turbo: true
+}
 ```
 
 ## API
 
-### getopts(args, options)
-#### args
+### getopts(argv, options)
+#### argv
 
-An array of arguments to parse. Use [`process.argv.slice(2)`](https://nodejs.org/docs/latest/api/process.html#process_process_argv).
+An array of arguments to parse. See [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv).
+
+Arguments that begin with one or two dashes are called options or flags. Options may have one or more [aliases](#optsalias). The underscore key stores operands. Operands include non-options, the single dash `-` and all the arguments after a double dash `--`.
 
 #### options.alias
 
-An object of option aliases. An alias can be a string or an array of aliases.
+An object of option aliases. An alias can be a string or an array of strings.
 
 ```js
 getopts(["-b"], {
   alias: {
-    b: ["B", "bolt"]
+    b: ["B", "turbo"]
   }
-}) //=> { _:[], b:true, B:true, bolt:true }
+}) //=> { _:[], b:true, B:true, turbo:true }
 ```
 
-#### option.boolean
+#### options.boolean
 
 An array of options that should be parsed as booleans.
 
@@ -154,7 +96,7 @@ getopts(["-b"], {
 
 #### options.unknown
 
-A function we run for every unknown option. Return `false` to dismiss the option.
+A function that runs for every unknown option. Return `false` to dismiss the option.
 
 ```js
 getopts(["-abc"], {
