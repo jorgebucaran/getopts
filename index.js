@@ -14,9 +14,9 @@ function aliases(aliases) {
     for (var i = 0, len = alias.length; i < len; i++) {
       var curr = (out[alias[i]] = [key])
 
-      for (var j = 0; j < len; j++) {
-        if (i !== j) {
-          curr.push(alias[j])
+      for (var k = 0; k < len; k++) {
+        if (i !== k) {
+          curr.push(alias[k])
         }
       }
     }
@@ -38,8 +38,8 @@ function booleans(aliases, booleans) {
       if (alias === undefined) {
         aliases[key] = EMPTY
       } else {
-        for (var j = 0, end = alias.length; j < end; j++) {
-          out[alias[j]] = true
+        for (var k = 0, end = alias.length; k < end; k++) {
+          out[alias[k]] = true
         }
       }
     }
@@ -102,7 +102,7 @@ module.exports = function(argv, opts) {
   var bools = booleans(alias, opts.boolean)
   var out = { _: [] }
 
-  for (var i = 0, j = 0, len = argv.length, _ = out._; i < len; i++) {
+  for (var i = 0, k = 0, len = argv.length, _ = out._; i < len; i++) {
     var arg = argv[i]
 
     if (arg === "--") {
@@ -125,10 +125,10 @@ module.exports = function(argv, opts) {
             set(
               out,
               key,
-              len === (j = i + 1) ||
-                argv[j][0] === "-" ||
+              len === (k = i + 1) ||
+                argv[k][0] === "-" ||
                 bools[key] !== undefined ||
-                argv[(i = j)],
+                argv[(i = k)],
               alias,
               unknown
             )
@@ -140,13 +140,13 @@ module.exports = function(argv, opts) {
         var end = match.index
         var value =
           match[0] ||
-          len === (j = i + 1) ||
-          argv[j][0] === "-" ||
+          len === (k = i + 1) ||
+          argv[k][0] === "-" ||
           bools[arg[end - 1]] !== undefined ||
-          argv[(i = j)]
+          argv[(i = k)]
 
-        for (j = 1; j < end; ) {
-          set(out, arg[j], ++j !== end || value, alias, unknown)
+        for (k = 1; k < end; ) {
+          set(out, arg[k], ++k !== end || value, alias, unknown)
         }
       }
     }
