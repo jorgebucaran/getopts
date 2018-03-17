@@ -19,7 +19,7 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 Use getopts to parse the arguments passed into your program from the command line.
 
 <pre>
-$ <a href="./example/demo">example/demo</a> --super=sonic -xU9000 -- game over
+$ <a href="./example/demo">example/demo</a> --super=sonic -xu9000 -- game over
 </pre>
 
 ```js
@@ -28,7 +28,7 @@ const getopts = require("getopts")
 const options = getopts(process.argv.slice(2), {
   alias: {
     s: "super",
-    U: "ultra"
+    u: "ultra"
   },
   default: {
     turbo: true
@@ -38,12 +38,12 @@ const options = getopts(process.argv.slice(2), {
 
 Getopts expects an array of arguments and options object (optional) and returns an object where you can look up the argument keys and their values.
 
-```jsx
+```js
 {
   _: ["game", "over"],
   x: true,
   s: "sonic",
-  U: "9000",
+  u: "9000",
   super: "sonic",
   ultra: "9000",
   turbo: true
@@ -65,21 +65,21 @@ Arguments that begin with one or two dashes are called options or flags. Options
 An object of option aliases. An alias can be a string or an array of strings.
 
 ```js
-getopts(["-U"], {
+getopts(["-u"], {
   alias: {
-    U: ["u", "ultra"]
+    u: ["U", "ultra"]
   }
 }) //=> { _:[], u:true, U:true, ultra:true }
 ```
 
 #### options.boolean
 
-An array of options that should be parsed as booleans. In the example, by indicating that `U` is a boolean option, the number `1` is parsed as an operand and not as a value.
+An array of options that should be parsed as booleans. In the example, by indicating that `u` is a boolean option, the number `1` is parsed as an operand and not as a value.
 
 ```js
-getopts(["-U", 1], {
-  boolean: ["U"]
-}) //=> { _:[1], U:true }
+getopts(["-u", 1], {
+  boolean: ["u"]
+}) //=> { _:[1], u:true }
 ```
 
 #### options.default
@@ -87,11 +87,11 @@ getopts(["-U", 1], {
 An object of default values for missing options.
 
 ```js
-getopts(["-U"], {
+getopts(["-u"], {
   default: {
     turbo: true
   }
-}) //=> { _:[], U:true, turbo:true }
+}) //=> { _:[], u:true, turbo:true }
 ```
 
 #### options.unknown

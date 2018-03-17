@@ -4,7 +4,7 @@ const yargs = require("yargs-parser")
 const getopts = require("../")
 const minimist = require("minimist")
 
-const argv = ["--super=sonic", "--no-lock", "-xU9000", "--", "game", "over"]
+const argv = ["--super=sonic", "--no-lock", "-xu9000", "--", "game", "over"]
 const bench = new Suite()
 bench
   .add("mri", () => mri(argv))
