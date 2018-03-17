@@ -38,7 +38,7 @@ const options = getopts(process.argv.slice(2), {
 
 Getopts expects an array of arguments and options object (optional) and returns an object where you can look up the argument keys and their values.
 
-```json
+```jsx
 {
   _: ["game", "over"],
   x: true,
