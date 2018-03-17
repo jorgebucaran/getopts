@@ -20,7 +20,7 @@
     "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push origin master && git push --tags && npm publish"
   },
   "devDependencies": {
-    "nyc": "^11.4.1",
-    "tape": "^4.8.0"
+    "nyc": "^11.6.0",
+    "tape": "^4.9.0"
   }
 }
