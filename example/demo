@@ -5,7 +5,7 @@ console.log(
   getopts(process.argv.slice(2), {
     alias: {
       s: "super",
-      b: "blitz"
+      u: "ultra"
     },
     default: {
       turbo: true
