@@ -58,7 +58,7 @@ Getopts expects an array of arguments and options object (optional) and returns 
 
 An array of arguments to parse. See [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv).
 
-Arguments that begin with one or two dashes are called options or flags. Options may have one or more [aliases](#optsalias). The underscore key stores operands. Operands include non-options, the single dash `-` and all the arguments after `--`.
+Arguments that begin with one or two dashes are called options or flags. Options may have one or more [aliases](#optionsalias). The underscore key stores operands. Operands include non-options, the single dash `-` and all the arguments after `--`.
 
 #### options.alias
 
@@ -74,7 +74,7 @@ getopts(["-U"], {
 
 #### options.boolean
 
-An array of options that should be parsed as booleans. In the example, by indicating <samp>U</samp> to be a boolean option, <samp>1</samp> is parsed as an operand.
+An array of options that should be parsed as booleans. In the example, by indicating that `U` is a boolean option, the number `1` is parsed as an operand and not as a value.
 
 ```js
 getopts(["-U", 1], {
