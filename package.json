@@ -1,7 +1,7 @@
 {
   "name": "getopts",
   "description": "Node.js CLI options parser.",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "main": "index.js",
   "license": "MIT",
   "repository": "jorgebucaran/getopts",
