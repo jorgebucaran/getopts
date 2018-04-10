@@ -19,7 +19,7 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 Use getopts to parse the arguments passed into your program from the command line.
 
 <pre>
-$ <a href="./example/demo">example/demo</a> --super=sonic -xu9000 -- game over
+$ <a href="./example/demo">example/demo</a> --super=sonic -au9000 -- game over
 </pre>
 
 ```js
@@ -41,7 +41,7 @@ Getopts expects an array of arguments and options object (optional) and returns 
 ```js
 {
   _: ["game", "over"],
-  x: true,
+  a: true,
   s: "sonic",
   u: "9000",
   super: "sonic",
