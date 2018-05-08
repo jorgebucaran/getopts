@@ -4,7 +4,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/jorgebucaran/getopts/master.svg)](https://codecov.io/gh/jorgebucaran/getopts)
 [![npm](https://img.shields.io/npm/v/getopts.svg)](https://www.npmjs.org/package/getopts)
 
-Getopts is a Node.js CLI options parser. It's designed according to the [Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html) so that your programs behave like typical UNIX utilities effortlessly — without sacrificing developer experience.
+Getopts is a Node.js CLI options parser. It's designed according to the [Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html) so that your programs behave like typical UNIX utilities effortlessly and without sacrificing developer experience.
 
 Need for speed? Getopts is 10 to 20 times faster than the alternatives. See the [benchmarks](/bench).
 
