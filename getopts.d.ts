@@ -5,7 +5,7 @@ interface ParsedOptions {
 }
 
 /** Interface for getops options argument.
- * @param alias   Option aliases.
+ * @param alias Option aliases.
  * @param boolean Options that should be parsed as booleans.
  * @param default Default values for missing options.
  * @param unknown Run for every unknown option.
@@ -18,7 +18,7 @@ interface Options {
 }
 
 /** Parse the arguments passed to your program from the command line.
- * @param argv    Arguments to parse.
+ * @param argv Arguments to parse.
  * @param options Options.
  * @returns An object with parsed pptions.
  */
