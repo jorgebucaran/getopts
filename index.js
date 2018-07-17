@@ -2,11 +2,11 @@ const EMPTY = []
 const SHORTSPLIT = /$|[!-@\[-`{-~].*/g
 const isArray = Array.isArray
 
-function toArray(any) {
+var toArray = function(any) {
   return isArray(any) ? any : [any]
 }
 
-function aliases(aliases) {
+var parseAlias = function(aliases) {
   var out = {}
 
   for (var key in aliases) {
@@ -26,7 +26,7 @@ function aliases(aliases) {
   return out
 }
 
-function booleans(aliases, booleans) {
+var parseBoolean = function(aliases, booleans) {
   var out = {}
 
   if (booleans !== undefined) {
@@ -49,7 +49,7 @@ function booleans(aliases, booleans) {
   return out
 }
 
-function defaults(aliases, defaults) {
+var parseDefault = function(aliases, defaults) {
   var out = {}
 
   for (var key in defaults) {
@@ -72,7 +72,7 @@ function defaults(aliases, defaults) {
   return out
 }
 
-function write(out, key, value, aliases, unknown) {
+var write = function(out, key, value, aliases, unknown) {
   var curr = out[key]
   var alias = aliases[key]
   var known = alias !== undefined
@@ -81,7 +81,7 @@ function write(out, key, value, aliases, unknown) {
     if (curr === undefined) {
       out[key] = value
     } else {
-      if (Array.isArray(curr)) {
+      if (isArray(curr)) {
         curr.push(value)
       } else {
         out[key] = [curr, value]
@@ -96,11 +96,11 @@ function write(out, key, value, aliases, unknown) {
   }
 }
 
-module.exports = function(argv, opts) {
+var getopts = function(argv, opts) {
   var unknown = (opts = opts || {}).unknown
-  var alias = aliases(opts.alias)
-  var values = defaults(alias, opts.default)
-  var bools = booleans(alias, opts.boolean)
+  var aliases = parseAlias(opts.alias)
+  var values = parseDefault(aliases, opts.default)
+  var bools = parseBoolean(aliases, opts.boolean)
   var out = { _: [] }
 
   for (var i = 0, k = 0, len = argv.length, _ = out._; i < len; i++) {
@@ -117,10 +117,10 @@ module.exports = function(argv, opts) {
         var end = arg.indexOf("=", 2)
 
         if (0 <= end) {
-          write(out, arg.slice(2, end), arg.slice(end + 1), alias, unknown)
+          write(out, arg.slice(2, end), arg.slice(end + 1), aliases, unknown)
         } else {
           if ("n" === arg[2] && "o" === arg[3] && "-" === arg[4]) {
-            write(out, arg.slice(5), false, alias, unknown)
+            write(out, arg.slice(5), false, aliases, unknown)
           } else {
             var key = arg.slice(2)
             write(
@@ -130,7 +130,7 @@ module.exports = function(argv, opts) {
                 argv[k][0] === "-" ||
                 bools[key] !== undefined ||
                 argv[(i = k)],
-              alias,
+              aliases,
               unknown
             )
           }
@@ -147,7 +147,7 @@ module.exports = function(argv, opts) {
           argv[(i = k)]
 
         for (k = 1; k < end; ) {
-          write(out, arg[k], ++k !== end || value, alias, unknown)
+          write(out, arg[k], ++k !== end || value, aliases, unknown)
         }
       }
     }
@@ -161,3 +161,5 @@ module.exports = function(argv, opts) {
 
   return out
 }
+
+module.exports = getopts
