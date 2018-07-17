@@ -1,15 +1,16 @@
-const SHORTSPLIT = /$|[!-@\[-`{-~].*/g
 const EMPTY = []
+const SHORTSPLIT = /$|[!-@\[-`{-~].*/g
+const isArray = Array.isArray
 
-function array(any) {
-  return Array.isArray(any) ? any : [any]
+function toArray(any) {
+  return isArray(any) ? any : [any]
 }
 
 function aliases(aliases) {
   var out = {}
 
   for (var key in aliases) {
-    var alias = (out[key] = array(aliases[key]))
+    var alias = (out[key] = toArray(aliases[key]))
 
     for (var i = 0, len = alias.length; i < len; i++) {
       var curr = (out[alias[i]] = [key])
@@ -71,12 +72,12 @@ function defaults(aliases, defaults) {
   return out
 }
 
-function set(out, key, value, aliases, unknown) {
+function write(out, key, value, aliases, unknown) {
   var curr = out[key]
   var alias = aliases[key]
   var known = alias !== undefined
 
-  if (known || unknown === undefined || false !== unknown(key)) {
+  if (known || unknown === undefined || unknown(key) !== false) {
     if (curr === undefined) {
       out[key] = value
     } else {
@@ -116,13 +117,13 @@ module.exports = function(argv, opts) {
         var end = arg.indexOf("=", 2)
 
         if (0 <= end) {
-          set(out, arg.slice(2, end), arg.slice(end + 1), alias, unknown)
+          write(out, arg.slice(2, end), arg.slice(end + 1), alias, unknown)
         } else {
           if ("n" === arg[2] && "o" === arg[3] && "-" === arg[4]) {
-            set(out, arg.slice(5), false, alias, unknown)
+            write(out, arg.slice(5), false, alias, unknown)
           } else {
             var key = arg.slice(2)
-            set(
+            write(
               out,
               key,
               len === (k = i + 1) ||
@@ -146,7 +147,7 @@ module.exports = function(argv, opts) {
           argv[(i = k)]
 
         for (k = 1; k < end; ) {
-          set(out, arg[k], ++k !== end || value, alias, unknown)
+          write(out, arg[k], ++k !== end || value, alias, unknown)
         }
       }
     }
