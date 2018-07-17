@@ -6,7 +6,7 @@
 
 Getopts is a Node.js CLI options parser. It's designed according to the [Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html) so that your programs behave like typical UNIX utilities effortlessly and without sacrificing developer experience.
 
-Need for speed? Getopts is 10 to 20 times faster than the alternatives. See the [benchmarks](/bench).
+Need for speed? Getopts is 10x to 20x faster than the alternatives. See the [benchmarks](/bench).
 
 ## Installation
 
@@ -16,7 +16,7 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 
 ## Usage
 
-Use getopts to parse the arguments passed into your program from the command line.
+Use getopts to parse the arguments passed to your program from the command line.
 
 <pre>
 $ <a href="./example/demo">example/demo</a> --super=sonic -au9000 -- game over
@@ -96,7 +96,7 @@ getopts(["-u"], {
 
 #### options.unknown
 
-A function that runs for every unknown option. Return `false` to dismiss the option.
+A function to run for every unknown option. Return `false` to dismiss the option.
 
 ```js
 getopts(["-abc"], {
