@@ -1,5 +1,5 @@
 const test = require("tape")
-const getopts = require("../")
+const getopts = require("..")
 
 test("opts.default", t => {
   t.plan(2)

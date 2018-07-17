@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "../..",
+    "paths": {
+      "getopts": ["getopts.js", "getopts.d.ts"]
+    }
+  }
+}

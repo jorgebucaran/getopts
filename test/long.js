@@ -1,5 +1,5 @@
 const test = require("tape")
-const getopts = require("../")
+const getopts = require("..")
 
 test("long", t => {
   t.plan(6)

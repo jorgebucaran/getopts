@@ -1,5 +1,5 @@
 const test = require("tape")
-const getopts = require("../")
+const getopts = require("..")
 
 test("opts.unknown", t => {
   t.plan(3)
