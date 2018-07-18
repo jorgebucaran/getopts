@@ -18,7 +18,6 @@
     "cli-parser"
   ],
   "scripts": {
-    "ts": "tsc test/ts/index.ts",
     "test": "nyc -r lcov tape test/*.js && nyc report && tsc -p test/ts",
     "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push origin master && git push --tags && npm publish"
   },
