@@ -2,7 +2,7 @@ const test = require("tape")
 const getopts = require("..")
 
 test("short", t => {
-  t.plan(9)
+  t.plan(10)
 
   t.deepEqual(getopts(["-a"]), {
     a: true,
@@ -57,6 +57,11 @@ test("short", t => {
     b: true,
     c: "$100.00",
     u: "~/@user",
+    _: []
+  })
+
+  t.deepEqual(getopts(["-f", "foo\nbar\nbaz"]), {
+    f: "foo\nbar\nbaz",
     _: []
   })
 })

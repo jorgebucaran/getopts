@@ -2,7 +2,7 @@ const test = require("tape")
 const getopts = require("..")
 
 test("long", t => {
-  t.plan(6)
+  t.plan(7)
 
   t.deepEqual(getopts(["--foo=bar"]), {
     foo: "bar",
@@ -34,5 +34,10 @@ test("long", t => {
   t.deepEqual(getopts(["--foo=/foo/bar/baz", "foobar"]), {
     foo: "/foo/bar/baz",
     _: ["foobar"]
+  })
+
+  t.deepEqual(getopts(["--foobar=foo\nbar"]), {
+    foobar: "foo\nbar",
+    _: []
   })
 })
