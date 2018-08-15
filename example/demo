@@ -1,14 +1,12 @@
 #!/usr/bin/env node
+
 const getopts = require("..")
 
 console.log(
-  getopts(process.argv.slice(2), {
+  getopts(process.argv.slice(0), {
     alias: {
-      s: "super",
-      u: "ultra"
-    },
-    default: {
-      turbo: true
+      w: "warp",
+      t: "turbo"
     }
   })
 )

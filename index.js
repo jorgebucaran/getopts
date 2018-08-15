@@ -1,26 +1,35 @@
 "use strict"
 
-const EMPTY = []
-const SHORTSPLIT = /$|[!-@\[-`{-~].*/g
+const EMPTYARR = []
+const SHORTSPLIT = /$|[!-@[-`{-~][\s\S]*/g
 const isArray = Array.isArray
 
-var toArray = function(any) {
-  return isArray(any) ? any : [any]
+const parseValue = function(any) {
+  if (any === "") return ""
+  if (any === "false") return false
+  const maybe = Number(any)
+  return maybe * 0 === 0 ? maybe : any
 }
 
-var parseAlias = function(aliases) {
-  var out = {}
+const parseAlias = function(aliases) {
+  let out = {},
+    key,
+    alias,
+    prev,
+    len,
+    any,
+    i,
+    k
 
-  for (var key in aliases) {
-    var alias = (out[key] = toArray(aliases[key]))
+  for (key in aliases) {
+    any = aliases[key]
+    alias = out[key] = isArray(any) ? any : [any]
 
-    for (var i = 0, len = alias.length; i < len; i++) {
-      var curr = (out[alias[i]] = [key])
+    for (i = 0, len = alias.length; i < len; i++) {
+      prev = out[alias[i]] = [key]
 
-      for (var k = 0; k < len; k++) {
-        if (i !== k) {
-          curr.push(alias[k])
-        }
+      for (k = 0; k < len; k++) {
+        if (i !== k) prev.push(alias[k])
       }
     }
   }
@@ -28,22 +37,25 @@ var parseAlias = function(aliases) {
   return out
 }
 
-var parseBoolean = function(aliases, booleans) {
-  var out = {}
+const parseDefault = function(aliases, defaults) {
+  let out = {},
+    key,
+    alias,
+    value,
+    len,
+    i
 
-  if (booleans !== undefined) {
-    for (var i = 0, len = booleans.length; i < len; i++) {
-      var key = booleans[i]
-      var alias = aliases[key]
+  for (key in defaults) {
+    value = defaults[key]
+    alias = aliases[key]
 
-      out[key] = true
+    out[key] = value
 
-      if (alias === undefined) {
-        aliases[key] = EMPTY
-      } else {
-        for (var k = 0, end = alias.length; k < end; k++) {
-          out[alias[k]] = true
-        }
+    if (alias === undefined) {
+      aliases[key] = EMPTYARR
+    } else {
+      for (i = 0, len = alias.length; i < len; i++) {
+        out[alias[i]] = value
       }
     }
   }
@@ -51,21 +63,27 @@ var parseBoolean = function(aliases, booleans) {
   return out
 }
 
-var parseDefault = function(aliases, defaults) {
-  var out = {}
+const parseOptions = function(aliases, options, value) {
+  let out = {},
+    key,
+    alias,
+    len,
+    end,
+    i,
+    k
 
-  for (var key in defaults) {
-    var value = defaults[key]
-    var alias = aliases[key]
+  if (options !== undefined) {
+    for (i = 0, len = options.length; i < len; i++) {
+      key = options[i]
+      alias = aliases[key]
 
-    if (out[key] === undefined) {
       out[key] = value
 
       if (alias === undefined) {
-        aliases[key] = EMPTY
+        aliases[key] = EMPTYARR
       } else {
-        for (var i = 0, len = alias.length; i < len; i++) {
-          out[alias[i]] = value
+        for (k = 0, end = alias.length; k < end; k++) {
+          out[alias[k]] = value
         }
       }
     }
@@ -74,92 +92,116 @@ var parseDefault = function(aliases, defaults) {
   return out
 }
 
-var write = function(out, key, value, aliases, unknown) {
-  var curr = out[key]
-  var alias = aliases[key]
-  var known = alias !== undefined
+const write = function(out, key, value, aliases, unknown) {
+  let i,
+    prev,
+    alias = aliases[key],
+    len = alias === undefined ? -1 : alias.length
 
-  if (known || unknown === undefined || unknown(key) !== false) {
-    if (curr === undefined) {
+  if (len >= 0 || unknown === undefined || unknown(key)) {
+    prev = out[key]
+
+    if (prev === undefined) {
       out[key] = value
     } else {
-      if (isArray(curr)) {
-        curr.push(value)
+      if (isArray(prev)) {
+        prev.push(value)
       } else {
-        out[key] = [curr, value]
+        out[key] = [prev, value]
       }
     }
 
-    if (known) {
-      for (var i = 0, len = alias.length; i < len; ) {
-        out[alias[i++]] = out[key]
-      }
+    for (i = 0; i < len; i++) {
+      out[alias[i]] = out[key]
     }
   }
 }
 
-var getopts = function(argv, opts) {
-  var unknown = (opts = opts || {}).unknown
-  var aliases = parseAlias(opts.alias)
-  var values = parseDefault(aliases, opts.default)
-  var bools = parseBoolean(aliases, opts.boolean)
-  var out = { _: [] }
+const getopts = function(argv, opts) {
+  let unknown = (opts = opts || {}).unknown,
+    aliases = parseAlias(opts.alias),
+    strings = parseOptions(aliases, opts.string, ""),
+    values = parseDefault(aliases, opts.default),
+    bools = parseOptions(aliases, opts.boolean, false),
+    _ = [],
+    out = { _ },
+    i = 0,
+    k = 0,
+    len = argv.length,
+    key,
+    arg,
+    end,
+    match,
+    value
 
-  for (var i = 0, k = 0, len = argv.length, _ = out._; i < len; i++) {
-    var arg = argv[i]
+  for (; i < len; i++) {
+    arg = argv[i]
 
     if (arg === "--") {
-      while (++i < len) {
-        _.push(argv[i])
-      }
+      while (++i < len) _.push(argv[i])
     } else if (arg === "-" || arg[0] !== "-") {
       _.push(arg)
     } else {
       if (arg[1] === "-") {
-        var end = arg.indexOf("=", 2)
+        end = arg.indexOf("=", 2)
 
-        if (0 <= end) {
-          write(out, arg.slice(2, end), arg.slice(end + 1), aliases, unknown)
+        if (arg[2] === "n" && arg[3] === "o" && arg[4] === "-") {
+          key = arg.slice(5, end >= 0 ? end : undefined)
+          value = false
+        } else if (end >= 0) {
+          key = arg.slice(2, end)
+          value =
+            bools[key] !== undefined ||
+            (strings[key] === undefined
+              ? parseValue(arg.slice(end + 1))
+              : arg.slice(end + 1))
         } else {
-          if ("n" === arg[2] && "o" === arg[3] && "-" === arg[4]) {
-            write(out, arg.slice(5), false, aliases, unknown)
-          } else {
-            var key = arg.slice(2)
-            write(
-              out,
-              key,
-              len === (k = i + 1) ||
-                argv[k][0] === "-" ||
-                bools[key] !== undefined ||
-                argv[(i = k)],
-              aliases,
-              unknown
-            )
-          }
+          key = arg.slice(2)
+          value =
+            bools[key] !== undefined ||
+            (len === i + 1 || argv[i + 1][0] === "-"
+              ? strings[key] === undefined
+                ? true
+                : ""
+              : strings[key] === undefined
+                ? parseValue(argv[++i])
+                : argv[++i])
         }
+
+        write(out, key, value, aliases, unknown)
       } else {
         SHORTSPLIT.lastIndex = 2
-        var match = SHORTSPLIT.exec(arg)
-        var end = match.index
-        var value =
-          match[0] ||
-          len === (k = i + 1) ||
-          argv[k][0] === "-" ||
-          bools[arg[end - 1]] !== undefined ||
-          argv[(i = k)]
+        match = SHORTSPLIT.exec(arg)
+        end = match.index
+        value = match[0]
 
-        for (k = 1; k < end; ) {
-          write(out, arg[k], ++k !== end || value, aliases, unknown)
+        for (k = 1; k < end; k++) {
+          write(
+            out,
+            (key = arg[k]),
+            k + 1 < end
+              ? strings[key] === undefined ||
+                arg.substring(k + 1, (k = end)) + value
+              : value === ""
+                ? len === i + 1 || argv[i + 1][0] === "-"
+                  ? strings[key] === undefined || ""
+                  : bools[key] !== undefined ||
+                    (strings[key] === undefined
+                      ? parseValue(argv[++i])
+                      : argv[++i])
+                : bools[key] !== undefined ||
+                  (strings[key] === undefined ? parseValue(value) : value),
+            aliases,
+            unknown
+          )
         }
       }
     }
   }
 
-  for (var key in values) {
-    if (out[key] === undefined) {
-      out[key] = values[key]
-    }
-  }
+  for (key in values) if (out[key] === undefined) out[key] = values[key]
+  for (key in bools) if (out[key] === undefined) out[key] = false
+  for (key in strings) if (out[key] === undefined) out[key] = ""
 
   return out
 }
