@@ -18,7 +18,7 @@
     "cli-parser"
   ],
   "scripts": {
-    "test": "nyc -r lcov testmatrix test/*.test.js && nyc report",
+    "test": "nyc -r lcov testmatrix test/*.test.js && nyc report && tsc -p test/ts",
     "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push origin master && git push --tags && npm publish"
   },
   "devDependencies": {
