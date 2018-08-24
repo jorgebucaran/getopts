@@ -1,4 +1,5 @@
 {
+  "private": true,
   "dependencies": {
     "benchmark": "^2.1.4",
     "minimist": "^1.2.0",
