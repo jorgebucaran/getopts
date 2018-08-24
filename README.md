@@ -6,7 +6,7 @@
 
 Getopts is a Node.js CLI arguments parser. It's designed closely following the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) so that your programs behave like typical UNIX utilities effortlessly and without sacrificing developer experience.
 
-Need for speed? Getopts is _10x_~_20x_ [faster](/bench) than alternatives.
+Need for speed? Getopts is the [fastest](#benchmark-results) CLI parser for Node.js
 
 ## Installation
 
@@ -21,7 +21,7 @@ Use getopts to parse the [command-line arguments](https://en.wikipedia.org/wiki/
 You can find the arguments in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first element will be the path to the node executable, followed by the path to the file being executed. The remaining elements will be the command line arguments. We don't need the first two elements, so we'll extract everything after.
 
 <pre>
-$ <a href="./example/demo">example/demo</a> --turbo -sw10 -- alpha beta
+$ <a href="./example/demo">example/demo</a> --turbo -xw10 -- alpha beta
 </pre>
 
 ```js
@@ -41,7 +41,7 @@ Getopts takes an array of arguments (and optional options object) and returns an
 {
   _: ["alpha", "beta"],
   w: 10,
-  s: true,
+  x: true,
   t: true,
   warp: 10,
   turbo: true
@@ -97,11 +97,11 @@ Getopts takes an array of arguments (and optional options object) and returns an
   ```
 
   ```js
-  getopts(["----", "alpha"]) //=> { _: [], --:"alpha" }
+  getopts(["--warp=e=mc^2"]) //=> { _: [], warp:"e=mc^2" }
   ```
 
   ```js
-  getopts(["--warp=e=mc^2"]) //=> { _: [], warp:"e=mc^2" }
+  getopts(["----", "alpha"]) //=> { _: [], --:"alpha" }
   ```
 
 - Arguments can be negated if prefixed with the sequence `--no-`. Their value is always `false`.
@@ -175,7 +175,7 @@ Arguments prefixed with one or two dashes are referred to as [short](#short-opti
 
 #### opts.alias
 
-An object of option aliases. An alias can be a string or an array of strings. Aliases let you define alternate names for an option, e.g., the short and long variations of its name, etc.
+An object of option aliases. An alias can be a string or an array of strings. Aliases let you define alternate names for an option, e.g., the short and long (canonical) variations.
 
 ```js
 getopts(["-t"], {
@@ -227,6 +227,21 @@ getopts(["-abc"], {
   unknown: option => "a" === option
 }) //=> { _:[], a:true }
 ```
+
+## Benchmark Results
+
+All tests run on a 2.4GHz Intel Core i7 CPU with 16 GB memory.
+
+```
+npm i -C bench && node bench
+```
+
+<pre>
+mri × 378,898 ops/sec
+yargs × 32,993 ops/sec
+<b>getopts × 1,290,267 ops/sec</b>
+minimist × 289,048 ops/sec
+</pre>
 
 ## License
 
