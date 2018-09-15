@@ -145,7 +145,7 @@ Getopts takes an array of arguments (and optional options object) and returns an
   }) //=> { _:[], a:"", b:false }
   ```
 
-* The string _false_ is always cast to boolean.
+* The string "false" is always cast to boolean.
 
   ```js
   getopts(["--turbo=false"]) //=> { _:[], turbo:false }
