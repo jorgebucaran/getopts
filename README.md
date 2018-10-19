@@ -4,9 +4,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/jorgebucaran/getopts/master.svg)](https://codecov.io/gh/jorgebucaran/getopts)
 [![npm](https://img.shields.io/npm/v/getopts.svg)](https://www.npmjs.org/package/getopts)
 
-Getopts is a Node.js CLI arguments parser. It's designed closely following the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) so that your programs behave like typical UNIX utilities effortlessly, without sacrificing developer experience.
-
-Need for speed? Getopts is the [fastest](#benchmark-results) CLI arguments parser for Node.js.
+Getopts is a [high-performance](#benchmark-results) Node.js CLI arguments parser. It's designed closely following the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) so that your programs behave like typical UNIX utilities effortlessly, without sacrificing developer experience.
 
 ## Installation
 
