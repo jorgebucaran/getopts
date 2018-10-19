@@ -15,7 +15,7 @@ runBenchmark(
   {
     mri: require("mri"),
     yargs: require("yargs-parser"),
-    getopts: require(".."),
-    minimist: require("minimist")
+    minimist: require("minimist"),
+    getopts: require("..")
   }
 )
