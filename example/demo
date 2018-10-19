@@ -3,7 +3,7 @@
 const getopts = require("..")
 
 console.log(
-  getopts(process.argv.slice(0), {
+  getopts(process.argv.slice(2), {
     alias: {
       w: "warp",
       t: "turbo"
