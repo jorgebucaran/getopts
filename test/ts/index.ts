@@ -2,14 +2,15 @@ import getopts, { ParsedOptions, Options } from "getopts"
 
 const options: Options = {
   alias: {
-    s: "super"
+    w: "warp",
+    t: "turbo"
   },
-  boolean: ["super"],
+  boolean: ["turbo"],
   default: {
-    super: true
+    turbo: true
   }
 }
 
-const parsedOptions: ParsedOptions = getopts(["-s"], options)
+const parsedOptions: ParsedOptions = getopts(["-w10"], options)
 
 console.log(parsedOptions)
