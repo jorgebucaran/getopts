@@ -12,18 +12,18 @@ console.log(
   })
 )
 
-function wrapGetopts(input: string, options: Options): ParsedOptions {
-  return getopts(input.split(" "), options)
-}
-
 const options: Options = {
   alias: {
-    e: "export"
+    s: "super"
   },
-  boolean: ["export"],
+  boolean: ["super"],
   default: {
-    export: false
+    super: true
   }
 }
 
-wrapGetopts("-e", options)
+const parsedOptions: ParsedOptions = getopts(["-s"], options)
+
+if (!parsedOptions.super) {
+  process.exit(1)
+}
