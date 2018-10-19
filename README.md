@@ -220,7 +220,7 @@ getopts(["--warp=10"], {
 
 #### opts.unknown
 
-A function that will be invoked for every unknown option. Return `false` to discard the option. Unknown options are those that appear in the arguments array but are not present in `opts.string`, `opts.boolean`, `opts.default`, or `opts.alias`.
+A function that will be invoked for every unknown option. Return `false` to discard the option. Unknown options are those that appear in the arguments array, but are not present in `opts.string`, `opts.boolean`, `opts.default`, or `opts.alias`.
 
 ```js
 getopts(["-abc"], {
