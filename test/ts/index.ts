@@ -1,4 +1,4 @@
-import getopts from "getopts"
+import getopts, {ParsedOptions, Options} from "getopts"
 
 console.log(
   getopts(["-s"], {
@@ -11,3 +11,19 @@ console.log(
     }
   })
 )
+
+function wrapGetopts(input: string, options: Options): ParsedOptions {
+  return getopts(input.split(" "), options)
+}
+
+const options: Options = {
+  alias: {
+    e: "export"
+  },
+  boolean: ["export"],
+  default: {
+    export: false
+  }
+}
+
+wrapGetopts("-e", options)
