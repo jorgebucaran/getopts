@@ -1,16 +1,4 @@
-import getopts, {ParsedOptions, Options} from "getopts"
-
-console.log(
-  getopts(["-s"], {
-    alias: {
-      s: "super"
-    },
-    boolean: ["super"],
-    default: {
-      super: true
-    }
-  })
-)
+import getopts, { ParsedOptions, Options } from "getopts"
 
 const options: Options = {
   alias: {
@@ -24,6 +12,4 @@ const options: Options = {
 
 const parsedOptions: ParsedOptions = getopts(["-s"], options)
 
-if (!parsedOptions.super) {
-  process.exit(1)
-}
+console.log(parsedOptions)

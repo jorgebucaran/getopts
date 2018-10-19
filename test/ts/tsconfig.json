@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "../..",
-    "paths": {
+     "paths": {
       "getopts": ["getopts.js", "getopts.d.ts"]
     },
     "noEmit": true

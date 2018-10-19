@@ -3,7 +3,10 @@
  * @param options Options.
  * @returns An object with parsed options.
  */
-declare function getopts(argv: string[], options?: getopts.Options): getopts.ParsedOptions
+declare function getopts(
+  argv: string[],
+  options?: getopts.Options
+): getopts.ParsedOptions
 
 export = getopts
 
@@ -12,7 +15,7 @@ declare namespace getopts {
     _: string[]
     [key: string]: any
   }
-  
+
   export interface Options {
     alias?: { [key: string]: string | string[] }
     boolean?: string[]
