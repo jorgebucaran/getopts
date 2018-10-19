@@ -16,13 +16,13 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 
 ## Usage
 
-Use getopts to parse the [command-line arguments](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) passed to your program.
-
-You can find the arguments in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first element will be the path to the node executable, followed by the path to the file being executed. The remaining elements will be the command line arguments. We don't need the first two elements, so we'll extract everything after.
+Use the [`getopts`](#getoptsargv-opts) function to parse the [command-line arguments](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) passed to your program.
 
 <pre>
 $ <a href="./example/demo">example/demo</a> --turbo -xw10 -- alpha beta
 </pre>
+
+You can find the command-line arguments in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first element will be the path to the node executable, followed by the path to the file being executed. We don't need the first two elements, so we'll extract everything after and pass it to `getopts`.
 
 ```js
 const getopts = require("getopts")
@@ -35,7 +35,9 @@ const options = getopts(process.argv.slice(2), {
 })
 ```
 
-Getopts takes an array of arguments (and optional options object) and returns an object that maps argument names to values. This object can be used to look up the value of an option by its name. The underscore `_` is reserved for [operands](#operands). Operands include standalone arguments (non-options), the single dash `-` and every argument after a double-dash `--`.
+Getopts takes an array of arguments (and optional options object) and returns an object that maps argument names to values. Use this object to look up the value of an option by its name.
+
+The underscore `_` is reserved for [operands](#operands). Operands include standalone arguments (non-options), the single dash `-` and every argument after a double-dash `--`.
 
 ```js
 {
@@ -66,7 +68,7 @@ Getopts takes an array of arguments (and optional options object) and returns an
   getopts(["-abc1"]) //=> { _: [], a:true, b:true, c:1 }
   ```
 
-- Only the last character in a cluster of options can be parsed as boolean, string or number depending on the argument that follows it. Any characters preceding it will be `true`. You can use [opts.string](#optstring) to indicate if one of these options should be parsed as a string instead.
+- Only the last character in a cluster of options can be parsed as boolean, string or number depending on the argument that follows it. Any characters preceding it will be `true`. You can use [`opts.string`](#optstring) to indicate if one of these options should be parsed as a string instead.
 
   ```js
   getopts(["-abc-100"], {
@@ -74,7 +76,7 @@ Getopts takes an array of arguments (and optional options object) and returns an
   }) //=> { _: [], a:true, b:"c-100" }
   ```
 
-- The argument immediately following a short or long option which is not an option itself will be used as a value. You can use [opts.boolean](#optsboolean) to indicate the option should be parsed as boolean and treat the value as an operand.
+- The argument immediately following a short or long option which is not an option itself will be used as a value. You can use [`opts.boolean`](#optsboolean) to indicate the option should be parsed as boolean and treat the value as an operand.
 
   ```js
   getopts(["-a", "alpha"], {
@@ -145,7 +147,7 @@ Getopts takes an array of arguments (and optional options object) and returns an
   }) //=> { _:[], a:"", b:false }
   ```
 
-* The string "false" is always cast to boolean.
+* The string `"false"` is always cast to boolean.
 
   ```js
   getopts(["--turbo=false"]) //=> { _:[], turbo:false }
@@ -220,7 +222,7 @@ getopts(["--warp=10"], {
 
 #### opts.unknown
 
-A function to be run for every unknown option. Return `false` to dismiss the option. Unknown options are those that appear in the arguments array but are not present in opts.string, opts.boolean, opts.default or opts.alias.
+A function to be run for every unknown option. Return `false` to dismiss the option. Unknown options are those that appear in the arguments array but are not present in `opts.string`, `opts.boolean`, `opts.default` or `opts.alias`.
 
 ```js
 getopts(["-abc"], {
@@ -237,12 +239,12 @@ npm i -C bench && node bench
 ```
 
 <pre>
-mri × 378,898 ops/sec
-yargs × 32,993 ops/sec
-<b>getopts × 1,290,267 ops/sec</b>
-minimist × 289,048 ops/sec
+mri × 363,444 ops/sec
+yargs × 31,734 ops/sec
+minimist × 270,504 ops/sec
+getopts × 1,252,164 ops/sec
 </pre>
 
 ## License
 
-Getopts is MIT licensed. See [LICENSE](LICENSE.md).
+Getopts is MIT licensed. See the [LICENSE](LICENSE.md) for details.
