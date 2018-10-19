@@ -22,6 +22,7 @@
     "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push origin master && git push --tags && npm publish"
   },
   "devDependencies": {
+    "@types/node": "^10.12.0",
     "nyc": "^12.0.2",
     "testmatrix": "^0.1.2",
     "typescript": "^3.0.1"
