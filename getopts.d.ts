@@ -1,6 +1,6 @@
 /**
  * @param argv Arguments to parse.
- * @param options Options.
+ * @param options Parsing options (configuration).
  * @returns An object with parsed options.
  */
 declare function getopts(
@@ -18,8 +18,10 @@ declare namespace getopts {
 
   export interface Options {
     alias?: { [key: string]: string | string[] }
+    string?: string[]
     boolean?: string[]
     default?: { [key: string]: any }
     unknown?: (optionName: string) => boolean
+    stopEarly?: boolean
   }
 }

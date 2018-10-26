@@ -33,7 +33,7 @@ const options = getopts(process.argv.slice(2), {
 })
 ```
 
-The `getopts` function takes an array of arguments (and optional options object) and returns an object that maps argument names to values. Use this object to look up the value of an option by its name.
+The `getopts` function takes two arguments: an array of arguments and optional object with options (configuration), and returns an object mapping argument names to values. Use that object to look up the value of an option by its name.
 
 The underscore `_` key is reserved for [operands](#operands). Operands consist of standalone arguments (non-options), the dash `-` symbol and every argument after a double-dash `--` sequence.
 
@@ -66,7 +66,7 @@ The underscore `_` key is reserved for [operands](#operands). Operands consist o
   getopts(["-abc1"]) //=> { _: [], a:true, b:true, c:1 }
   ```
 
-- Only the last character in a cluster of options can be parsed as a string or as a number depending on the argument that follows it. Any options preceding it will be `true`. You can use [`opts.string`](#optstring) to indicate that one or more options should be parsed as strings.
+- Only the last character in a cluster of options can be parsed as a string or as a number depending on the argument that follows it. Any options preceding it will be `true`. You can use [`opts.string`](#optsstring) to indicate that one or more options should be parsed as strings.
 
   ```js
   getopts(["-abc-100"], {
@@ -228,6 +228,35 @@ getopts(["-abc"], {
 }) //=> { _:[], a:true }
 ```
 
+#### opts.stopEarly
+
+A boolean property. If true, the operands array `_` will be populated with all the arguments after the first non-option.
+
+```js
+getopts(["-w9", "alpha", "--turbo", "beta"], {
+  stopEarly: true
+}) //=> { _:["alpha", "--turbo", "beta"], w:9 }
+```
+
+This property is useful when implementing sub-commands in a CLI.
+
+```js
+const { install, update, uninstall } = require("./commands")
+
+const options = getopts(process.argv.slice(2), {
+  stopEarly: true
+})
+const [command, subargs] = options._
+
+if (command === "install") {
+  install(subargs)
+} else if (command === "update") {
+  update(subargs)
+} else if (command === "uninstall") {
+  uninstall(subargs)
+}
+```
+
 ## Benchmark Results
 
 All tests run on a 2.4GHz Intel Core i7 CPU with 16 GB memory.
@@ -237,10 +266,10 @@ npm i -C bench && node bench
 ```
 
 <pre>
-mri × 363,444 ops/sec
-yargs × 31,734 ops/sec
-minimist × 270,504 ops/sec
-getopts × 1,252,164 ops/sec
+getopts × 1,315,998 ops/sec
+minimist × 260,817 ops/sec
+yargs × 33,520 ops/sec
+mri × 386,495 ops/sec
 </pre>
 
 ## License

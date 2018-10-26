@@ -123,6 +123,7 @@ const getopts = function(argv, opts) {
     strings = parseOptions(aliases, opts.string, ""),
     values = parseDefault(aliases, opts.default),
     bools = parseOptions(aliases, opts.boolean, false),
+    stopEarly = opts.stopEarly,
     _ = [],
     out = { _ },
     i = 0,
@@ -137,14 +138,14 @@ const getopts = function(argv, opts) {
   for (; i < len; i++) {
     arg = argv[i]
 
-    if (arg === "--") {
+    if (arg[0] !== "-" || arg === "-") {
+      if (stopEarly) while (i < len) _.push(argv[i++])
+      else _.push(arg)
+    } else if (arg === "--") {
       while (++i < len) _.push(argv[i])
-    } else if (arg === "-" || arg[0] !== "-") {
-      _.push(arg)
     } else {
       if (arg[1] === "-") {
         end = arg.indexOf("=", 2)
-
         if (arg[2] === "n" && arg[3] === "o" && arg[4] === "-") {
           key = arg.slice(5, end >= 0 ? end : undefined)
           value = false
@@ -167,7 +168,6 @@ const getopts = function(argv, opts) {
                 ? parseValue(argv[++i])
                 : argv[++i])
         }
-
         write(out, key, value, aliases, unknown)
       } else {
         SHORTSPLIT.lastIndex = 2
