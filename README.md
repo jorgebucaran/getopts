@@ -4,7 +4,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/jorgebucaran/getopts/master.svg)](https://codecov.io/gh/jorgebucaran/getopts)
 [![npm](https://img.shields.io/npm/v/getopts.svg)](https://www.npmjs.org/package/getopts)
 
-Getopts is a [high-performance](#benchmark-results) Node.js CLI arguments parser. It's designed closely following the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) so that your programs behave like typical UNIX utilities effortlessly, without sacrificing developer experience.
+Getopts is a [high performance](#benchmark-results) CLI options parser for Node.js. It is used to parse and validate the [command-line arguments](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) passed to your program at runtime. It follows the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) so that your programs behave like typical UNIX utilities effortlessly. Once you learn how to use it, you'll never go back to parsing `process.argv` on your own again.
 
 ## Installation
 
@@ -14,13 +14,15 @@ npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
 
 ## Usage
 
-Use Getopts to parse the [command-line arguments](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) passed to your program.
+You want to parse the command-line arguments passed to your program at runtime. How do you do that?
 
 <pre>
 $ <a href="./example/demo">example/demo</a> --turbo -xw10 -- alpha beta
 </pre>
 
-You can find the command-line arguments in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first element in the array will be the path to the node executable, followed by the path to the file being executed. We don't need either one, so we'll copy everything after the second index and pass it to the [`getopts`](<(#getoptsargv-opts)>) function.
+Getopts main export is a function that takes two arguments: an array of arguments and (optional) object with options.
+
+The command-line arguments can be found in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first item in the array will be the path to the node executable, followed by the path to the file being executed. We don't need either one, so slice everything after the second index and pass it to [`getopts`](#getoptsargv-opts).
 
 ```js
 const getopts = require("getopts")
@@ -33,9 +35,7 @@ const options = getopts(process.argv.slice(2), {
 })
 ```
 
-The `getopts` function takes an array of arguments (and optional options object) and returns an object that maps argument names to values. Use this object to look up the value of an option by its name.
-
-The underscore `_` key is reserved for [operands](#operands). Operands consist of standalone arguments (non-options), the dash `-` symbol and every argument after a double-dash `--` sequence.
+The return value is an object that maps the argument names to their values. Use it to look up the value of an option by its name. The underscore `_` key is reserved for [operands](#operands). Operands consist of bare arguments (non-options), the dash `-` symbol and every argument after a double-dash `--` sequence.
 
 ```js
 {
@@ -66,7 +66,7 @@ The underscore `_` key is reserved for [operands](#operands). Operands consist o
   getopts(["-abc1"]) //=> { _: [], a:true, b:true, c:1 }
   ```
 
-- Only the last character in a cluster of options can be parsed as a string or as a number depending on the argument that follows it. Any options preceding it will be `true`. You can use [`opts.string`](#optstring) to indicate that one or more options should be parsed as strings.
+- Only the last character in a cluster of options can be parsed as a string or as a number depending on the argument that follows it. Any options preceding it will be `true`. You can use [`opts.string`](#optsstring) to indicate that one or more options should be parsed as strings.
 
   ```js
   getopts(["-abc-100"], {
@@ -128,7 +128,7 @@ The underscore `_` key is reserved for [operands](#operands). Operands consist o
   getopts(["--code=alpha", "beta"]) //=> { _: ["beta"], code:"alpha" }
   ```
 
-- A standalone dash `-` is an operand.
+- A dash `-` is an operand.
 
   ```js
   getopts(["--turbo", "-"]) //=> { _:["-"], turbo:true }
@@ -167,12 +167,13 @@ The underscore `_` key is reserved for [operands](#operands). Operands consist o
 
 ### getopts(argv, opts)
 
-#### argv
+Parse command line arguments. Expects an array of arguments, e.g. [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv), and object with options, and returns an object that maps the argument names to their values.
 
-An array of arguments to parse, e.g., [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv).
+### argv
 
-Any arguments prefixed with one or two dashes are referred to as [short](#short-options) and [long](#long-options) options respectively. Options can have one or more [aliases](#optssalias). Numerical values are casted to numbers when possible.
+Array of arguments.
 
+### opts
 #### opts.alias
 
 An object of option aliases. An alias can be a string or an array of strings. Aliases let you define alternate names for an option, e.g. the short (abbreviated) and long (canonical) variations.
@@ -228,6 +229,35 @@ getopts(["-abc"], {
 }) //=> { _:[], a:true }
 ```
 
+#### opts.stopEarly
+
+A boolean property. If true, the operands array `_` will be populated with all the arguments after the first non-option.
+
+```js
+getopts(["-w9", "alpha", "--turbo", "beta"], {
+  stopEarly: true
+}) //=> { _:["alpha", "--turbo", "beta"], w:9 }
+```
+
+This property is useful when implementing sub-commands in a CLI.
+
+```js
+const { install, update, uninstall } = require("./commands")
+
+const options = getopts(process.argv.slice(2), {
+  stopEarly: true
+})
+const [command, subargs] = options._
+
+if (command === "install") {
+  install(subargs)
+} else if (command === "update") {
+  update(subargs)
+} else if (command === "uninstall") {
+  uninstall(subargs)
+}
+```
+
 ## Benchmark Results
 
 All tests run on a 2.4GHz Intel Core i7 CPU with 16 GB memory.
@@ -237,10 +267,10 @@ npm i -C bench && node bench
 ```
 
 <pre>
-mri × 363,444 ops/sec
-yargs × 31,734 ops/sec
-minimist × 270,504 ops/sec
-getopts × 1,252,164 ops/sec
+getopts × 1,315,998 ops/sec
+minimist × 260,817 ops/sec
+yargs × 33,520 ops/sec
+mri × 386,495 ops/sec
 </pre>
 
 ## License

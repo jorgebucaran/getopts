@@ -13,9 +13,9 @@ const runBenchmark = (test, modules) =>
 runBenchmark(
   parse => parse(["--turbo", "--no-kill", "-xw1000", "--", "alpha", "beta"]),
   {
-    mri: require("mri"),
-    yargs: require("yargs-parser"),
+    getopts: require(".."),
     minimist: require("minimist"),
-    getopts: require("..")
+    yargs: require("yargs-parser"),
+    mri: require("mri")
   }
 )
