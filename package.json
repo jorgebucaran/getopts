@@ -1,7 +1,7 @@
 {
   "name": "getopts",
-  "description": "High-performance Node.js CLI options parser.",
-  "version": "2.2.2",
+  "description": "High performance Node.js CLI options parser.",
+  "version": "2.2.3",
   "main": "index.js",
   "types": "getopts.d.ts",
   "license": "MIT",
