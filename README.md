@@ -22,7 +22,7 @@ $ <a href="./example/demo">example/demo</a> --turbo -xw10 -- alpha beta
 
 Getopts main export is a function that takes two arguments: an array of arguments and (optional) object with options.
 
-The command-line arguments can be found in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first item in the array will be the path to the node executable, followed by the path to the file being executed. We don't need either one, so slice everything after the second index and pass it to [`getopts`](#getoptsargv-opts).
+The command-line arguments can be found in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first item in the array is the path to the node executable, followed by the path to the file to execute. We don't need either one, so slice everything after the second index and pass it to [`getopts`](#getoptsargv-opts).
 
 ```js
 const getopts = require("getopts")
@@ -74,7 +74,7 @@ The return value is an object that maps the argument names to their values. Use 
   }) //=> { _: [], a:true, b:"c-100" }
   ```
 
-- The argument immediately following a short or a long option, which is not an option itself, will be parsed as the value of the option. You can use [`opts.boolean`](#optsboolean) to indicate that one or more options should be parsed as booleans, causing any adjacent argument to be parsed as an operand and not as a value.
+- The argument immediately following a short or a long option, which is not an option itself, will be parsed as the value of the option. You can use [`opts.boolean`](#optsboolean) to indicate that one or more options should be parsed as booleans, causing an adjacent argument to be parsed as an operand and not as a value.
 
   ```js
   getopts(["-a", "alpha"], {
@@ -90,7 +90,7 @@ The return value is an object that maps the argument names to their values. Use 
 
 #### Long Options
 
-- A long option consists of two dashes `--` followed by one or more characters. Any character listed in the ASCII table can be used to form a long option with the exception of the `=` symbol, which separates an option's name and value.
+- A long option consists of two dashes `--` followed by one or more characters. Any character listed in the ASCII table can be used to create a long option except the `=` symbol, which separates an option's name and value.
 
   ```js
   getopts(["--turbo", "--warp=10"]) //=> { _: [], turbo:true, warp:10 }
@@ -118,7 +118,7 @@ The return value is an object that maps the argument names to their values. Use 
   getopts(["--", "--alpha", "001"]) //=> { _:["--alpha", "001"] }
   ```
 
-- Every non-option, standalone argument is an operand.
+- Every non-option standalone argument is an operand.
 
   ```js
   getopts(["alpha", "-w9"]) //=> { _: ["alpha"], w:9 }
@@ -136,7 +136,7 @@ The return value is an object that maps the argument names to their values. Use 
 
 #### Other
 
-- Options missing from the arguments array that have been designated as a boolean or string type will be added to the result object as `false` and `""` respectively.
+- Options missing from the arguments array designated as a boolean or string type will be added to the result object as `false` and `""` respectively.
 
   ```js
   getopts([], {
@@ -145,7 +145,7 @@ The return value is an object that maps the argument names to their values. Use 
   }) //=> { _:[], a:"", b:false }
   ```
 
-* The string `"false"` is always casted to a boolean `false`.
+* The string `"false"` is always cast to a boolean `false`.
 
   ```js
   getopts(["--turbo=false"]) //=> { _:[], turbo:false }
@@ -167,16 +167,17 @@ The return value is an object that maps the argument names to their values. Use 
 
 ### getopts(argv, opts)
 
-Parse command line arguments. Expects an array of arguments, e.g. [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv), and object with options, and returns an object that maps the argument names to their values.
+Parse command line arguments. Expects an array of arguments, e.g., [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv), an object with options, and returns an object that maps the argument names to their values.
 
 ### argv
 
-Array of arguments.
+An array of arguments.
 
 ### opts
+
 #### opts.alias
 
-An object of option aliases. An alias can be a string or an array of strings. Aliases let you define alternate names for an option, e.g. the short (abbreviated) and long (canonical) variations.
+An object of option aliases. An alias can be a string or an array of strings. Aliases let you define alternate names for an option, e.g., the short (abbreviated) and long (canonical) variations.
 
 ```js
 getopts(["-t"], {
@@ -198,7 +199,7 @@ getopts(["-t", "alpha"], {
 
 #### opts.string
 
-An array of options that should be parsed as strings. In the example, by declaring `t` as string, all adjacent characters are parsed as a single value and not as individual options.
+An array of options that should be parsed as strings. In the example, by declaring `t` as a string, all adjacent characters are parsed as a single value and not as individual options.
 
 ```js
 getopts(["-atabc"], {
@@ -275,4 +276,4 @@ mri × 386,495 ops/sec
 
 ## License
 
-Getopts is MIT licensed. See the [LICENSE](LICENSE.md) for details.
+[MIT](LICENSE.md)
