@@ -143,58 +143,54 @@ const getopts = function(argv, opts) {
       else _.push(arg)
     } else if (arg === "--") {
       while (++i < len) _.push(argv[i])
-    } else {
-      if (arg[1] === "-") {
-        end = arg.indexOf("=", 2)
-        if (arg[2] === "n" && arg[3] === "o" && arg[4] === "-") {
-          key = arg.slice(5, end >= 0 ? end : undefined)
-          value = false
-        } else if (end >= 0) {
-          key = arg.slice(2, end)
-          value =
-            bools[key] !== undefined ||
-            (strings[key] === undefined
-              ? parseValue(arg.slice(end + 1))
-              : arg.slice(end + 1))
-        } else {
-          key = arg.slice(2)
-          value =
-            bools[key] !== undefined ||
-            (len === i + 1 || argv[i + 1][0] === "-"
-              ? strings[key] === undefined
-                ? true
-                : ""
-              : strings[key] === undefined
-                ? parseValue(argv[++i])
-                : argv[++i])
-        }
-        write(out, key, value, aliases, unknown)
+    } else if (arg[1] === "-") {
+      end = arg.indexOf("=", 2)
+      if (arg[2] === "n" && arg[3] === "o" && arg[4] === "-") {
+        key = arg.slice(5, end >= 0 ? end : undefined)
+        value = false
+      } else if (end >= 0) {
+        key = arg.slice(2, end)
+        value =
+          bools[key] !== undefined ||
+          (strings[key] === undefined
+            ? parseValue(arg.slice(end + 1))
+            : arg.slice(end + 1))
       } else {
-        SHORTSPLIT.lastIndex = 2
-        match = SHORTSPLIT.exec(arg)
-        end = match.index
-        value = match[0]
+        key = arg.slice(2)
+        value =
+          bools[key] !== undefined ||
+          (len === i + 1 || argv[i + 1][0] === "-"
+            ? strings[key] === undefined
+              ? true
+              : ""
+            : strings[key] === undefined
+            ? parseValue(argv[++i])
+            : argv[++i])
+      }
+      write(out, key, value, aliases, unknown)
+    } else {
+      SHORTSPLIT.lastIndex = 2
+      match = SHORTSPLIT.exec(arg)
+      end = match.index
+      value = match[0]
 
-        for (k = 1; k < end; k++) {
-          write(
-            out,
-            (key = arg[k]),
-            k + 1 < end
-              ? strings[key] === undefined ||
+      for (k = 1; k < end; k++) {
+        write(
+          out,
+          (key = arg[k]),
+          k + 1 < end
+            ? strings[key] === undefined ||
                 arg.substring(k + 1, (k = end)) + value
-              : value === ""
-                ? len === i + 1 || argv[i + 1][0] === "-"
-                  ? strings[key] === undefined || ""
-                  : bools[key] !== undefined ||
-                    (strings[key] === undefined
-                      ? parseValue(argv[++i])
-                      : argv[++i])
-                : bools[key] !== undefined ||
-                  (strings[key] === undefined ? parseValue(value) : value),
-            aliases,
-            unknown
-          )
-        }
+            : value === ""
+            ? len === i + 1 || argv[i + 1][0] === "-"
+              ? strings[key] === undefined || ""
+              : bools[key] !== undefined ||
+                (strings[key] === undefined ? parseValue(argv[++i]) : argv[++i])
+            : bools[key] !== undefined ||
+              (strings[key] === undefined ? parseValue(value) : value),
+          aliases,
+          unknown
+        )
       }
     }
   }
