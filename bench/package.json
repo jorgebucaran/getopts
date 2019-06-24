@@ -4,6 +4,6 @@
     "benchmark": "^2.1.4",
     "minimist": "^1.2.0",
     "mri": "^1.1.4",
-    "yargs-parser": "13.0.0"
+    "yargs-parser": "13.1.1"
   }
 }
