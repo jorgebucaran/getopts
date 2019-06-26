@@ -1,6 +1,6 @@
 {
   "name": "getopts",
-  "description": "High performance Node.js CLI options parser.",
+  "description": "Parse CLI options, better.",
   "version": "2.2.4",
   "main": "index.js",
   "types": "getopts.d.ts",
@@ -15,6 +15,10 @@
     "getopts",
     "cli",
     "argv",
+    "flags",
+    "yargs",
+    "options",
+    "minimist",
     "cli-parser"
   ],
   "scripts": {
