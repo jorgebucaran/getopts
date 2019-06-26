@@ -6,19 +6,18 @@ Getopts sorts your command-line arguments into key-value pairs for easy look-up 
 
 - Up to ~6x faster than the alternatives ([run the benchmarks](#run-the-benchmarks)).
 - Built upon [utility syntax guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) that have been used for decades.
-- You can even use it as a "drop-in replacement" for `yargs` or `minimist`.
-- Your programs will look and feel like typical UNIX commands.
+- You can use it as a drop-in replacement for `yargs` or `minimist`.
 - ~180 LOC and no dependencies.
 
 ## Quickstart
 
-Install the latest version of Getopts with npm or Yarn:
+Install Getopts with npm or Yarn:
 
 ```console
 npm i getopts
 ```
 
-How about we start with something useful: let's write a password generator. Our program should print out a random string of characters of the given length, and to make things more interesting, we'll add a way exclude certain characters like numbers or punctuation. We'll call it `pwd` (pronounced "password").
+How about we start with something useful: let's write a password generator. Our program should print out a random string of characters of a given length, and to make things more interesting, we'll add a way exclude certain characters like numbers or punctuation. We'll call it `pwd` (pronounced "password").
 
 A typical invocation of our program will look like this:
 
@@ -26,7 +25,7 @@ A typical invocation of our program will look like this:
 example/pwd --no-symbols --length=12
 ```
 
-First, we'll use `getopts` to parse the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array (the first two items are always `node` and the path to the script so we usually skip them). We'll also define aliases for each of our options, as well as set their default values.
+First, we'll use `getopts` to parse the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array (the first two items are always `node` and the path to the script so we usually skip them). We'll also define aliases for each of our options, and set their default values.
 
 ```js
 #!/usr/bin/env node
@@ -62,9 +61,9 @@ What we get is an object mapping argument names to values. We'll use it to look 
 }
 ```
 
-Next, to generate the password, here's what we're going to do:
+And to generate the password, here's what we're going to do:
 
-1. Print out help if `--help` is in the parsed options and exit.
+1. Print usage if `--help` is in the parsed options and exit.
 2. Initialize `CHARS` with all the possible password characters.
 3. Initialize an array of length `options.length`, where each item is a random character from `CHARS`.
 4. Join the result into a string and print it out.
@@ -87,7 +86,7 @@ process.stdout.write(
 )
 ```
 
-Well done! Now you're ready to start working with Getopts on your own project. To learn more, continue to [Parsing Rules](#parsing-rules). Want to dig deeper? Head over to the [API docs](#api).
+That's it! Now you're ready to start working with Getopts on your own project. To learn more, continue to [Parsing Rules](#parsing-rules). Want to dig deeper? Head over to the [API docs](#api).
 
 ## Parsing Rules
 
