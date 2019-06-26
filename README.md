@@ -4,7 +4,7 @@
 
 Getopts sorts your command-line arguments into key-value pairs for easy look-up and retrieval, and its sane out-of-the-box defaults allow you to focus on the big picture: writing CLI tools. Here's why you'll love it:
 
-- Up to ~6x faster than the alternatives ([run the benchmarks]()).
+- Up to ~6x faster than the alternatives ([run the benchmarks](#run-the-benchmarks)).
 - Built upon [utility syntax guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) that have been used for decades.
 - You can even use it as a "drop-in replacement" for `yargs` or `minimist`.
 - Your programs will look and feel like typical UNIX commands.
@@ -18,7 +18,7 @@ Install the latest version of Getopts with npm or Yarn:
 npm i getopts
 ```
 
-How about we start out with something simple: let's write a password generator. Our program should print out a random string of characters of a given length, and to make things more interesting, we'll add a way exclude certain characters like numbers or punctuation. Let's call it `pwd` (pronounced "password").
+How about we start with something useful: let's write a password generator. Our program should print out a random string of characters of the given length, and to make things more interesting, we'll add a way exclude certain characters like numbers or punctuation. We'll call it `pwd` (pronounced "password").
 
 A typical invocation of our program will look like this:
 
@@ -26,19 +26,13 @@ A typical invocation of our program will look like this:
 example/pwd --no-symbols --length=12
 ```
 
-First, we'll require `getopts`. The default export is a function that takes your CLI arguments, and configuration object.
+First, we'll use `getopts` to parse the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array (the first two items are always `node` and the path to the script so we usually skip them). We'll also define aliases for each of our options, as well as set their default values.
 
 ```js
 #!/usr/bin/env node
 
 const getopts = require("getopts")
-```
 
-The arguments can be found in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first item is the path to the node executable, followed by the path to the program. Since we don't need either one, we'll slice everything after the second index.
-
-For the configuration, we want custom aliases for each of our option flags, and to set their default values.
-
-```js
 const options = getopts(process.argv.slice(2), {
   alias: {
     help: "h",
@@ -54,7 +48,7 @@ const options = getopts(process.argv.slice(2), {
 })
 ```
 
-The return value is an object that maps argument names to their values. We'll use it to look up the value of an option by their name. Here's what it looks like when invoked with `--no-symbols --length=12`.
+What we get is an object mapping argument names to values. We'll use it to look up the value of an option by their name. This is what it looks like when `pwd` is invoked with `--no-symbols --length=12`:
 
 ```js
 {
@@ -68,15 +62,11 @@ The return value is an object that maps argument names to their values. We'll us
 }
 ```
 
-<!-- The `_` key is reserved for [operands](#operands), bare arguments, the `-` symbol, and every argument after a double-dash `--`. -->
+Next, to generate the password, here's what we're going to do:
 
-The `_` key is reserved for [operands](#operands), which we didn't use here, so we'll skip the details.
-
-For the rest of the program, here's what we're going to do:
-
-1. Print out usage help if `--help` is passed in and exit.
-2. Initialize a string `CHARS` with valid characters for the password.
-3. Create an array of length `options.length`, initializing each item with a random character from `CHARS`.
+1. Print out help if `--help` is in the parsed options and exit.
+2. Initialize `CHARS` with all the possible password characters.
+3. Initialize an array of length `options.length`, where each item is a random character from `CHARS`.
 4. Join the result into a string and print it out.
 
 ```js
@@ -97,7 +87,7 @@ process.stdout.write(
 )
 ```
 
-Well done! Now you're ready to start working on your own project. To learn more, head over to [Parsing Rules](#parsing-rules) or dive into the [API docs](#api) to see everything else you can do with Getopts.
+Well done! Now you're ready to start working with Getopts on your own project. To learn more, continue to [Parsing Rules](#parsing-rules). Want to dig deeper? Head over to the [API docs](#api).
 
 ## Parsing Rules
 
@@ -218,7 +208,7 @@ getopts(["-9", "-#10", "-%0.01"]) //=> { _:[], 9:true, #:10, %:0.01 }
 
 ### `getopts(argv, opts)`
 
-Parse command line arguments. Expects an array of arguments, e.g., [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv), an object with options, and returns an object that maps the argument names to their values.
+Parse command line arguments. Expects an array of arguments, e.g., [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv), options configuration object, and returns an object mapping argument names to their values.
 
 ### `argv`
 
@@ -226,7 +216,7 @@ An array of arguments.
 
 ### `opts.alias`
 
-An object of option aliases. An alias can be a string or an array of strings. Aliases allow you to declare substitute names for an option, e.g., the short (abbreviated) and long (canonical) variations.
+An object of option aliases. An alias can be a string or an array of strings. Aliases let you declare substitute names for an option, e.g., the short (abbreviated) and long (canonical) variations.
 
 ```js
 getopts(["-t"], {
@@ -238,7 +228,7 @@ getopts(["-t"], {
 
 ### `opts.boolean`
 
-An array of options that should be parsed as booleans. In the example, declaring `t` as boolean causes the next argument to be parsed as an operand and not as a value.
+An array to indicate boolean options. In the next example, declaring `t` as boolean causes the next argument to be parsed as an operand and not as a value.
 
 ```js
 getopts(["-t", "alpha"], {
@@ -248,7 +238,7 @@ getopts(["-t", "alpha"], {
 
 ### `opts.string`
 
-An array of options that should be parsed as strings. In the example, by declaring `t` as a string, all adjacent characters are parsed as a single value and not as individual options.
+An array to indicate string options. In the next example, by declaring `t` as a string, all adjacent characters are parsed as a single value and not as individual options.
 
 ```js
 getopts(["-atabc"], {
@@ -297,6 +287,7 @@ const { install, update, uninstall } = require("./commands")
 const options = getopts(process.argv.slice(2), {
   stopEarly: true
 })
+
 const [command, subargs] = options._
 
 if (command === "install") {
@@ -308,18 +299,16 @@ if (command === "install") {
 }
 ```
 
-## Benchmark Results
-
-All tests run on a 2.4 GHz Intel Core i9 CPU with 32 GB memory.
+## Run the benchmarks
 
 ```
 npm i -C bench && node bench
 ```
 
 <pre>
-getopts × 1,857,203 ops/sec
-minimist × 324,815 ops/sec
-yargs × 34,900 ops/sec
+getopts × 1,769,415 ops/sec
+minimist × 314,240 ops/sec
+yargs × 33,179 ops/sec
 </pre>
 
 ## License
