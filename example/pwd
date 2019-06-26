@@ -17,7 +17,7 @@ const options = getopts(process.argv.slice(2), {
 })
 
 if (options.help) {
-  console.log("usage: pwd [-l|--length=N] [-d|--digits] [-s|--symbols]")
+  console.log("usage: pwd [-l|--length=N] [--no-digits] [--no-symbols]")
   process.exit(0)
 }
 
