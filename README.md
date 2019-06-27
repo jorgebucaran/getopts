@@ -11,8 +11,6 @@ Getopts sorts your command-line arguments into key-value pairs for easy look-up 
 
 ## Quickstart
 
-Install Getopts with npm or Yarn:
-
 ```console
 npm i getopts
 ```
