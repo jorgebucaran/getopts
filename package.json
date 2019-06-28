@@ -1,7 +1,7 @@
 {
   "name": "getopts",
   "description": "Parse CLI options, better.",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "main": "index.js",
   "types": "getopts.d.ts",
   "license": "MIT",
