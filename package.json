@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "test": "nyc -r lcov testmatrix test/*.test.js && nyc report && tsc -p test/ts",
-    "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push origin master && git push --tags && npm publish"
+    "release": "v=$npm_package_version; git commit -am $v && git tag -s $v -m $v && git push && git push --tags && npm publish"
   },
   "devDependencies": {
     "nyc": "^14.1.1",
