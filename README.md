@@ -128,78 +128,78 @@ getopts(["-9", "-#10", "-%0.01"]) //=> { _:[], 9:true, #:10, %:0.01 }
 
 ### Long Options
 
-- A long option consists of two dashes `--` followed by one or more characters. Any character listed in the ASCII table can be used to create a long option except the `=` symbol, which separates an option's name and value.
+A long option consists of two dashes `--` followed by one or more characters. Any character listed in the ASCII table can be used to create a long option except the `=` symbol, which separates an option's name and value.
 
-  ```js
-  getopts(["--turbo", "--warp=10"]) //=> { _: [], turbo:true, warp:10 }
-  ```
+```js
+getopts(["--turbo", "--warp=10"]) //=> { _: [], turbo:true, warp:10 }
+```
 
-  ```js
-  getopts(["--warp=e=mc^2"]) //=> { _: [], warp:"e=mc^2" }
-  ```
+```js
+getopts(["--warp=e=mc^2"]) //=> { _: [], warp:"e=mc^2" }
+```
 
-  ```js
-  getopts(["----", "alpha"]) //=> { _: [], --:"alpha" }
-  ```
+```js
+getopts(["----", "alpha"]) //=> { _: [], --:"alpha" }
+```
 
-- Options can be negated if they are prefixed with the sequence `--no-`. Their value is always `false`.
+Options can be negated if they are prefixed with the sequence `--no-`. Their value is always `false`.
 
-  ```js
-  getopts(["--no-turbo"]) //=> { _: [], turbo:false }
-  ```
+```js
+getopts(["--no-turbo"]) //=> { _: [], turbo:false }
+```
 
 ### Operands
 
-- Every argument after the first double-dash sequence `--` is saved to the operands array `_`.
+Every argument after the first double-dash sequence `--` is saved to the operands array `_`.
 
-  ```js
-  getopts(["--", "--alpha", "001"]) //=> { _:["--alpha", "001"] }
-  ```
+```js
+getopts(["--", "--alpha", "001"]) //=> { _:["--alpha", "001"] }
+```
 
-- Every non-option standalone argument is an operand.
+Every non-option standalone argument is an operand.
 
-  ```js
-  getopts(["alpha", "-w9"]) //=> { _: ["alpha"], w:9 }
-  ```
+```js
+getopts(["alpha", "-w9"]) //=> { _: ["alpha"], w:9 }
+```
 
-  ```js
-  getopts(["--code=alpha", "beta"]) //=> { _: ["beta"], code:"alpha" }
-  ```
+```js
+getopts(["--code=alpha", "beta"]) //=> { _: ["beta"], code:"alpha" }
+```
 
-- A dash `-` is an operand.
+A dash `-` is an operand.
 
-  ```js
-  getopts(["--turbo", "-"]) //=> { _:["-"], turbo:true }
-  ```
+```js
+getopts(["--turbo", "-"]) //=> { _:["-"], turbo:true }
+```
 
 ### Other
 
-- Options missing from the arguments array designated as a boolean or string type will be added to the result object as `false` and `""` respectively.
+Options missing from the arguments array designated as a boolean or string type will be added to the result object as `false` and `""` respectively.
 
-  ```js
-  getopts([], {
-    string: ["a"],
-    boolean: ["b"]
-  }) //=> { _:[], a:"", b:false }
-  ```
+```js
+getopts([], {
+  string: ["a"],
+  boolean: ["b"]
+}) //=> { _:[], a:"", b:false }
+```
 
-* The string `"false"` is always cast to a boolean `false`.
+The string `"false"` is always cast to a boolean `false`.
 
-  ```js
-  getopts(["--turbo=false"]) //=> { _:[], turbo:false }
-  ```
+```js
+getopts(["--turbo=false"]) //=> { _:[], turbo:false }
+```
 
-* Options that appear multiple times are parsed as an array that consists of every value in the order they are found.
+Options that appear multiple times are parsed as an array that consists of every value in the order they are found.
 
-  ```js
-  getopts(["-a?alpha=beta", "-aa0.1"] //=> { _:[], a:["?alpha=beta", true, 0.1] }
-  ```
+```js
+getopts(["-a?alpha=beta", "-aa0.1"] //=> { _:[], a:["?alpha=beta", true, 0.1] }
+```
 
-* A value may contain newlines or other control characters.
+A value may contain newlines or other control characters.
 
-  ```js
-  getopts(["--text=top\n\tcenter\bottom"]) //=> { _:[], text:"top\n\tcenter\bottom" }
-  ```
+```js
+getopts(["--text=top\n\tcenter\bottom"]) //=> { _:[], text:"top\n\tcenter\bottom" }
+```
 
 ## API
 
