@@ -20,6 +20,7 @@ declare namespace getopts {
     alias?: { [key: string]: string | string[] }
     string?: string[]
     boolean?: string[]
+    array?: string[]
     default?: { [key: string]: any }
     unknown?: (optionName: string) => boolean
     stopEarly?: boolean
