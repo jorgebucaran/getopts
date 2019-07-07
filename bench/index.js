@@ -11,7 +11,7 @@ const runBenchmark = (test, modules) =>
     .run()
 
 runBenchmark(
-  parse => parse(["--turbo", "--no-kill", "-xw1000", "--", "alpha", "beta"]),
+  parse => parse(["--turbo", "--no-slack", "-xyz1000", "--", "alpha", "beta"]),
   {
     getopts: require(".."),
     minimist: require("minimist"),

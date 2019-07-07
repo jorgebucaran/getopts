@@ -1,183 +1,219 @@
-# Getopts
+# Getopts [![npm](https://img.shields.io/npm/v/getopts.svg?label=&color=0080FF)](https://github.com/jorgebucaran/getopts/releases/latest) [![Travis CI](https://img.shields.io/travis/jorgebucaran/getopts.svg?label=)](https://travis-ci.org/jorgebucaran/getopts)
 
-[![Travis CI](https://img.shields.io/travis/jorgebucaran/getopts/master.svg)](https://travis-ci.org/jorgebucaran/getopts)
-[![Codecov](https://img.shields.io/codecov/c/github/jorgebucaran/getopts/master.svg)](https://codecov.io/gh/jorgebucaran/getopts)
-[![npm](https://img.shields.io/npm/v/getopts.svg)](https://www.npmjs.org/package/getopts)
+> Parse CLI options, better.
 
-Getopts is a [high performance](#benchmark-results) CLI options parser for Node.js. It is used to parse and validate the [command-line arguments](https://en.wikipedia.org/wiki/Command-line_interface#Arguments) passed to your program at runtime. It follows the [Utility Syntax Guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) so that your programs behave like typical UNIX utilities effortlessly. Once you learn how to use it, you'll never go back to parsing `process.argv` on your own again.
+Getopts sorts your command-line arguments into key-value pairs for easy look-up and retrieval, and its sane out-of-the-box defaults allow you to focus on the big picture: writing CLI tools. Here's why you'll love it:
 
-## Installation
+- Up to ~6x faster than the alternatives ([run the benchmarks](#run-the-benchmarks)).
+- Built upon [utility syntax guidelines](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) that have been used for decades.
+- You can use it as a drop-in replacement for `yargs` or `minimist`.
+- ~180 LOC and no dependencies.
 
-<pre>
-npm i <a href="https://www.npmjs.com/package/getopts">getopts</a>
-</pre>
+## Quickstart
 
-## Usage
+```console
+npm i getopts
+```
 
-You want to parse the command-line arguments passed to your program at runtime. How do you do that?
+How about we start with something useful: let's write a password generator. Our program should print out a random string of characters of a given length, and to make things more interesting, we'll add a way exclude certain characters like numbers or punctuation. We'll call it `pwd` (pronounced "password").
 
-<pre>
-$ <a href="./example/demo">example/demo</a> --turbo -xw10 -- alpha beta
-</pre>
+A typical invocation of our program will look like this:
 
-Getopts main export is a function that takes two arguments: an array of arguments and (optional) object with options.
+```console
+example/pwd --no-symbols --length=12
+```
 
-The command-line arguments can be found in the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array. The first item in the array is the path to the node executable, followed by the path to the file to execute. We don't need either one, so slice everything after the second index and pass it to [`getopts`](#getoptsargv-opts).
+First, we'll use `getopts` to parse the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array (the first two items are always `node` and the path to the script so we usually skip them). We'll also define aliases for each of our options, and set their default values.
 
 ```js
+#!/usr/bin/env node
+
 const getopts = require("getopts")
 
 const options = getopts(process.argv.slice(2), {
   alias: {
-    w: "warp",
-    t: "turbo"
+    help: "h",
+    length: "l",
+    digits: "d",
+    symbols: "s"
+  },
+  default: {
+    length: 16,
+    digits: true,
+    symbols: true
   }
 })
 ```
 
-The return value is an object that maps the argument names to their values. Use it to look up the value of an option by its name. The underscore `_` key is reserved for [operands](#operands). Operands consist of bare arguments (non-options), the dash `-` symbol and every argument after a double-dash `--` sequence.
+What we get is an object mapping argument names to values. We'll use it to look up the value of an option by their name. This is what it looks like when `pwd` is invoked with `--no-symbols --length=12`:
 
 ```js
 {
-  _: ["alpha", "beta"],
-  w: 10,
-  x: true,
-  t: true,
-  warp: 10,
-  turbo: true
+  _: [],
+  symbols: false,
+  s: false,
+  length: 12,
+  l: 12,
+  digits: true,
+  d: true
 }
 ```
 
-### Parsing Rules
+And to generate the password, here's what we're going to do:
 
-#### Short Options
+1. Print usage if `--help` is in the parsed options and exit.
+2. Initialize `CHARS` with all the possible password characters.
+3. Initialize an array of length `options.length`, where each item is a random character from `CHARS`.
+4. Join the result into a string and print it out.
 
-- A short option consists of a dash `-` followed by a single alphabetic character. Multiple short options can be clustered together without spaces. Short options will be casted to boolean unless followed by an [operand](#operand) or if adjacent to one or more non-alphabetic characters matching the regular expression <code>/[!-@[-`{-~][\s\s]\*/</code>.
+```js
+if (options.help) {
+  console.log("usage: pwd [-l|--length=N] [-d|--digits] [-s|--symbols]")
+  process.exit(0)
+}
 
-  ```js
-  getopts(["-ab", "-c"]) //=> { _: [], a:true, b:true, c:true }
-  ```
+const CHARS =
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+  (options.digits ? "0123456789" : "") +
+  (options.symbols ? "!@#$%^&*()_+~`|}{[]:;?><,./-=" : "")
 
-  ```js
-  getopts(["-a", "alpha"]) //=> { _: [], a:"alpha" }
-  ```
+const getRandom = list => list.charAt(Math.floor(Math.random() * list.length))
 
-  ```js
-  getopts(["-abc1"]) //=> { _: [], a:true, b:true, c:1 }
-  ```
+process.stdout.write(
+  Array.from({ length: options.length }, () => getRandom(CHARS)).join("") + "\n"
+)
+```
 
-- Only the last character in a cluster of options can be parsed as a string or as a number depending on the argument that follows it. Any options preceding it will be `true`. You can use [`opts.string`](#optsstring) to indicate that one or more options should be parsed as strings.
+That's it! Now you're ready to start working with Getopts on your own project. To learn more, continue to [Parsing Rules](#parsing-rules). Want to dig deeper? Head over to the [API docs](#api).
 
-  ```js
-  getopts(["-abc-100"], {
-    string: ["b"]
-  }) //=> { _: [], a:true, b:"c-100" }
-  ```
+## Parsing Rules
 
-- The argument immediately following a short or a long option, which is not an option itself, will be parsed as the value of the option. You can use [`opts.boolean`](#optsboolean) to indicate that one or more options should be parsed as booleans, causing an adjacent argument to be parsed as an operand and not as a value.
+### Short Options
 
-  ```js
-  getopts(["-a", "alpha"], {
-    boolean: ["a"]
-  }) //=> { _: ["alpha"], a:true }
-  ```
+A short option consists of a dash `-` followed by a single alphabetic character. Multiple short options can be clustered together without spaces. Short options will be a boolean `true` unless followed by an [operand](#operand) or if adjacent to one or more non-alphabetic characters matching the regular expression <code>/[!-@[-`{-~][\s\s]\*/</code>.
 
-- Any character listed in the ASCII table can be used as a short option if it's the first character after the dash.
+```js
+getopts(["-ab", "-c"]) //=> { _: [], a:true, b:true, c:true }
+```
 
-  ```js
-  getopts(["-9", "-#10", "-%0.01"]) //=> { _:[], 9:true, #:10, %:0.01 }
-  ```
+```js
+getopts(["-a", "alpha"]) //=> { _: [], a:"alpha" }
+```
 
-#### Long Options
+```js
+getopts(["-abc1"]) //=> { _: [], a:true, b:true, c:1 }
+```
 
-- A long option consists of two dashes `--` followed by one or more characters. Any character listed in the ASCII table can be used to create a long option except the `=` symbol, which separates an option's name and value.
+The last character in a cluster of options can be parsed as a string or as a number depending on the argument that follows it. Any options preceding it will be `true`. You can use [`opts.string`](#optsstring) to specify if one or more options should be parsed as strings instead.
 
-  ```js
-  getopts(["--turbo", "--warp=10"]) //=> { _: [], turbo:true, warp:10 }
-  ```
+```js
+getopts(["-abc-100"], {
+  string: ["b"]
+}) //=> { _: [], a:true, b:"c-100" }
+```
 
-  ```js
-  getopts(["--warp=e=mc^2"]) //=> { _: [], warp:"e=mc^2" }
-  ```
+The argument immediately following a short or a long option, which is not an option itself, will be parsed as the value of that option. You can use [`opts.boolean`](#optsboolean) to specify if one or more options should be parsed as booleans, causing any adjacent argument to be parsed as an operand instead.
 
-  ```js
-  getopts(["----", "alpha"]) //=> { _: [], --:"alpha" }
-  ```
+```js
+getopts(["-a", "alpha"], {
+  boolean: ["a"]
+}) //=> { _: ["alpha"], a:true }
+```
 
-- Options can be negated if they are prefixed with the sequence `--no-`. Their value is always `false`.
+Any character listed in the ASCII table can be used as a short option if it's the first character after the dash.
 
-  ```js
-  getopts(["--no-turbo"]) //=> { _: [], turbo:false }
-  ```
+```js
+getopts(["-9", "-#10", "-%0.01"]) //=> { _:[], 9:true, #:10, %:0.01 }
+```
 
-#### Operands
+### Long Options
 
-- Every argument after the first double-dash sequence `--` is saved to the operands array `_`.
+A long option consists of two dashes `--` followed by one or more characters. Any character listed in the ASCII table can be used to create a long option except the `=` symbol, which separates an option's name and value.
 
-  ```js
-  getopts(["--", "--alpha", "001"]) //=> { _:["--alpha", "001"] }
-  ```
+```js
+getopts(["--turbo", "--warp=10"]) //=> { _: [], turbo:true, warp:10 }
+```
 
-- Every non-option standalone argument is an operand.
+```js
+getopts(["--warp=e=mc^2"]) //=> { _: [], warp:"e=mc^2" }
+```
 
-  ```js
-  getopts(["alpha", "-w9"]) //=> { _: ["alpha"], w:9 }
-  ```
+```js
+getopts(["----", "alpha"]) //=> { _: [], --:"alpha" }
+```
 
-  ```js
-  getopts(["--code=alpha", "beta"]) //=> { _: ["beta"], code:"alpha" }
-  ```
+Options can be negated if they are prefixed with the sequence `--no-`. Their value is always `false`.
 
-- A dash `-` is an operand.
+```js
+getopts(["--no-turbo"]) //=> { _: [], turbo:false }
+```
 
-  ```js
-  getopts(["--turbo", "-"]) //=> { _:["-"], turbo:true }
-  ```
+### Operands
 
-#### Other
+Every argument after the first double-dash sequence `--` is saved to the operands array `_`.
 
-- Options missing from the arguments array designated as a boolean or string type will be added to the result object as `false` and `""` respectively.
+```js
+getopts(["--", "--alpha", "001"]) //=> { _:["--alpha", "001"] }
+```
 
-  ```js
-  getopts([], {
-    string: ["a"],
-    boolean: ["b"]
-  }) //=> { _:[], a:"", b:false }
-  ```
+Every non-option standalone argument is an operand.
 
-* The string `"false"` is always cast to a boolean `false`.
+```js
+getopts(["alpha", "-w9"]) //=> { _: ["alpha"], w:9 }
+```
 
-  ```js
-  getopts(["--turbo=false"]) //=> { _:[], turbo:false }
-  ```
+```js
+getopts(["--code=alpha", "beta"]) //=> { _: ["beta"], code:"alpha" }
+```
 
-* Options that appear multiple times are parsed as an array that consists of every value in the order they are found.
+A dash `-` is an operand.
 
-  ```js
-  getopts(["-a?alpha=beta", "-aa0.1"] //=> { _:[], a:["?alpha=beta", true, 0.1] }
-  ```
+```js
+getopts(["--turbo", "-"]) //=> { _:["-"], turbo:true }
+```
 
-* A value may contain newlines or other control characters.
+### Other
 
-  ```js
-  getopts(["--text=top\n\tcenter\bottom"]) //=> { _:[], text:"top\n\tcenter\bottom" }
-  ```
+Options missing from the arguments array designated as a boolean or string type will be added to the result object as `false` and `""` respectively.
+
+```js
+getopts([], {
+  string: ["a"],
+  boolean: ["b"]
+}) //=> { _:[], a:"", b:false }
+```
+
+The string `"false"` is always cast to a boolean `false`.
+
+```js
+getopts(["--turbo=false"]) //=> { _:[], turbo:false }
+```
+
+Options that appear multiple times are parsed as an array that consists of every value in the order they are found.
+
+```js
+getopts(["-a?alpha=beta", "-aa0.1"] //=> { _:[], a:["?alpha=beta", true, 0.1] }
+```
+
+A value may contain newlines or other control characters.
+
+```js
+getopts(["--text=top\n\tcenter\bottom"]) //=> { _:[], text:"top\n\tcenter\bottom" }
+```
 
 ## API
 
-### getopts(argv, opts)
+### `getopts(argv, opts)`
 
-Parse command line arguments. Expects an array of arguments, e.g., [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv), an object with options, and returns an object that maps the argument names to their values.
+Parse command line arguments. Expects an array of arguments, e.g., [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv), options configuration object, and returns an object mapping argument names to their values.
 
-### argv
+### `argv`
 
 An array of arguments.
 
-### opts
+### `opts.alias`
 
-#### opts.alias
-
-An object of option aliases. An alias can be a string or an array of strings. Aliases let you define alternate names for an option, e.g., the short (abbreviated) and long (canonical) variations.
+An object of option aliases. An alias can be a string or an array of strings. Aliases let you declare substitute names for an option, e.g., the short (abbreviated) and long (canonical) variations.
 
 ```js
 getopts(["-t"], {
@@ -187,9 +223,9 @@ getopts(["-t"], {
 }) //=> { _:[], t:true, T:true, turbo:true }
 ```
 
-#### opts.boolean
+### `opts.boolean`
 
-An array of options that should be parsed as booleans. In the example, declaring `t` as boolean causes the next argument to be parsed as an operand and not as a value.
+An array to indicate boolean options. In the next example, declaring `t` as boolean causes the next argument to be parsed as an operand and not as a value.
 
 ```js
 getopts(["-t", "alpha"], {
@@ -197,9 +233,9 @@ getopts(["-t", "alpha"], {
 }) //=> { _:["alpha"], t:true }
 ```
 
-#### opts.string
+### `opts.string`
 
-An array of options that should be parsed as strings. In the example, by declaring `t` as a string, all adjacent characters are parsed as a single value and not as individual options.
+An array to indicate string options. In the next example, by declaring `t` as a string, all adjacent characters are parsed as a single value and not as individual options.
 
 ```js
 getopts(["-atabc"], {
@@ -207,7 +243,7 @@ getopts(["-atabc"], {
 }) //=> { _:[], a:true, t:"abc" }
 ```
 
-#### opts.default
+### `opts.default`
 
 An object of default values for options that are not present in the arguments array.
 
@@ -220,7 +256,7 @@ getopts(["--warp=10"], {
 }) //=> { _:[], warp:10, turbo:true }
 ```
 
-#### opts.unknown
+### `opts.unknown`
 
 A function that will be invoked for every unknown option. Return `false` to discard the option. Unknown options are those that appear in the arguments array, but are not present in `opts.string`, `opts.boolean`, `opts.default`, or `opts.alias`.
 
@@ -230,7 +266,7 @@ getopts(["-abc"], {
 }) //=> { _:[], a:true }
 ```
 
-#### opts.stopEarly
+### `opts.stopEarly`
 
 A boolean property. If true, the operands array `_` will be populated with all the arguments after the first non-option.
 
@@ -248,6 +284,7 @@ const { install, update, uninstall } = require("./commands")
 const options = getopts(process.argv.slice(2), {
   stopEarly: true
 })
+
 const [command, subargs] = options._
 
 if (command === "install") {
@@ -259,19 +296,16 @@ if (command === "install") {
 }
 ```
 
-## Benchmark Results
-
-All tests run on a 2.4GHz Intel Core i7 CPU with 16 GB memory.
+## Run the benchmarks
 
 ```
 npm i -C bench && node bench
 ```
 
 <pre>
-getopts × 1,315,998 ops/sec
-minimist × 260,817 ops/sec
-yargs × 33,520 ops/sec
-mri × 386,495 ops/sec
+getopts × 1,769,415 ops/sec
+minimist × 314,240 ops/sec
+yargs × 33,179 ops/sec
 </pre>
 
 ## License
