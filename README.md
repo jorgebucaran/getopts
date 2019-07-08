@@ -1,4 +1,4 @@
-# Getopts [![npm](https://img.shields.io/npm/v/getopts.svg?label=&color=0080FF)](https://github.com/jorgebucaran/getopts/releases/latest) [![Travis CI](https://img.shields.io/travis/jorgebucaran/getopts.svg?label=)](https://travis-ci.org/jorgebucaran/getopts)
+# Getopts [![npm](https://img.shields.io/npm/v/getopts.svg?label=&color=0080FF)](https://github.com/jorgebucaran/getopts/releases/latest)
 
 > Parse CLI options, better.
 
