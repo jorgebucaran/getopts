@@ -103,6 +103,15 @@ exports.default = {
         "--bg-color": "red",
         "": "void"
       }
+    },
+    {
+      name: "whitespace",
+      argv: ["--foo=bar bar bar", "--bar", "foo foo foo"],
+      expected: {
+        _: [],
+        foo: "bar bar bar",
+        bar: "foo foo foo",
+      },
     }
   ].map(Parse)
 }
