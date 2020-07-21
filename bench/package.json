@@ -1,9 +1,11 @@
 {
   "private": true,
   "dependencies": {
-    "benchmark": "^2.1.4",
-    "minimist": "^1.2.0",
-    "mri": "^1.1.4",
-    "yargs-parser": "13.1.1"
+    "benchmark": "*",
+    "getopts": "*",
+    "minimist": "*",
+    "mri": "*",
+    "nopt": "*",
+    "yargs-parser": "*"
   }
 }

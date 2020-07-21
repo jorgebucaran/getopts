@@ -1,21 +1,32 @@
-const { Suite } = require("benchmark")
+const { Suite } = require('benchmark');
+const getopts = require("getopts");
+const minimist = require('minimist');
+const mri = require('mri');
+const nopt = require('nopt');
+const yargs = require('yargs-parser');
+const current = require('..');
 
-const runBenchmark = (test, modules) =>
-  Object.keys(modules)
-    .reduce(
-      (suite, name) => suite.add(name, () => test(modules[name], name)),
-      new Suite().on("cycle", ({ target: { name, hz } }) =>
-        console.log(`${name} × ${Math.floor(hz).toLocaleString()} ops/sec`)
-      )
-    )
-    .run()
+const bench = new Suite();
 
-runBenchmark(
-  parse => parse(["--turbo", "--no-slack", "-xyz1000", "--", "alpha", "beta"]),
-  {
-    getopts: require(".."),
-    minimist: require("minimist"),
-    yargs: require("yargs-parser"),
-    mri: require("mri")
-  }
-)
+const args = [
+  "dummy",                // value
+  '-s',                   // short
+  '-xyz',                 // short sequence
+  '-z=5',                 // short valued
+  '--long',               // long
+  '--very-long-flag=foo', // long valued
+  "--",                   // stop
+  "alpha",                // value
+  "-n",                   // short
+  "--bar=zoo"             // long valued
+];
+
+bench
+  .add('getopts (prior)   ', () => getopts(args))
+	.add('getopts (current) ', () => current(args))
+	.add('minimist          ', () => minimist(args))
+	.add('mri               ', () => mri(args))
+	.add('nopt              ', () => nopt({}, {}, args))
+	.add('yargs-parser      ', () => yargs(args))
+	.on('cycle', e => console.log(String(e.target)))
+	.run();
