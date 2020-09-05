@@ -92,7 +92,7 @@ const parseOptions = function(aliases, options, value) {
   return out
 }
 
-const write = function(out, key, value, aliases, unknown) {
+const write = function(out, key, value, aliases, unknown, inArray) {
   let i,
     prev,
     alias = aliases[key],
@@ -102,7 +102,7 @@ const write = function(out, key, value, aliases, unknown) {
     prev = out[key]
 
     if (prev === undefined) {
-      out[key] = value
+      out[key] = inArray ? [value] : value
     } else {
       if (isArray(prev)) {
         prev.push(value)
@@ -123,6 +123,7 @@ const getopts = function(argv, opts) {
     strings = parseOptions(aliases, opts.string, ""),
     values = parseDefault(aliases, opts.default),
     bools = parseOptions(aliases, opts.boolean, false),
+    arrays = parseOptions(aliases, opts.array, true),
     stopEarly = opts.stopEarly,
     _ = [],
     out = { _ },
@@ -167,7 +168,7 @@ const getopts = function(argv, opts) {
             ? parseValue(argv[++i])
             : argv[++i])
       }
-      write(out, key, value, aliases, unknown)
+      write(out, key, value, aliases, unknown, arrays[key])
     } else {
       SHORTSPLIT.lastIndex = 2
       match = SHORTSPLIT.exec(arg)
@@ -189,7 +190,8 @@ const getopts = function(argv, opts) {
             : bools[key] !== undefined ||
               (strings[key] === undefined ? parseValue(value) : value),
           aliases,
-          unknown
+          unknown,
+          arrays[key]
         )
       }
     }
