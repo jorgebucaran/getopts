@@ -1,16 +1,23 @@
 {
   "name": "getopts",
-  "description": "Parse CLI options, better.",
   "version": "2.2.5",
-  "main": "index.js",
+  "type": "module",
+  "main": "index.cjs",
   "types": "getopts.d.ts",
-  "license": "MIT",
+  "description": "Parse CLI options, better.",
   "repository": "jorgebucaran/getopts",
-  "author": "Jorge Bucaran",
+  "license": "MIT",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "require": "./index.cjs",
+      "import": "./index.js"
+    }
+  },
   "files": [
-    "index.js",
-    "getopts.d.ts"
+    "*.*(c)[tj]s*"
   ],
+  "author": "Jorge Bucaran",
   "keywords": [
     "getopts",
     "cli",
@@ -23,6 +30,7 @@
   ],
   "scripts": {
     "test": "nyc -r lcov testmatrix tests/*.test.js && nyc report",
+    "build": "node -e \"fs.writeFileSync('index.cjs',fs.readFileSync('index.js','utf8').replace(/export default/,'module.exports ='),'utf8')\"",
     "release": "v=$npm_package_version; git commit -am $v && git tag -s $v -m $v && git push && git push --tags && npm publish"
   },
   "devDependencies": {

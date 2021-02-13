@@ -117,7 +117,7 @@ const write = function(out, key, value, aliases, unknown) {
   }
 }
 
-const getopts = function(argv, opts) {
+export default function(argv, opts) {
   let unknown = (opts = opts || {}).unknown,
     aliases = parseAlias(opts.alias),
     strings = parseOptions(aliases, opts.string, ""),
@@ -202,4 +202,3 @@ const getopts = function(argv, opts) {
   return out
 }
 
-module.exports = getopts
