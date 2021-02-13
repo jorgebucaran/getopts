@@ -1,43 +1,45 @@
-const Parse = require("./Parse").Parse
+import getopts from "../index.js"
+import { t, deepEqual } from "twist"
 
-exports.default = {
-  "--no-* options": [
-    {
-      name: "are always false",
-      argv: ["--no-foo", "--no-bar=true", "--no-baz=0", "--no-fum", "bam"],
-      expected: {
-        _: ["bam"],
-        foo: false,
-        bar: false,
-        baz: false,
-        fum: false
-      }
-    },
-    {
-      name: "can't be cast to strings",
-      argv: ["--no-foo", "--no-bar=baz"],
-      opts: {
-        string: ["foo", "bar"]
-      },
-      expected: {
-        _: [],
-        foo: false,
-        bar: false
-      }
-    },
-    {
-      name: "can be aliased",
-      argv: ["--no-foo"],
-      opts: {
-        alias: {
-          foo: "f"
+export default [
+  t("--no-* options", [
+    t("are always false", [
+      deepEqual(
+        getopts(["--no-foo", "--no-bar=true", "--no-baz=0", "--no-fum", "bam"]),
+        {
+          _: ["bam"],
+          foo: false,
+          bar: false,
+          baz: false,
+          fum: false,
         }
-      },
-      expected: {
-        _: [],
-        foo: false,
-        f: false
-      }
-    }
-  ].map(Parse)
-}
+      ),
+    ]),
+    t("can't be cast to strings", [
+      deepEqual(
+        getopts(["--no-foo", "--no-bar=baz"], {
+          string: ["foo", "bar"],
+        }),
+        {
+          _: [],
+          foo: false,
+          bar: false,
+        }
+      ),
+    ]),
+    t("can be aliased", [
+      deepEqual(
+        getopts(["--no-foo"], {
+          alias: {
+            foo: "f",
+          },
+        }),
+        {
+          _: [],
+          foo: false,
+          f: false,
+        }
+      ),
+    ]),
+  ]),
+]

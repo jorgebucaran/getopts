@@ -1,45 +1,49 @@
-const Parse = require("./Parse").Parse
+import getopts from "../index.js"
+import { t, deepEqual } from "twist"
 
-exports.default = {
-  stopEarly: [
-    {
-      name: "stops parsing after first non-option",
-      argv: ["-abc", "foo", "bam", "-xyz"],
-      opts: { stopEarly: true },
-      expected: {
+export default [
+  t("stopEarly", [
+    t("stops parsing after first non-option", [
+      deepEqual(getopts(["-abc", "foo", "bam", "-xyz"], { stopEarly: true }), {
         _: ["bam", "-xyz"],
         a: true,
         b: true,
-        c: "foo"
-      }
-    },
-    {
-      name: "stops parsing after first non-option (using opts.boolean)",
-      argv: ["-abc", "foo", "bam", "-xyz"],
-      opts: { stopEarly: true, boolean: ["c"] },
-      expected: {
-        _: ["foo", "bam", "-xyz"],
-        a: true,
-        b: true,
-        c: true
-      }
-    },
-    {
-      name: "stops parsing after first non-option (using opts.string)",
-      argv: ["-abc", "foo", "bam", "-xyz"],
-      opts: { stopEarly: true, string: ["a"] },
-      expected: {
-        _: ["foo", "bam", "-xyz"],
-        a: "bc"
-      }
-    },
-    {
-      name: "does not remove double dashes",
-      argv: ["foo", "bam", "--", "-xyz", "--"],
-      opts: { stopEarly: true },
-      expected: {
-        _: ["foo", "bam", "--", "-xyz", "--"]
-      }
-    }
-  ].map(Parse)
-}
+        c: "foo",
+      }),
+    ]),
+    t("stops parsing after first non-option (using opts.boolean)", [
+      deepEqual(
+        getopts(["-abc", "foo", "bam", "-xyz"], {
+          stopEarly: true,
+          boolean: ["c"],
+        }),
+        {
+          _: ["foo", "bam", "-xyz"],
+          a: true,
+          b: true,
+          c: true,
+        }
+      ),
+    ]),
+    t("stops parsing after first non-option (using opts.string)", [
+      deepEqual(
+        getopts(["-abc", "foo", "bam", "-xyz"], {
+          stopEarly: true,
+          string: ["a"],
+        }),
+        {
+          _: ["foo", "bam", "-xyz"],
+          a: "bc",
+        }
+      ),
+    ]),
+    t("does not remove double dashes", [
+      deepEqual(
+        getopts(["foo", "bam", "--", "-xyz", "--"], { stopEarly: true }),
+        {
+          _: ["foo", "bam", "--", "-xyz", "--"],
+        }
+      ),
+    ]),
+  ]),
+]

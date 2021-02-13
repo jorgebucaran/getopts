@@ -1,78 +1,79 @@
-const Parse = require("./Parse").Parse
+import getopts from "../index.js"
+import { t, deepEqual } from "twist"
 
-exports.default = {
-  aliases: [
-    {
-      name: "short",
-      argv: ["-ab", "foo"],
-      opts: {
-        alias: {
-          a: "A",
-          b: ["B", "X"]
+export default [
+  t("aliases", [
+    t("short", [
+      deepEqual(
+        getopts(["-ab", "foo"], {
+          alias: {
+            a: "A",
+            b: ["B", "X"],
+          },
+        }),
+        {
+          _: [],
+          a: true,
+          A: true,
+          b: "foo",
+          B: "foo",
+          X: "foo",
         }
-      },
-      expected: {
-        _: [],
-        a: true,
-        A: true,
-        b: "foo",
-        B: "foo",
-        X: "foo"
-      }
-    },
-    {
-      name: "long",
-      argv: ["--foo", "bar", "--baz=fum"],
-      opts: {
-        alias: {
-          foo: "f",
-          baz: "b"
+      ),
+    ]),
+    t("long", [
+      deepEqual(
+        getopts(["--foo", "bar", "--baz=fum"], {
+          alias: {
+            foo: "f",
+            baz: "b",
+          },
+        }),
+        {
+          _: [],
+          f: "bar",
+          foo: "bar",
+          b: "fum",
+          baz: "fum",
         }
-      },
-      expected: {
-        _: [],
-        f: "bar",
-        foo: "bar",
-        b: "fum",
-        baz: "fum"
-      }
-    },
-    {
-      name: "jumbled aliases",
-      argv: ["--foo", "bar", "--baz=fum", "--bam=qux"],
-      opts: {
-        alias: {
-          f: ["F", "foo"],
-          b: ["B", "baz", "bam"]
+      ),
+    ]),
+    t("jumbled aliases", [
+      deepEqual(
+        getopts(["--foo", "bar", "--baz=fum", "--bam=qux"], {
+          alias: {
+            f: ["F", "foo"],
+            b: ["B", "baz", "bam"],
+          },
+        }),
+        {
+          _: [],
+          f: "bar",
+          F: "bar",
+          foo: "bar",
+          b: ["fum", "qux"],
+          B: ["fum", "qux"],
+          baz: ["fum", "qux"],
+          bam: ["fum", "qux"],
         }
-      },
-      expected: {
-        _: [],
-        f: "bar",
-        F: "bar",
-        foo: "bar",
-        b: ["fum", "qux"],
-        B: ["fum", "qux"],
-        baz: ["fum", "qux"],
-        bam: ["fum", "qux"]
-      }
-    },
-    {
-      name: "single alias as string",
-      argv: ["-fb"],
-      opts: {
-        alias: {
-          f: "foo",
-          b: "bar"
+      ),
+    ]),
+    t("single alias as string", [
+      deepEqual(
+        getopts(["-fb"], {
+          alias: {
+            f: "foo",
+            b: "bar",
+          },
+        }),
+        {
+          _: [],
+          f: true,
+          b: true,
+          foo: true,
+          bar: true,
         }
-      },
-      expected: {
-        _: [],
-        f: true,
-        b: true,
-        foo: true,
-        bar: true
-      }
-    }
-  ].map(Parse)
-}
+      ),
+    ]),
+  ]),
+]

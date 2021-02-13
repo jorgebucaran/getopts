@@ -1,49 +1,38 @@
-const Parse = require("./Parse").Parse
+import getopts from "../index.js"
+import { t, deepEqual } from "twist"
 
-exports.default = {
-  operands: [
-    {
-      name: "standalone arguments",
-      argv: ["foo", "bar", "baz"],
-      expected: {
-        _: ["foo", "bar", "baz"]
-      }
-    },
-    {
-      name: "double dash (end of options)",
-      argv: ["foo", "--", "bar", "-abc", "--baz", "fum"],
-      expected: {
-        _: ["foo", "bar", "-abc", "--baz", "fum"]
-      }
-    },
-    {
-      name: "ignore the first double dash",
-      argv: ["--"],
-      expected: {
-        _: []
-      }
-    },
-    {
-      name: "don't ignore any subsequent double dash",
-      argv: ["--", "--"],
-      expected: {
-        _: ["--"]
-      }
-    },
-    {
-      name: "standalone single dash operand (stdin)",
-      argv: ["--foo", "-", "bar"],
-      expected: {
+export default [
+  t("operands", [
+    t("standalone arguments", [
+      deepEqual(getopts(["foo", "bar", "baz"]), {
+        _: ["foo", "bar", "baz"],
+      }),
+    ]),
+    t("double dash (end of options)", [
+      deepEqual(getopts(["foo", "--", "bar", "-abc", "--baz", "fum"]), {
+        _: ["foo", "bar", "-abc", "--baz", "fum"],
+      }),
+    ]),
+    t("ignore the first double dash", [
+      deepEqual(getopts(["--"]), {
+        _: [],
+      }),
+    ]),
+    t("don't ignore any subsequent double dash", [
+      deepEqual(getopts(["--", "--"]), {
+        _: ["--"],
+      }),
+    ]),
+    t("standalone single dash operand (stdin)", [
+      deepEqual(getopts(["--foo", "-", "bar"]), {
         _: ["-", "bar"],
-        foo: true
-      }
-    },
-    {
-      name: "empty spaces and standalone special characters",
-      argv: [" ", " ", "foo\nbar", "\n\tbaz\tfum\tbam\n"],
-      expected: {
-        _: [" ", " ", "foo\nbar", "\n\tbaz\tfum\tbam\n"]
-      }
-    }
-  ].map(Parse)
-}
+        foo: true,
+      }),
+    ]),
+    t("empty spaces and standalone special characters", [
+      deepEqual(getopts([" ", " ", "foo\nbar", "\n\tbaz\tfum\tbam\n"]), {
+        _: [" ", " ", "foo\nbar", "\n\tbaz\tfum\tbam\n"],
+      }),
+    ]),
+  ]),
+]

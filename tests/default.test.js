@@ -1,65 +1,66 @@
-const Parse = require("./Parse").Parse
+import { t, deepEqual } from "twist"
+import getopts from "../index.js"
 
-exports.default = {
-  "opts.default": [
-    {
-      name: "do nothing when all default options are in argv",
-      argv: ["-abc"],
-      opts: {
-        default: {
-          a: 1,
-          b: 2,
-          c: 3
+export default [
+  t("opts.default", [
+    t("do nothing when all default options are in argv", [
+      deepEqual(
+        getopts(["-abc"], {
+          default: {
+            a: 1,
+            b: 2,
+            c: 3,
+          },
+        }),
+        {
+          _: [],
+          a: true,
+          b: true,
+          c: true,
         }
-      },
-      expected: {
-        _: [],
-        a: true,
-        b: true,
-        c: true
-      }
-    },
-    {
-      name: "apply values when no default options are in argv",
-      argv: ["-abc"],
-      opts: {
-        default: {
+      ),
+    ]),
+    t("apply values when no default options are in argv", [
+      deepEqual(
+        getopts(["-abc"], {
+          default: {
+            x: true,
+            y: true,
+            z: true,
+          },
+        }),
+        {
+          _: [],
+          a: true,
+          b: true,
+          c: true,
           x: true,
           y: true,
-          z: true
+          z: true,
         }
-      },
-      expected: {
-        _: [],
-        a: true,
-        b: true,
-        c: true,
-        x: true,
-        y: true,
-        z: true
-      }
-    },
-    {
-      name: "with aliases",
-      argv: [],
-      opts: {
-        alias: {
-          a: "A",
-          b: "B",
-          c: "C"
-        },
-        default: {
+      ),
+    ]),
+    t("with aliases", [
+      deepEqual(
+        getopts([], {
+          alias: {
+            a: "A",
+            b: "B",
+            c: "C",
+          },
+          default: {
+            a: true,
+            B: true,
+          },
+        }),
+        {
+          _: [],
           a: true,
-          B: true
+          A: true,
+          b: true,
+          B: true,
         }
-      },
-      expected: {
-        _: [],
-        a: true,
-        A: true,
-        b: true,
-        B: true
-      }
-    }
-  ].map(Parse)
-}
+      ),
+    ]),
+  ]),
+]

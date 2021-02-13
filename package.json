@@ -29,12 +29,12 @@
     "cli-parser"
   ],
   "scripts": {
-    "test": "nyc -r lcov testmatrix tests/*.test.js && nyc report",
+    "test": "c8 twist tests/*.js",
     "build": "node -e \"fs.writeFileSync('index.cjs',fs.readFileSync('index.js','utf8').replace(/export default/,'module.exports ='),'utf8')\"",
     "release": "v=$npm_package_version; git commit -am $v && git tag -s $v -m $v && git push && git push --tags && npm publish"
   },
   "devDependencies": {
-    "nyc": "^14.1.1",
-    "testmatrix": "^0.1.2"
+    "c8": "*",
+    "twist": "*"
   }
 }

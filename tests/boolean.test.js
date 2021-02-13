@@ -1,60 +1,63 @@
-const Parse = require("./Parse").Parse
+import { t, deepEqual } from "twist"
+import getopts from "../index.js"
 
-exports.default = {
-  "opts.boolean": [
-    {
-      name: "cast short option to boolean / treat next argument as operand",
-      argv: ["-a", "foo", "-b0101"],
-      opts: {
-        boolean: ["a", "b"]
-      },
-      expected: {
-        _: ["foo"],
-        a: true,
-        b: true
-      }
-    },
-    {
-      name: "cast long option to boolean / treat next argument as operand",
-      argv: ["--foo=bar", "--baz", "fum"],
-      opts: {
-        boolean: ["foo", "baz"]
-      },
-      expected: {
-        _: ["fum"],
-        foo: true,
-        baz: true
-      }
-    },
-    {
-      name: "with jumbled aliases",
-      argv: ["-a", "foo", "-b", "bar"],
-      opts: {
-        alias: {
-          a: "A",
-          b: "B"
-        },
-        boolean: ["A", "B"]
-      },
-      expected: {
-        _: ["foo", "bar"],
-        a: true,
-        A: true,
-        b: true,
-        B: true
-      }
-    },
-    {
-      name: "have a default value when not in argv",
-      argv: [],
-      opts: {
-        boolean: ["foo", "bar"]
-      },
-      expected: {
-        _: [],
-        foo: false,
-        bar: false
-      }
-    }
-  ].map(Parse)
-}
+export default [
+  t("opts.boolean", [
+    t("treat next argument as operand", [
+      t("short options", [
+        deepEqual(
+          getopts(["-a", "foo", "-b0101"], {
+            boolean: ["a", "b"],
+          }),
+          {
+            _: ["foo"],
+            a: true,
+            b: true,
+          }
+        ),
+      ]),
+      t("long options", [
+        deepEqual(
+          getopts(["--foo=bar", "--baz", "fum"], {
+            boolean: ["foo", "baz"],
+          }),
+          {
+            _: ["fum"],
+            foo: true,
+            baz: true,
+          }
+        ),
+      ]),
+    ]),
+    t("with jumbled aliases", [
+      deepEqual(
+        getopts(["-a", "foo", "-b", "bar"], {
+          alias: {
+            a: "A",
+            b: "B",
+          },
+          boolean: ["A", "B"],
+        }),
+        {
+          _: ["foo", "bar"],
+          a: true,
+          A: true,
+          b: true,
+          B: true,
+        }
+      ),
+    ]),
+    t("have a default value when not in argv", [
+      deepEqual(
+        getopts([], {
+          boolean: ["foo", "bar"],
+        }),
+        {
+          _: [],
+          foo: false,
+          bar: false,
+        }
+      ),
+    ]),
+  ]),
+]

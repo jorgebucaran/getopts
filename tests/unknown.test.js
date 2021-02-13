@@ -1,75 +1,76 @@
-const Parse = require("./Parse").Parse
+import getopts from "../index.js"
+import { t, deepEqual } from "twist"
 
-exports.default = {
-  "opts.unknown": [
-    {
-      name: "return true/false to accept/dismiss option if not in argv",
-      argv: ["-AbCdEfG"],
-      opts: {
-        unknown: opt => opt === opt.toUpperCase()
-      },
-      expected: {
-        _: [],
-        A: true,
-        C: true,
-        E: true,
-        G: true
-      }
-    },
-    {
-      name: "don't dismiss known options via opts.default",
-      argv: ["-abcdefg", "--foo"],
-      opts: {
-        default: {
-          a: "A",
-          foo: "Foo"
-        },
-        unknown: () => false
-      },
-      expected: {
-        _: [],
-        a: true,
-        foo: true
-      }
-    },
-    {
-      name: "don't dismiss known options via opts.boolean",
-      argv: ["-abcdefg"],
-      opts: {
-        boolean: ["a"],
-        unknown: () => false
-      },
-      expected: {
-        _: [],
-        a: true
-      }
-    },
-    {
-      name: "don't dismiss known options via opts.string",
-      argv: ["-abc"],
-      opts: {
-        string: ["b"],
-        unknown: () => false
-      },
-      expected: {
-        _: [],
-        b: "c"
-      }
-    },
-    {
-      name: "don't dismiss known options via opts.alias",
-      argv: ["-abcdefg/home"],
-      opts: {
-        alias: { a: "A", g: "G" },
-        unknown: () => false
-      },
-      expected: {
-        _: [],
-        a: true,
-        A: true,
-        g: "/home",
-        G: "/home"
-      }
-    }
-  ].map(Parse)
-}
+export default [
+  t("opts.unknown", [
+    t("return true/false to accept/dismiss option if not in argv", [
+      deepEqual(
+        getopts(["-AbCdEfG"], {
+          unknown: (opt) => opt === opt.toUpperCase(),
+        }),
+        {
+          _: [],
+          A: true,
+          C: true,
+          E: true,
+          G: true,
+        }
+      ),
+    ]),
+    t("don't dismiss known options via opts.default", [
+      deepEqual(
+        getopts(["-abcdefg", "--foo"], {
+          default: {
+            a: "A",
+            foo: "Foo",
+          },
+          unknown: () => false,
+        }),
+        {
+          _: [],
+          a: true,
+          foo: true,
+        }
+      ),
+    ]),
+    t("don't dismiss known options via opts.boolean", [
+      deepEqual(
+        getopts(["-abcdefg"], {
+          boolean: ["a"],
+          unknown: () => false,
+        }),
+        {
+          _: [],
+          a: true,
+        }
+      ),
+    ]),
+    t("don't dismiss known options via opts.string", [
+      deepEqual(
+        getopts(["-abc"], {
+          string: ["b"],
+          unknown: () => false,
+        }),
+        {
+          _: [],
+          b: "c",
+        }
+      ),
+    ]),
+    t("don't dismiss known options via opts.alias", [
+      deepEqual(
+        getopts(["-abcdefg/home"], {
+          alias: { a: "A", g: "G" },
+          unknown: () => false,
+        }),
+        {
+          _: [],
+          a: true,
+          A: true,
+          g: "/home",
+          G: "/home",
+        }
+      ),
+    ]),
+  ]),
+]

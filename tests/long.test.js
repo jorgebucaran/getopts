@@ -1,117 +1,106 @@
-const Parse = require("./Parse").Parse
+import { t, deepEqual } from "twist"
+import getopts from "../index.js"
 
-exports.default = {
-  "long options": [
-    {
-      name: "without value (boolean)",
-      argv: ["--foo"],
-      expected: {
+export default [
+  t("long options", [
+    t("without value (boolean)", [
+      deepEqual(getopts(["--foo"]), {
         _: [],
-        foo: true
-      }
-    },
-    {
-      name: "boolean if it's the last argument",
-      argv: ["--foo=bar", "--baz"],
-      expected: {
+        foo: true,
+      }),
+    ]),
+    t("boolean if it's the last argument", [
+      deepEqual(getopts(["--foo=bar", "--baz"]), {
         _: [],
         foo: "bar",
-        baz: true
-      }
-    },
-    {
-      name: "boolean false if value is the string 'false'",
-      argv: ["--foo=false"],
-      expected: {
+        baz: true,
+      }),
+    ]),
+    t("boolean false if value is the string 'false'", [
+      deepEqual(getopts(["--foo=false"]), {
         _: [],
-        foo: false
-      }
-    },
-    {
-      name: "cast to number or string with implicit value",
-      argv: ["--foo", "001", "--bar", "baz"],
-      expected: {
+        foo: false,
+      }),
+    ]),
+    t("cast to number or string with implicit value", [
+      deepEqual(getopts(["--foo", "001", "--bar", "baz"]), {
         _: [],
         foo: 1,
-        bar: "baz"
-      }
-    },
-    {
-      name: "cast to number or string with explicit value",
-      argv: ["--foo=001", "--bar=baz"],
-      expected: {
+        bar: "baz",
+      }),
+    ]),
+    t("cast to number or string with explicit value", [
+      deepEqual(getopts(["--foo=001", "--bar=baz"]), {
         _: [],
         foo: 1,
-        bar: "baz"
-      }
-    },
-    {
-      name: "name may be formed by any characters",
-      argv: ["--foo", "01", "--bar=2", "--baz3", "--34m"],
-      expected: {
+        bar: "baz",
+      }),
+    ]),
+    t("name may be formed by any characters", [
+      deepEqual(getopts(["--foo", "01", "--bar=2", "--baz3", "--34m"]), {
         _: [],
         foo: 1,
         bar: 2,
         baz3: true,
-        "34m": true
-      }
-    },
-    {
-      name: "split value after first =",
-      argv: ["--foo=e=mc^2"],
-      expected: {
+        "34m": true,
+      }),
+    ]),
+    t("split value after first =", [
+      deepEqual(getopts(["--foo=e=mc^2"]), {
         _: [],
-        foo: "e=mc^2"
-      }
-    },
-    {
-      name: "with mixed boolean, string and numerical values",
-      argv: ["--foo", "bar", "baz", "--fum", "--bam=pow", "--qux", "0.1"],
-      expected: {
-        _: ["baz"],
-        foo: "bar",
-        fum: true,
-        bam: "pow",
-        qux: 0.1
-      }
-    },
-    {
-      name: "with empty strings and other characters",
-      argv: ["--foo=/foo/bar/baz", "foobar", "--fum=", "--bam=.99", "--pow=$"],
-      expected: {
-        _: ["foobar"],
-        foo: "/foo/bar/baz",
-        fum: "",
-        bam: 0.99,
-        pow: "$"
-      }
-    },
-    {
-      name: "with new lines",
-      argv: ["--foobar=foo\nbar"],
-      expected: {
+        foo: "e=mc^2",
+      }),
+    ]),
+    t("with mixed boolean, string and numerical values", [
+      deepEqual(
+        getopts(["--foo", "bar", "baz", "--fum", "--bam=pow", "--qux", "0.1"]),
+        {
+          _: ["baz"],
+          foo: "bar",
+          fum: true,
+          bam: "pow",
+          qux: 0.1,
+        }
+      ),
+    ]),
+    t("with empty strings and other characters", [
+      deepEqual(
+        getopts([
+          "--foo=/foo/bar/baz",
+          "foobar",
+          "--fum=",
+          "--bam=.99",
+          "--pow=$",
+        ]),
+        {
+          _: ["foobar"],
+          foo: "/foo/bar/baz",
+          fum: "",
+          bam: 0.99,
+          pow: "$",
+        }
+      ),
+    ]),
+    t("with new lines", [
+      deepEqual(getopts(["--foobar=foo\nbar"]), {
         _: [],
-        foobar: "foo\nbar"
-      }
-    },
-    {
-      name: "with special characters",
-      argv: ["--@foo=bar", "----bg-color=red", "--=void"],
-      expected: {
+        foobar: "foo\nbar",
+      }),
+    ]),
+    t("with special characters", [
+      deepEqual(getopts(["--@foo=bar", "----bg-color=red", "--=void"]), {
         _: [],
         "@foo": "bar",
         "--bg-color": "red",
-        "": "void"
-      }
-    },
-    {
-      name: "whitespace",
-      argv: ["--foo=bar bar bar", "--bar", "foo foo foo"],
-      expected: {
+        "": "void",
+      }),
+    ]),
+    t("whitespace", [
+      deepEqual(getopts(["--foo=bar bar bar", "--bar", "foo foo foo"]), {
         _: [],
         foo: "bar bar bar",
         bar: "foo foo foo",
-      },
-    }
-  ].map(Parse)
-}
+      }),
+    ]),
+  ]),
+]
