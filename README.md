@@ -20,7 +20,7 @@ How about we start with something useful: let's write a password generator. Our 
 A typical invocation of our program will look like this:
 
 ```console
-example/pwd --no-symbols --length=12
+example/pwd.js --no-symbols --length=12
 ```
 
 First, we'll use `getopts` to parse the [`process.argv`](https://nodejs.org/docs/latest/api/process.html#process_process_argv) array (the first two items are always `node` and the path to the script so we usually skip them). We'll also define aliases for each of our options, and set their default values.

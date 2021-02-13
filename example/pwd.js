@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 
-const getopts = require("..")
+import getopts from "../index.js"
 
 const options = getopts(process.argv.slice(2), {
   alias: {
     help: "h",
     length: "l",
     digits: "d",
-    symbols: "s"
+    symbols: "s",
   },
   default: {
     length: 16,
     digits: true,
-    symbols: true
-  }
+    symbols: true,
+  },
 })
 
 if (options.help) {
@@ -26,7 +26,7 @@ const CHARS =
   (options.digits ? "0123456789" : "") +
   (options.symbols ? "!@#$%^&*()_+~`|}{[]:;?><,./-=" : "")
 
-const getRandom = list => list.charAt(Math.floor(Math.random() * list.length))
+const getRandom = (list) => list.charAt(Math.floor(Math.random() * list.length))
 
 process.stdout.write(
   Array.from({ length: options.length }, () => getRandom(CHARS)).join("") + "\n"
