@@ -1,4 +1,4 @@
-# Getopts [![npm](https://img.shields.io/npm/v/getopts.svg?label=&color=0080FF)](https://github.com/jorgebucaran/getopts/releases/latest)
+# Getopts
 
 > Parse CLI options, better.
 
@@ -35,13 +35,13 @@ const options = getopts(process.argv.slice(2), {
     help: "h",
     length: "l",
     digits: "d",
-    symbols: "s"
+    symbols: "s",
   },
   default: {
     length: 16,
     digits: true,
-    symbols: true
-  }
+    symbols: true,
+  },
 })
 ```
 
@@ -77,7 +77,7 @@ const CHARS =
   (options.digits ? "0123456789" : "") +
   (options.symbols ? "!@#$%^&*()_+~`|}{[]:;?><,./-=" : "")
 
-const getRandom = list => list.charAt(Math.floor(Math.random() * list.length))
+const getRandom = (list) => list.charAt(Math.floor(Math.random() * list.length))
 
 process.stdout.write(
   Array.from({ length: options.length }, () => getRandom(CHARS)).join("") + "\n"
@@ -108,7 +108,7 @@ The last character in a cluster of options can be parsed as a string or as a num
 
 ```js
 getopts(["-abc-100"], {
-  string: ["b"]
+  string: ["b"],
 }) //=> { _: [], a:true, b:"c-100" }
 ```
 
@@ -116,7 +116,7 @@ The argument immediately following a short or a long option, which is not an opt
 
 ```js
 getopts(["-a", "alpha"], {
-  boolean: ["a"]
+  boolean: ["a"],
 }) //=> { _: ["alpha"], a:true }
 ```
 
@@ -179,7 +179,7 @@ Options missing from the arguments array designated as a boolean or string type 
 ```js
 getopts([], {
   string: ["a"],
-  boolean: ["b"]
+  boolean: ["b"],
 }) //=> { _:[], a:"", b:false }
 ```
 
@@ -218,8 +218,8 @@ An object of option aliases. An alias can be a string or an array of strings. Al
 ```js
 getopts(["-t"], {
   alias: {
-    turbo: ["t", "T"]
-  }
+    turbo: ["t", "T"],
+  },
 }) //=> { _:[], t:true, T:true, turbo:true }
 ```
 
@@ -229,7 +229,7 @@ An array to indicate boolean options. In the next example, declaring `t` as bool
 
 ```js
 getopts(["-t", "alpha"], {
-  boolean: ["t"]
+  boolean: ["t"],
 }) //=> { _:["alpha"], t:true }
 ```
 
@@ -239,7 +239,7 @@ An array to indicate string options. In the next example, by declaring `t` as a 
 
 ```js
 getopts(["-atabc"], {
-  string: ["t"]
+  string: ["t"],
 }) //=> { _:[], a:true, t:"abc" }
 ```
 
@@ -251,8 +251,8 @@ An object of default values for options that are not present in the arguments ar
 getopts(["--warp=10"], {
   default: {
     warp: 15,
-    turbo: true
-  }
+    turbo: true,
+  },
 }) //=> { _:[], warp:10, turbo:true }
 ```
 
@@ -262,7 +262,7 @@ A function that will be invoked for every unknown option. Return `false` to disc
 
 ```js
 getopts(["-abc"], {
-  unknown: option => "a" === option
+  unknown: (option) => "a" === option,
 }) //=> { _:[], a:true }
 ```
 
@@ -272,7 +272,7 @@ A boolean property. If true, the operands array `_` will be populated with all t
 
 ```js
 getopts(["-w9", "alpha", "--turbo", "beta"], {
-  stopEarly: true
+  stopEarly: true,
 }) //=> { _:["alpha", "--turbo", "beta"], w:9 }
 ```
 
@@ -282,7 +282,7 @@ This property is useful when implementing sub-commands in a CLI.
 const { install, update, uninstall } = require("./commands")
 
 const options = getopts(process.argv.slice(2), {
-  stopEarly: true
+  stopEarly: true,
 })
 
 const [command, subargs] = options._
