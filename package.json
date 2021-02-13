@@ -15,7 +15,7 @@
     }
   },
   "files": [
-    "*.*(c)[tj]s*"
+    "*.[tj]s"
   ],
   "author": "Jorge Bucaran",
   "keywords": [
