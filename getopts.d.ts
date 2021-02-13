@@ -1,7 +1,7 @@
 /**
  * @param argv Arguments to parse.
  * @param options Parsing options (configuration).
- * @returns An object with parsed options.
+ * @returns The parsed arguments.
  */
 declare function getopts(
   argv: string[],
