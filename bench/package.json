@@ -1,9 +1,13 @@
 {
   "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npm install && node index.js"
+  },
   "dependencies": {
     "benchmark": "^2.1.4",
-    "minimist": "^1.2.0",
-    "mri": "^1.1.4",
-    "yargs-parser": "19.0.4"
+    "minimist": "*",
+    "mri": "*",
+    "yargs-parser": "*"
   }
 }
