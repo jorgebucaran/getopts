@@ -1,5 +1,3 @@
-"use strict"
-
 const EMPTYARR = []
 const SHORTSPLIT = /$|[!-@[-`{-~][\s\S]*/g
 const isArray = Array.isArray
