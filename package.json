@@ -3,7 +3,7 @@
   "version": "2.2.5",
   "type": "module",
   "main": "index.cjs",
-  "types": "getopts.d.ts",
+  "types": "index.d.ts",
   "description": "Parse CLI options, better.",
   "repository": "jorgebucaran/getopts",
   "license": "MIT",
