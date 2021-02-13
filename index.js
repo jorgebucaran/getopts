@@ -2,31 +2,27 @@ const EMPTYARR = []
 const SHORTSPLIT = /$|[!-@[-`{-~][\s\S]*/g
 const isArray = Array.isArray
 
-const parseValue = function(any) {
+const parseValue = function (any) {
   if (any === "") return ""
   if (any === "false") return false
-  const maybe = Number(any)
+  const maybe = +any
   return maybe * 0 === 0 ? maybe : any
 }
 
-const parseAlias = function(aliases) {
+const parseAlias = function (aliases) {
   let out = {},
-    key,
     alias,
     prev,
-    len,
-    any,
-    i,
-    k
+    any
 
-  for (key in aliases) {
+  for (let key in aliases) {
     any = aliases[key]
     alias = out[key] = isArray(any) ? any : [any]
 
-    for (i = 0, len = alias.length; i < len; i++) {
+    for (let i = 0; i < alias.length; i++) {
       prev = out[alias[i]] = [key]
 
-      for (k = 0; k < len; k++) {
+      for (let k = 0; k < alias.length; k++) {
         if (i !== k) prev.push(alias[k])
       }
     }
@@ -35,24 +31,21 @@ const parseAlias = function(aliases) {
   return out
 }
 
-const parseDefault = function(aliases, defaults) {
+const parseDefault = function (aliases, defaults) {
   let out = {},
-    key,
     alias,
-    value,
-    len,
-    i
+    value
 
-  for (key in defaults) {
-    value = defaults[key]
+  for (let key in defaults) {
     alias = aliases[key]
+    value = defaults[key]
 
     out[key] = value
 
     if (alias === undefined) {
       aliases[key] = EMPTYARR
     } else {
-      for (i = 0, len = alias.length; i < len; i++) {
+      for (let i = 0; i < alias.length; i++) {
         out[alias[i]] = value
       }
     }
@@ -61,17 +54,13 @@ const parseDefault = function(aliases, defaults) {
   return out
 }
 
-const parseOptions = function(aliases, options, value) {
+const parseOptions = function (aliases, options, value) {
   let out = {},
     key,
-    alias,
-    len,
-    end,
-    i,
-    k
+    alias
 
   if (options !== undefined) {
-    for (i = 0, len = options.length; i < len; i++) {
+    for (let i = 0; i < options.length; i++) {
       key = options[i]
       alias = aliases[key]
 
@@ -80,7 +69,7 @@ const parseOptions = function(aliases, options, value) {
       if (alias === undefined) {
         aliases[key] = EMPTYARR
       } else {
-        for (k = 0, end = alias.length; k < end; k++) {
+        for (let k = 0, end = alias.length; k < end; k++) {
           out[alias[k]] = value
         }
       }
@@ -90,9 +79,8 @@ const parseOptions = function(aliases, options, value) {
   return out
 }
 
-const write = function(out, key, value, aliases, unknown) {
-  let i,
-    prev,
+const write = function (out, key, value, aliases, unknown) {
+  let prev,
     alias = aliases[key],
     len = alias === undefined ? -1 : alias.length
 
@@ -109,13 +97,13 @@ const write = function(out, key, value, aliases, unknown) {
       }
     }
 
-    for (i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       out[alias[i]] = out[key]
     }
   }
 }
 
-export default function(argv, opts) {
+export default function (argv, opts) {
   let unknown = (opts = opts || {}).unknown,
     aliases = parseAlias(opts.alias),
     strings = parseOptions(aliases, opts.string, ""),
@@ -124,23 +112,27 @@ export default function(argv, opts) {
     stopEarly = opts.stopEarly,
     _ = [],
     out = { _ },
-    i = 0,
-    k = 0,
-    len = argv.length,
     key,
     arg,
     end,
     match,
     value
 
-  for (; i < len; i++) {
+  for (let i = 0, len = argv.length; i < len; i++) {
     arg = argv[i]
 
     if (arg[0] !== "-" || arg === "-") {
-      if (stopEarly) while (i < len) _.push(argv[i++])
-      else _.push(arg)
+      if (stopEarly) {
+        while (i < len) {
+          _.push(argv[i++])
+        }
+      } else {
+        _.push(arg)
+      }
     } else if (arg === "--") {
-      while (++i < len) _.push(argv[i])
+      while (++i < len) {
+        _.push(argv[i])
+      }
     } else if (arg[1] === "-") {
       end = arg.indexOf("=", 2)
       if (arg[2] === "n" && arg[3] === "o" && arg[4] === "-") {
@@ -172,7 +164,7 @@ export default function(argv, opts) {
       end = match.index
       value = match[0]
 
-      for (k = 1; k < end; k++) {
+      for (let k = 1; k < end; k++) {
         write(
           out,
           (key = arg[k]),
@@ -193,10 +185,9 @@ export default function(argv, opts) {
     }
   }
 
-  for (key in values) if (out[key] === undefined) out[key] = values[key]
-  for (key in bools) if (out[key] === undefined) out[key] = false
-  for (key in strings) if (out[key] === undefined) out[key] = ""
+  for (let key in values) if (out[key] === undefined) out[key] = values[key]
+  for (let key in bools) if (out[key] === undefined) out[key] = false
+  for (let key in strings) if (out[key] === undefined) out[key] = ""
 
   return out
 }
-
