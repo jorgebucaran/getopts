@@ -4,17 +4,13 @@
 
 - Lightweight drop-in replacement for `minimist` and clones.
 - Small (180 LOC), focused, no dependencies.
-- Up to [6x faster](#benchmarks) than alternatives! 🔥
+- Up to [6x faster](#benchmarks) than alternatives!
 
 Break up command-line arguments into key-value pairs for easy look-up and retrieval. Built upon [utility conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02) that have been used for decades, Getopts sane defaults help you write CLI tools that look and feel like the real deal.
 
-First, let's say we are writing a program that is typically invoked like this:
-
 ```console
-$ bundle --type=module -o main.js *.{js,json}
+$ example --type=module -o main.js *.{js,json}
 ```
-
-Then, we want to scan for CLI flags and values.
 
 ```js
 import getopts from "getopts"
