@@ -19,12 +19,11 @@
   ],
   "author": "Jorge Bucaran",
   "keywords": [
-    "getopts",
     "cli",
     "argv",
     "flags",
-    "yargs",
-    "options",
+    "parse",
+    "getopts",
     "minimist",
     "cli-parser"
   ],
