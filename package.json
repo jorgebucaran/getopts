@@ -1,6 +1,6 @@
 {
   "name": "getopts",
-  "version": "2.2.5",
+  "version": "2.3.0",
   "type": "module",
   "main": "index.cjs",
   "types": "index.d.ts",
