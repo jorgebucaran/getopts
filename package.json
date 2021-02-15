@@ -4,7 +4,7 @@
   "type": "module",
   "main": "index.cjs",
   "types": "index.d.ts",
-  "description": "Parse CLI options, better.",
+  "description": "Parse CLI arguments.",
   "repository": "jorgebucaran/getopts",
   "license": "MIT",
   "exports": {
